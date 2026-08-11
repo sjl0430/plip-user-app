@@ -7,7 +7,7 @@
 |------|------|
 | `.github/ISSUE_TEMPLATE/` | 이슈 유형·제목·라벨·본문 |
 | `.github/pull_request_template.md` | PR 제목·본문 양식 |
-| `.github/workflows/test.yml` | `develop` / `main` PR·push 시 typecheck + lint + build |
+| `.github/workflows/ci.yml` | `develop` / `main` PR·push — **CI** (test job) · **CD** (deploy job, Vercel 설정 후) |
 
 ## 0. 브랜치 전략 (환경)
 
@@ -17,12 +17,14 @@
 | **`main`** | **운영(Production) 서버** | 검증 완료 코드만 반영. **`develop` → `main`** 릴리즈 PR |
 
 ```
-feature/12-login-page  ──PR──▶  develop  ──(개발 서버 배포)──▶
+feature/12-login-page  ──PR──▶  develop  ──(개발 서버 배포*)──▶
                                       │
                                릴리즈 PR (검증 후)
                                       ▼
-                                    main  ──(운영 서버 배포)──▶
+                                    main  ──(운영 서버 배포*)──▶
 ```
+
+\* **배포(CD)** 는 [`docs/DEPLOYMENT.md`](./DEPLOYMENT.md) 참고. 기본적으로 **CI만 활성**이며, Vercel Git 연동 또는 Actions Secrets 설정 후 배포 가능.
 
 - feature/fix/refactor 등 작업 브랜치는 **`develop`에서 분기**합니다.
 - **`main`에 직접 push/PR 금지** (핫픽스 등 예외는 팀 합의 후).
@@ -129,10 +131,26 @@ GitHub **New Issue**에서 템플릿을 선택합니다.
 
 | 섹션 | 내용 |
 |------|------|
-| 작업 내용 | 무엇을 왜 바꿨는지 |
+| 작업 내용 | 무엇을 왜 바꿨는지 (2–4문장) |
 | 관련 이슈 | `Close #N` |
-| 변경 사항 | 주요 변경 체크리스트 |
+| 변경 사항 | **변경 단위별** 제목 · 파일 · 설명 · **코드 스니펫** |
 | 테스트 | 로컬/CI 확인 항목 |
+
+#### 변경 사항 작성 규칙
+
+각 변경마다 아래 형식을 따릅니다.
+
+1. `### N. {변경 제목}`
+2. **파일** — 영향받는 경로 나열
+3. **설명** — 무엇이 어떻게 바뀌었는지
+4. **코드** — 실제 diff에서 발췌한 핵심 스니펫 (```lang 블록, 10~30줄)
+
+모호한 체크리스트(`- [ ] CI 추가`)만 적지 말고, **구체적 파일·코드**를 포함합니다.
+
+#### PR 본문 복사 (cpm / 에이전트 출력)
+
+- 응답 **맨 아래**에 ` ````markdown ` … ` ```` ` **단일 블록** — 블록 안만 PR 본문, 상태·링크는 블록 **밖**
+- 내부 코드 스니펫 때문에 **4-backtick** 래퍼 사용 (3-backtick이면 복사 시 깨짐)
 
 ### 머지 전
 
@@ -140,9 +158,9 @@ GitHub **New Issue**에서 템플릿을 선택합니다.
 - [ ] `Close #N` 연결
 - [ ] CI **Test** 성공
 
-## 6. CI
+## 6. CI / CD
 
-`.github/workflows/test.yml`
+### CI (활성) — `.github/workflows/ci.yml` → `test`
 
 | 항목 | 내용 |
 |------|------|
@@ -150,6 +168,18 @@ GitHub **New Issue**에서 템플릿을 선택합니다.
 | 실행 | Node 20 + `npm ci` + `typecheck` + `lint` + `build` |
 
 push 전 로컬에서도 `npm run test` (또는 `npm run build`)로 확인합니다.
+
+### CD (비활성 — 설정 필요) — `deploy` job
+
+| 항목 | 내용 |
+|------|------|
+| 트리거 | `push` to `develop` / `main`, **`test` job 성공 후** |
+| 조건 | Repository Variable `VERCEL_DEPLOY=true` + Vercel Secrets |
+| `develop` | Vercel Preview (개발 서버) |
+| `main` | Vercel Production (`--prod`, 운영 서버) |
+
+상세 설정: [`docs/DEPLOYMENT.md`](./DEPLOYMENT.md)  
+Vercel Git 연동만 써도 되며, 이 경우 Actions `deploy` job은 끈 채로 두면 됩니다.
 
 API 명세: Gateway Swagger UI에서 서비스별 OpenAPI를 통합 조회합니다.
 
@@ -162,12 +192,12 @@ API 명세: Gateway Swagger UI에서 서비스별 OpenAPI를 통합 조회합니
 2. Branch  feature/12-login-page       (from develop)
 3. Commit  Feature: 로그인 화면 추가
 4. PR      [#12] Feature : 로그인 화면 구현  → base: develop / Close #12
-5. CI      Test 통과 → 리뷰 → develop 머지 → 개발 서버 배포
+5. CI      Test 통과 → 리뷰 → develop 머지 → (설정 시) 개발 서버 배포
 ```
 
 ### 운영 배포 (main)
 
 ```
 1. PR      develop → main  (릴리즈 PR, 변경 요약·테스트 명시)
-2. CI      Test 통과 → 리뷰 → main 머지 → 운영 서버 배포
+2. CI      Test 통과 → 리뷰 → main 머지 → (설정 시) 운영 서버 배포
 ```

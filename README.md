@@ -57,7 +57,16 @@ Issue → 브랜치(develop 기준) → 커밋 → PR → CI → 리뷰 → 머�
 | PR 본문 | `Close #12` + 템플릿 섹션 작성 |
 
 템플릿: `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`  
-CI: `.github/workflows/test.yml` (`develop` / `main`)
+CI: `.github/workflows/ci.yml` (`develop` / `main`)
+
+### CI / CD
+
+| 구분 | 상태 | 설명 |
+|------|------|------|
+| **CI** (`test` job) | ✅ 활성 | typecheck + lint + build |
+| **CD** (`deploy` job) | ⏸ 미설정 | Vercel Secrets + `VERCEL_DEPLOY=true` 필요 |
+
+배포 설정: [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md)
 
 ## Git 훅 (Husky)
 
@@ -137,7 +146,7 @@ UI (client / RSC)
 채팅에서 **`cpm`** 이라고 하면 에이전트가 아래를 수행합니다.
 
 1. `git add` → `commit` → `push`
-2. PR 본문 초안을 **대화창 markdown 코드 블록**으로 출력 (`.github/pull_request_template.md` 형식, `Close #N` 포함)
+2. PR 본문을 **복사·붙여넣기용 단일 코드 블록**(` ````markdown ` 4-backtick)으로 출력 — 변경 사항에 **파일·설명·코드 스니펫** 포함
 
 PR 생성(`gh pr create`)은 **`cpm`만으로는 실행하지 않음** — 별도 요청 시에만 진행.
 
