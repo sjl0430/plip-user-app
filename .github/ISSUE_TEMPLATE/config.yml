@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links: []
+issue_templates:
+  - feature.yml
+  - fix.yml
+  - refactor.yml
+  - style.yml
+  - docs.yml
+  - chore.yml

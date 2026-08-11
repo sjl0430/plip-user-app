@@ -1,0 +1,21 @@
+name: Refactor
+description: 동작 동일, 구조·가독성 개선
+title: "[Refactor] "
+labels:
+  - Refactor
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 개요
+      placeholder: HeroSection을 organisms/templates로 분리
+    validations:
+      required: true
+  - type: checkboxes
+    id: tasks
+    attributes:
+      label: 작업 내용
+      options:
+        - label: 파일/폴더 구조 변경
+        - label: 네이밍·타입 정리
+        - label: 동작 변경 없음 확인

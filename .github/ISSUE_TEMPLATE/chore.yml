@@ -1,0 +1,21 @@
+name: Chore
+description: 빌드·CI·의존성·설정
+title: "[Chore] "
+labels:
+  - Chore
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 개요
+      placeholder: Husky pre-push 훅 추가
+    validations:
+      required: true
+  - type: checkboxes
+    id: tasks
+    attributes:
+      label: 작업 내용
+      options:
+        - label: package.json / 의존성
+        - label: CI workflow
+        - label: Husky / lint-staged

@@ -1,0 +1,21 @@
+name: Style
+description: 포맷·네이밍 등 동작 없는 스타일 정리
+title: "[Style] "
+labels:
+  - Style
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 개요
+      placeholder: ESLint 경고 일괄 수정
+    validations:
+      required: true
+  - type: checkboxes
+    id: tasks
+    attributes:
+      label: 작업 내용
+      options:
+        - label: 포맷 / lint
+        - label: 네이밍 통일
+        - label: 동작 변경 없음 확인
