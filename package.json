@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
-    "prebuild": "npm run typecheck && npm run lint",
+    "test": "npm run typecheck && npm run lint",
+    "prebuild": "npm run test",
     "prepare": "husky"
   },
   "lint-staged": {

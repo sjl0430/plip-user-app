@@ -24,15 +24,51 @@ npm run dev
 | `npm run lint` | ESLint 전체 검사 |
 | `npm run lint:fix` | ESLint 자동 수정 |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm run test` | typecheck + lint (pre-push / prebuild) |
+
+## Git Convention
+
+상세: [`docs/GIT_CONVENTION.md`](./docs/GIT_CONVENTION.md)
+
+### 브랜치 · 환경
+
+| 브랜치 | 환경 | 용도 |
+|--------|------|------|
+| **`develop`** | 개발 서버 | feature 브랜치 머지 · 일상 개발 |
+| **`main`** | 운영 서버 | `develop` 릴리즈 PR로만 반영 |
+
+```
+feature/* ──PR──▶ develop (개발 서버) ──릴리즈 PR──▶ main (운영 서버)
+```
+
+### 작업 규칙
+
+```
+Issue → 브랜치(develop 기준) → 커밋 → PR → CI → 리뷰 → 머지
+```
+
+| 항목 | 규칙 |
+|------|------|
+| Issue 제목 | `[Feature]` `[Fix]` … + 한글 요약 |
+| 브랜치 | `feature/12-login-page` (**from `develop`**) |
+| PR base | **`develop`** (운영은 `develop` → `main` 릴리즈 PR) |
+| 커밋 | `Feature: 로그인 화면 추가` |
+| PR 제목 | `[#12] Feature : 로그인 화면 구현` |
+| PR 본문 | `Close #12` + 템플릿 섹션 작성 |
+
+템플릿: `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`  
+CI: `.github/workflows/test.yml` (`develop` / `main`)
 
 ## Git 훅 (Husky)
 
 | 시점 | 동작 |
 |------|------|
-| **pre-commit** | staged `*.{ts,tsx}`에 ESLint `--fix` (`lint-staged`) |
-| **prebuild** | `typecheck` → `lint` 후 `next build` |
+| **pre-commit** | staged `*.{ts,tsx}` ESLint `--fix` |
+| **commit-msg** | `Type: 요약` 형식 검증 |
+| **pre-push** | `npm run test` |
+| **prebuild** | `npm run test` 후 build |
 
-`npm install` 시 `prepare` 스크립트로 Husky가 자동 설정됩니다.
+`npm install` 시 Husky 자동 설정. `--no-verify` 남용 금지.
 
 ## 프로젝트 구조
 
@@ -101,7 +137,7 @@ UI (client / RSC)
 채팅에서 **`cpm`** 이라고 하면 에이전트가 아래를 수행합니다.
 
 1. `git add` → `commit` → `push`
-2. PR 본문 초안을 **`pr-message.md`** 로 출력 (로컬 파일, Git 미포함)
+2. PR 본문 초안을 **대화창 markdown 코드 블록**으로 출력 (`.github/pull_request_template.md` 형식, `Close #N` 포함)
 
 PR 생성(`gh pr create`)은 **`cpm`만으로는 실행하지 않음** — 별도 요청 시에만 진행.
 

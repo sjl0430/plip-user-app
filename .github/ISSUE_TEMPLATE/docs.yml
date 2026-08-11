@@ -1,0 +1,21 @@
+name: Docs
+description: README, Git Convention 등 문서
+title: "[Docs] "
+labels:
+  - Docs
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 개요
+      placeholder: README Git Convention 섹션 보완
+    validations:
+      required: true
+  - type: checkboxes
+    id: tasks
+    attributes:
+      label: 작업 내용
+      options:
+        - label: README.md
+        - label: docs/GIT_CONVENTION.md
+        - label: .github 템플릿
