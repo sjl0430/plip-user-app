@@ -53,7 +53,7 @@ export function HomeHeader() {
 
 export function HeroSection() {
   return (
-    <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main className="flex w-full max-w-3xl flex-col items-center justify-between bg-white px-4 py-16 sm:items-start sm:px-8 sm:py-24 md:px-16 md:py-32 dark:bg-black">
       <HomeHeader />
       <HeroContent />
       <ActionButtons />
