@@ -5,6 +5,8 @@ export const ROUTES = {
   signup: "/signup",
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
+  heart: "/heart",
+  capture: "/capture",
   diary: {
     root: "/diary",
     date: (date: string) => `/diary/${date}` as const,
@@ -12,6 +14,9 @@ export const ROUTES = {
       root: "/diary/themes",
       detail: (themeId: string) => `/diary/themes/${themeId}` as const,
     },
+  },
+  agit: {
+    root: "/agit",
   },
   mypage: {
     root: "/mypage",

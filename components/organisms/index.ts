@@ -1,3 +1,4 @@
+export { AgitListSection } from "./AgitListSection";
 export { ChangePasswordForm } from "./ChangePasswordForm";
 export { CreateThemeDialog } from "./CreateThemeDialog";
 export { DiaryDateDetailSection } from "./DiaryDateDetailSection";

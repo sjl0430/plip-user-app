@@ -1,3 +1,4 @@
+export { AgitListTemplate } from "./AgitListTemplate";
 export { AppRouteShell } from "./AppRouteShell";
 export { AuthTemplate } from "./AuthTemplate";
 export { ChangePasswordTemplate } from "./ChangePasswordTemplate";
