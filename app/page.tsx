@@ -1,5 +1,5 @@
-import { HomeTemplate } from "@/components/templates";
+import { IntroTemplate } from "@/components/templates";
 
-export default function Home() {
-  return <HomeTemplate />;
+export default function IntroPage() {
+  return <IntroTemplate />;
 }
