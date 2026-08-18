@@ -1,6 +1,7 @@
 "use client";
 
 import { DailyToggle } from "@/components/molecules/DailyToggle";
+import { NotificationIconToggle } from "@/components/molecules/NotificationIconToggle";
 import { useState } from "react";
 
 const INVITE_LINK = "dailyloop.app/join/7K2M9";
@@ -83,7 +84,7 @@ export function InvitesSafetySection() {
           <p className="dl-info-row__title font-semibold">관리 알림</p>
           <p className="dl-info-row__desc">신고·추방·초대 링크 변경</p>
         </div>
-        <DailyToggle checked={notify} label="관리 알림" onChange={setNotify} />
+        <NotificationIconToggle checked={notify} label="관리 알림" onChange={setNotify} />
       </div>
     </section>
   );

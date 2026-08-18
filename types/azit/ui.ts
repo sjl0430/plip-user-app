@@ -16,6 +16,8 @@ export type UiAzit = {
   topicSummary?: string;
   thumbnailSrc?: string;
   joined?: boolean;
+  hasNewChat?: boolean;
+  hasTodayTopic?: boolean;
 };
 
 export type UiAzitMember = {

@@ -32,6 +32,7 @@ export {
   InvitesSafetyTemplate as AzitSafetyTemplate,
   MembersPermissionsTemplate as AzitMembersTemplate,
   RoomManageHubTemplate as AzitManageTemplate,
+  TopicCreateTemplate as AzitTopicCreateTemplate,
   TopicsLayoutTemplate as AzitTopicsTemplate,
 } from "./RoomManageTemplates";
 
@@ -48,9 +49,9 @@ export function AzitChatTemplate({ azitId }: { azitId: string }) {
   }
 
   return (
-    <DailyLoopAuthTemplate>
+    <AppChromeTemplate activeTab="azit" variant="light">
       <AzitChatSection azitId={azitId} />
-    </DailyLoopAuthTemplate>
+    </AppChromeTemplate>
   );
 }
 

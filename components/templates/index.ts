@@ -10,6 +10,7 @@ export {
   AzitListTemplate,
   AzitMembersTemplate,
   AzitSearchTemplate,
+  AzitTopicCreateTemplate,
   AzitTopicsTemplate,
   AzitManageTemplate,
   AzitSafetyTemplate,

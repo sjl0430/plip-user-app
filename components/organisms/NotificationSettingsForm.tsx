@@ -1,6 +1,6 @@
 "use client";
 
-import { DailyToggle } from "@/components/molecules/DailyToggle";
+import { NotificationIconToggle } from "@/components/molecules/NotificationIconToggle";
 import { SettingsRow } from "@/components/molecules/SettingsRow";
 import { useState } from "react";
 
@@ -29,7 +29,7 @@ export function NotificationSettingsForm() {
         title="전체 알림"
         description="모든 푸시 알림 허용"
         trailing={
-          <DailyToggle
+          <NotificationIconToggle
             checked={toggles.all}
             label="전체 알림"
             onChange={(value) => setToggle("all", value)}
@@ -43,7 +43,7 @@ export function NotificationSettingsForm() {
         title="채팅 알림"
         description="새 메시지와 답장"
         trailing={
-          <DailyToggle
+          <NotificationIconToggle
             checked={toggles.chat}
             label="채팅 알림"
             onChange={(value) => setToggle("chat", value)}
@@ -55,7 +55,7 @@ export function NotificationSettingsForm() {
         title="영상 반응"
         description="내 영상의 이모지 반응"
         trailing={
-          <DailyToggle
+          <NotificationIconToggle
             checked={toggles.reaction}
             label="영상 반응"
             onChange={(value) => setToggle("reaction", value)}
@@ -67,7 +67,7 @@ export function NotificationSettingsForm() {
         title="방 초대 및 관리"
         description="초대 링크·추방·방장 위임"
         trailing={
-          <DailyToggle
+          <NotificationIconToggle
             checked={toggles.invite}
             label="방 초대 및 관리"
             onChange={(value) => setToggle("invite", value)}
@@ -81,7 +81,7 @@ export function NotificationSettingsForm() {
         title="러닝 메이트의 30일"
         description={toggles.roomRun ? "채팅 알림 켜짐" : "채팅 알림 꺼짐"}
         trailing={
-          <DailyToggle
+          <NotificationIconToggle
             checked={toggles.roomRun}
             label="러닝 메이트의 30일 채팅 알림"
             onChange={(value) => setToggle("roomRun", value)}
@@ -93,7 +93,7 @@ export function NotificationSettingsForm() {
         title="주말 한강 산책 모임"
         description={toggles.roomWalk ? "채팅 알림 켜짐" : "채팅 알림 꺼짐"}
         trailing={
-          <DailyToggle
+          <NotificationIconToggle
             checked={toggles.roomWalk}
             label="주말 한강 산책 모임 채팅 알림"
             onChange={(value) => setToggle("roomWalk", value)}
