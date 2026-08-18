@@ -64,7 +64,7 @@ CI: `.github/workflows/ci.yml` (`develop` / `main`)
 | 구분 | 상태 | 설명 |
 |------|------|------|
 | **CI** (`test` job) | ✅ 활성 | typecheck + lint + build |
-| **CD** (`deploy` job) | ⏸ 미설정 | Vercel Secrets + `VERCEL_DEPLOY=true` 필요 |
+| **CD** | Vercel Git | `main` push → Production |
 
 배포 설정: [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md)
 

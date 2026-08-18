@@ -7,7 +7,7 @@
 |------|------|
 | `.github/ISSUE_TEMPLATE/` | 이슈 유형·제목·라벨·본문 |
 | `.github/pull_request_template.md` | PR 제목·본문 양식 |
-| `.github/workflows/ci.yml` | `develop` / `main` PR·push — **CI** (test job) · **CD** (deploy job, Vercel 설정 후) |
+| `.github/workflows/ci.yml` | `develop` / `main` PR·push — **CI** (test job). 배포는 Vercel Git |
 
 ## 0. 브랜치 전략 (환경)
 
@@ -24,7 +24,7 @@ feature/12-login-page  ──PR──▶  develop  ──(개발 서버 배포*)
                                     main  ──(운영 서버 배포*)──▶
 ```
 
-\* **배포(CD)** 는 [`docs/DEPLOYMENT.md`](./DEPLOYMENT.md) 참고. 기본적으로 **CI만 활성**이며, Vercel Git 연동 또는 Actions Secrets 설정 후 배포 가능.
+\* **배포(CD)** 는 Vercel Git 연동. `main` push → Production. 상세: [`docs/DEPLOYMENT.md`](./DEPLOYMENT.md)
 
 - feature/fix/refactor 등 작업 브랜치는 **`develop`에서 분기**합니다.
 - **`main`에 직접 push/PR 금지** (핫픽스 등 예외는 팀 합의 후).
@@ -169,17 +169,16 @@ GitHub **New Issue**에서 템플릿을 선택합니다.
 
 push 전 로컬에서도 `npm run test` (또는 `npm run build`)로 확인합니다.
 
-### CD (비활성 — 설정 필요) — `deploy` job
+### CD — Vercel Git 연동
 
 | 항목 | 내용 |
 |------|------|
-| 트리거 | `push` to `develop` / `main`, **`test` job 성공 후** |
-| 조건 | Repository Variable `VERCEL_DEPLOY=true` + Vercel Secrets |
-| `develop` | Vercel Preview (개발 서버) |
-| `main` | Vercel Production (`--prod`, 운영 서버) |
+| 방식 | Vercel이 GitHub `main` push를 Production으로 배포 |
+| Actions | **CI(`test`)만** 실행. `deploy` job 없음 |
+| `develop` | Vercel Preview (연동 시) |
+| `main` | Vercel Production |
 
-상세 설정: [`docs/DEPLOYMENT.md`](./DEPLOYMENT.md)  
-Vercel Git 연동만 써도 되며, 이 경우 Actions `deploy` job은 끈 채로 두면 됩니다.
+상세: [`docs/DEPLOYMENT.md`](./DEPLOYMENT.md)
 
 API 명세: Gateway Swagger UI에서 서비스별 OpenAPI를 통합 조회합니다.
 
@@ -192,12 +191,12 @@ API 명세: Gateway Swagger UI에서 서비스별 OpenAPI를 통합 조회합니
 2. Branch  feature/12-login-page       (from develop)
 3. Commit  Feature: 로그인 화면 추가
 4. PR      [#12] Feature : 로그인 화면 구현  → base: develop / Close #12
-5. CI      Test 통과 → 리뷰 → develop 머지 → (설정 시) 개발 서버 배포
+5. CI      Test 통과 → 리뷰 → develop 머지 → (연동 시) Vercel Preview
 ```
 
 ### 운영 배포 (main)
 
 ```
 1. PR      develop → main  (릴리즈 PR, 변경 요약·테스트 명시)
-2. CI      Test 통과 → 리뷰 → main 머지 → (설정 시) 운영 서버 배포
+2. CI      Test 통과 → 리뷰 → main 머지 → Vercel Production 배포
 ```
