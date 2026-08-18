@@ -12,9 +12,12 @@ export { InlineCode } from "./InlineCode";
 export { Input } from "./Input";
 export { Label } from "./Label";
 export {
+  NavAgitIcon,
   NavAzitIcon,
+  NavCaptureIcon,
   NavCreateIcon,
   NavDiaryIcon,
+  NavHeartIcon,
   NavHomeIcon,
   NavInboxIcon,
   NavMyPageIcon,

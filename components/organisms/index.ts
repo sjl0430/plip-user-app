@@ -23,6 +23,7 @@ export { PublicRoomDetail } from "./PublicRoomDetail";
 export { RoomProfileSelect } from "./RoomProfileSelect";
 export { AzitDetailSection } from "./AzitDetailSection";
 export { AzitListSection } from "./AzitListSection";
+export { AgitListSection } from "./AgitListSection";
 export {
   AzitChatSection,
   AzitEnterSection,

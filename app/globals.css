@@ -1651,6 +1651,44 @@ body {
   height: 1.4rem;
 }
 
+.plip-bottom-nav__item--capture {
+  flex: 0 0 auto;
+  width: 3.35rem;
+  min-height: 3.35rem;
+  margin-top: -0.55rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(150, 210, 255, 0.28);
+  background: rgba(100, 185, 255, 0.14);
+  color: #eef8ff !important;
+  box-shadow: 0 0 18px rgba(80, 160, 255, 0.2);
+}
+
+.plip-bottom-nav__item--capture .plip-bottom-nav__icon {
+  width: 1.55rem;
+  height: 1.55rem;
+}
+
+.plip-bottom-nav__item--capture.is-active {
+  background: rgba(100, 185, 255, 0.28);
+  box-shadow: 0 0 22px rgba(80, 160, 255, 0.28);
+}
+
+button.plip-bottom-nav__item {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: default;
+  padding: 0;
+}
+
+.plip-bottom-nav--light .plip-bottom-nav__item--capture {
+  border-color: rgba(11, 23, 83, 0.12);
+  background: rgba(11, 23, 83, 0.08);
+  color: #0b1753 !important;
+  box-shadow: none;
+}
+
+
 .plip-bottom-nav__item--create {
   color: var(--plip-feed-accent) !important;
 }
@@ -4143,6 +4181,7 @@ body {
 
 .plip-muted {
   color: var(--dc-fg-secondary);
+
 }
 
 .plip-bottom-nav--light {

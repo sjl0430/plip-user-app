@@ -35,6 +35,9 @@ export const ROUTES = {
     pollEdit: (azitId: string) => `/azit/${azitId}/chat/poll/edit` as const,
     search: "/azit/search",
   },
+  agit: {
+    root: "/agit",
+  },
   viewer: {
     clip: (clipId: string) => `/viewer/${clipId}` as const,
     edit: (clipId: string) => `/viewer/${clipId}/edit` as const,
