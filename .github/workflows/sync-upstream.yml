@@ -1,0 +1,30 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    # 30분마다 자동 동기화 실행
+    - cron: '*/30 * * * *'
+  # GitHub Actions 탭에서 수동 실행 버튼 활성화
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0 # 히스토리 전체를 가져와 머지 에러 방지
+
+      - name: Sync with Upstream
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # /tree/main을 제거한 순수 레포지토리 주소 입력
+          git remote add upstream https://github.com/team-yes-bang/plip-user-app.git
+          git fetch upstream
+          git merge upstream/main -m "chore: sync with upstream"
+          git push origin main
