@@ -6030,7 +6030,7 @@ button.plip-bottom-nav__item {
 
 .dl-camera__shutter {
   position: absolute;
-  bottom: 36px;
+  bottom: 20px;
   left: 50%;
   width: 84px;
   height: 84px;
@@ -6045,6 +6045,32 @@ button.plip-bottom-nav__item {
   inset: 10px;
   border-radius: 999px;
   background: #fff;
+  transition: inset 0.15s ease, background-color 0.15s ease;
+}
+
+.dl-camera__shutter.is-recording {
+  background: rgba(239, 68, 68, 0.38);
+}
+
+.dl-camera__shutter.is-recording .dl-camera__shutter-inner {
+  inset: 16px;
+  background: #ef4444;
+}
+
+.dl-camera__timer {
+  position: absolute;
+  bottom: 142px;
+  left: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
 }
 
 .dl-shorts-meta {

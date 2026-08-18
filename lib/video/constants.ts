@@ -1,5 +1,10 @@
-/** plip-video backend contract: max 5 seconds */
+/** plip-video backend contract: max 5 seconds (saved / displayed) */
 export const MAX_RECORD_MS = 5_000;
+
+/** MediaRecorder stop — 0.2s buffer so last frame isn't cut */
+export const RECORD_STOP_MS = 5_200;
+
+export const RECORD_TIMESLICE_MS = 250;
 
 export const RECORDER_MIME_CANDIDATES = [
   "video/mp4",

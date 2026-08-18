@@ -2,6 +2,7 @@
 
 import { ROUTES } from "@/config/routes";
 import { useVideoCaptureFlow } from "@/hooks/useVideoCaptureFlow";
+import { CaptureVideoFrame } from "@/components/molecules/CaptureVideoFrame";
 import { formatBlobSummary } from "@/lib/video/recorderMime";
 import Link from "next/link";
 
@@ -46,16 +47,16 @@ export function VideoCaptureSection() {
         </p>
       </header>
 
-      <div className="overflow-hidden rounded-lg border bg-black">
+      <CaptureVideoFrame variant="lab">
         <video
           ref={videoRef}
-          className="aspect-[9/16] max-h-[420px] w-full object-cover"
+          className="h-full w-full object-contain"
           autoPlay
           playsInline
           muted={flowPhase !== "complete"}
           controls={flowPhase === "preview" || flowPhase === "complete"}
         />
-      </div>
+      </CaptureVideoFrame>
 
       <div className="space-y-1 text-xs text-black/60">
         <p>phase: {flowPhase}</p>

@@ -1,8 +1,9 @@
 "use client";
 
-import { MAX_RECORD_MS } from "@/lib/video/constants";
+import { MAX_RECORD_MS, RECORD_STOP_MS, RECORD_TIMESLICE_MS } from "@/lib/video/constants";
 import { pickRecorderMimeType, requestCameraStream } from "@/lib/video/recorderMime";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { isIgnorablePlayError, safeVideoPlay } from "@/lib/video/safeVideoPlay";
+import { useCallback, useEffect, useRef, useState, type RefCallback } from "react";
 
 export type RecorderStatus =
   | "idle"
@@ -17,11 +18,34 @@ export type UseVideoRecorderOptions = {
   facingMode?: "user" | "environment";
   /** Mount 시 카메라 권한 요청 (default: true) */
   autoPrepare?: boolean;
+  /** MediaRecorder stop 후 preview blob 준비 시 */
+  onRecordingComplete?: () => void;
 };
+
+function attachLiveStream(node: HTMLVideoElement, stream: MediaStream) {
+  node.pause();
+  node.removeAttribute("src");
+  node.srcObject = stream;
+  node.muted = true;
+  safeVideoPlay(node);
+}
+
+function attachPreviewUrl(node: HTMLVideoElement, previewUrl: string) {
+  node.pause();
+  node.srcObject = null;
+  if (node.src !== previewUrl) {
+    node.src = previewUrl;
+  }
+  node.muted = false;
+  node.load();
+  safeVideoPlay(node);
+}
 
 export function useVideoRecorder(options: UseVideoRecorderOptions = {}) {
   const maxDurationMs = options.maxDurationMs ?? MAX_RECORD_MS;
+  const recordStopMs = RECORD_STOP_MS;
   const autoPrepare = options.autoPrepare ?? true;
+  const onRecordingComplete = options.onRecordingComplete;
 
   const [facingMode, setFacingMode] = useState<"user" | "environment">(
     options.facingMode ?? "user",
@@ -43,6 +67,35 @@ export function useVideoRecorder(options: UseVideoRecorderOptions = {}) {
   const startedAtRef = useRef<number>(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const autoPrepareStartedRef = useRef(false);
+
+  const syncVideoElement = useCallback(
+    (node: HTMLVideoElement | null) => {
+      videoRef.current = node;
+      if (!node) {
+        return;
+      }
+
+      if (
+        liveStream &&
+        (status === "requesting" || status === "ready" || status === "recording")
+      ) {
+        attachLiveStream(node, liveStream);
+        return;
+      }
+
+      if (status === "preview" && previewUrl) {
+        attachPreviewUrl(node, previewUrl);
+      }
+    },
+    [liveStream, previewUrl, status],
+  );
+
+  const bindVideoElement = useCallback<RefCallback<HTMLVideoElement>>(
+    (node) => {
+      syncVideoElement(node);
+    },
+    [syncVideoElement],
+  );
 
   const clearTimers = useCallback(() => {
     if (stopTimerRef.current !== null) {
@@ -148,13 +201,26 @@ export function useVideoRecorder(options: UseVideoRecorderOptions = {}) {
     recorder.onstop = () => {
       clearTimers();
 
-      const recordedBlob = new Blob(chunksRef.current, { type: selectedMimeType });
+      const maxChunks = Math.ceil(maxDurationMs / RECORD_TIMESLICE_MS);
+      const trimmedChunks = chunksRef.current.slice(0, maxChunks);
+      const recordedBlob = new Blob(trimmedChunks, { type: selectedMimeType });
+
+      if (recordedBlob.size === 0) {
+        stopStream();
+        setError("녹화 데이터가 비어 있습니다. 다시 촬영해 주세요.");
+        setStatus("error");
+        void prepareCamera();
+        return;
+      }
+
       const nextPreviewUrl = URL.createObjectURL(recordedBlob);
 
+      stopStream();
+      setError(null);
       setBlob(recordedBlob);
       setPreviewUrl(nextPreviewUrl);
       setStatus("preview");
-      stopStream();
+      onRecordingComplete?.();
     };
 
     recorder.onerror = () => {
@@ -166,16 +232,29 @@ export function useVideoRecorder(options: UseVideoRecorderOptions = {}) {
     setElapsedMs(0);
     setStatus("recording");
 
-    recorder.start(250);
+    recorder.start(RECORD_TIMESLICE_MS);
 
     tickTimerRef.current = window.setInterval(() => {
-      setElapsedMs(Date.now() - startedAtRef.current);
-    }, 100);
+      setElapsedMs(Math.min(Date.now() - startedAtRef.current, maxDurationMs));
+    }, 50);
 
     stopTimerRef.current = window.setTimeout(() => {
+      const activeRecorder = recorderRef.current;
+      if (activeRecorder && activeRecorder.state === "recording") {
+        activeRecorder.requestData();
+      }
       stopRecording();
-    }, maxDurationMs);
-  }, [clearTimers, maxDurationMs, prepareCamera, resetPreview, stopRecording, stopStream]);
+    }, recordStopMs);
+  }, [
+    clearTimers,
+    maxDurationMs,
+    onRecordingComplete,
+    prepareCamera,
+    recordStopMs,
+    resetPreview,
+    stopRecording,
+    stopStream,
+  ]);
 
   const discardRecording = useCallback(async () => {
     clearTimers();
@@ -209,36 +288,16 @@ export function useVideoRecorder(options: UseVideoRecorderOptions = {}) {
       stopStream();
       const message =
         cause instanceof Error ? cause.message : "Camera flip failed";
-      setError(message);
+      if (!isIgnorablePlayError(cause)) {
+        setError(message);
+      }
       setStatus("error");
     }
   }, [facingMode, resetPreview, status, stopStream]);
 
   useEffect(() => {
-    const node = videoRef.current;
-    if (!node) {
-      return;
-    }
-
-    if (liveStream && (status === "requesting" || status === "ready" || status === "recording")) {
-      node.src = "";
-      node.srcObject = liveStream;
-      node.muted = true;
-      void node.play().catch((playError) => {
-        const message =
-          playError instanceof Error ? playError.message : "Video preview failed";
-        setError(message);
-      });
-      return;
-    }
-
-    if (status === "preview" && previewUrl) {
-      node.srcObject = null;
-      node.src = previewUrl;
-      node.muted = false;
-      void node.play().catch(() => undefined);
-    }
-  }, [liveStream, previewUrl, status]);
+    syncVideoElement(videoRef.current);
+  }, [syncVideoElement]);
 
   useEffect(() => {
     if (!autoPrepare || autoPrepareStartedRef.current) {
@@ -263,7 +322,7 @@ export function useVideoRecorder(options: UseVideoRecorderOptions = {}) {
   }, [clearTimers, stopStream]);
 
   return {
-    videoRef,
+    videoRef: bindVideoElement,
     status,
     error,
     elapsedMs,
