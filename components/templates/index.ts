@@ -56,3 +56,5 @@ export {
 } from "./ShopTemplates";
 export { SignUpTemplate } from "./SignUpTemplate";
 export { ClipEditTemplate, ClipViewerTemplate } from "./ViewerTemplates";
+export { CaptureApiTemplate } from "./CaptureApiTemplate";
+export { CaptureVideoTemplate } from "./CaptureVideoTemplate";

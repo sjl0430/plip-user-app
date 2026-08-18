@@ -60,4 +60,9 @@ export const ROUTES = {
     notifications: "/mypage/notifications",
     settings: "/mypage/settings",
   },
+  /** plip-video Phase 0-F — user-app 본 UI와 분리 (route group `(capture)`) */
+  capture: {
+    video: "/video",
+    videoApi: "/video-api",
+  },
 } as const;
