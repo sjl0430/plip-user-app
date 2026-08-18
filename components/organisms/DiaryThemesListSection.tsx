@@ -1,8 +1,9 @@
 "use client";
 
-import { IconButton, SubmitButton } from "@/components/atoms";
-import { VideoThumbnailGrid } from "@/components/molecules";
+import { TextLink } from "@/components/atoms";
 import { CreateThemeDialog } from "@/components/organisms/CreateThemeDialog";
+import { DIARY_THEMES } from "@/config/diary-mock";
+import { ROUTES } from "@/config/routes";
 import { useState } from "react";
 
 export function DiaryThemesListSection() {
@@ -10,24 +11,42 @@ export function DiaryThemesListSection() {
 
   return (
     <>
-      <div className="flex w-full flex-col gap-6">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-semibold sm:text-xl">테마</h2>
-          <SubmitButton
+      <div className="plip-diary-themes">
+        <div className="plip-diary-themes__head">
+          <h2>Themes</h2>
+          <button
             type="button"
-            className="w-auto px-4"
+            className="plip-diary-themes__create"
             onClick={() => setDialogOpen(true)}
           >
             생성
-          </SubmitButton>
+          </button>
         </div>
 
-        <div className="relative">
-          <VideoThumbnailGrid count={5} />
-          <IconButton
-            label="테마 삭제"
-            className="absolute right-2 top-2 size-5 bg-white/80 sm:size-6"
-          />
+        <div className="plip-diary-themes__grid">
+          {DIARY_THEMES.map((theme, index) => (
+            <div key={theme.id} className="plip-diary-themes__card">
+              <TextLink
+                href={ROUTES.diary.themes.detail(theme.id)}
+                className="plip-diary-themes__link"
+              >
+                <span
+                  className={`plip-diary-themes__thumb is-${(index % 3) + 1}`}
+                  aria-hidden
+                />
+                <span className="plip-diary-themes__name">{theme.name}</span>
+              </TextLink>
+              {index === 0 ? (
+                <button
+                  type="button"
+                  className="plip-diary-themes__menu"
+                  aria-label={`${theme.name} 테마 삭제`}
+                >
+                  ···
+                </button>
+              ) : null}
+            </div>
+          ))}
         </div>
       </div>
 

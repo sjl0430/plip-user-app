@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Geist_Mono, Gothic_A1, Manrope, Montserrat, Poppins } from "next/font/google";
+import { Geist_Mono, Gothic_A1, Inter, Manrope, Montserrat, Poppins, Geist } from "next/font/google";
 import { AppRouteShell } from "@/components/templates/AppRouteShell";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -46,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${poppins.variable} ${gothicA1.variable} ${montserrat.variable} ${manrope.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", poppins.variable, gothicA1.variable, montserrat.variable, manrope.variable, geistMono.variable, inter.variable, "font-sans", geist.variable)}
     >
       <body className="flex min-h-dvh flex-col">
         <AppRouteShell>{children}</AppRouteShell>

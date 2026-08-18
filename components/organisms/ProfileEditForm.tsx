@@ -1,46 +1,51 @@
-import { SubmitButton, TextLink } from "@/components/atoms";
-import { CheckboxField, FormField } from "@/components/molecules";
+import { DailyIcon, SubmitButton } from "@/components/atoms";
+import { AuthField } from "@/components/molecules";
 import { ROUTES } from "@/config/routes";
+import Image from "next/image";
 
 export function ProfileEditForm() {
   return (
-    <form
-      className="flex w-full flex-col gap-6"
-      action={ROUTES.mypage.root}
-      method="post"
-    >
-      <FormField label="이메일" htmlFor="profile-email">
-        <p id="profile-email" className="text-sm text-zinc-700 dark:text-zinc-300">
-          plip123@gmail.com
+    <form className="flex w-full flex-col gap-3.5" action={ROUTES.mypage.root} method="get">
+      <div className="flex items-center gap-3.5">
+        <div className="dl-avatar dl-avatar--lg">
+          <Image src="/plip/daily-loop/profile-hub.png" alt="" width={88} height={88} />
+        </div>
+        <button type="button" className="dl-photo-change">
+          <DailyIcon name="camera" size={20} />
+          사진 변경
+        </button>
+      </div>
+
+      <AuthField
+        id="profile-nickname"
+        name="nickname"
+        label="닉네임"
+        hint="2–12자"
+        defaultValue="데일리러너"
+        maxLength={12}
+        required
+      />
+      <AuthField
+        id="profile-bio"
+        name="bio"
+        label="한 줄 소개"
+        hint="최대 40자"
+        defaultValue="작은 기록을 꾸준히 남겨요"
+        maxLength={40}
+      />
+
+      <div className="dl-panel">
+        <p className="m-0 text-[13px] font-semibold leading-[19px] text-[var(--dl-color-text-primary)]">
+          기존 방에는 자동 반영되지 않아요
         </p>
-      </FormField>
+        <p className="dl-notice-body mt-1.5">
+          이미 방 전용 프로필을 사용 중인 방은 해당 프로필을 유지합니다.
+        </p>
+      </div>
 
-      <FormField label="비밀번호">
-        <TextLink
-          href={ROUTES.mypage.password}
-          className="flex h-9 w-full items-center justify-center rounded-md border border-zinc-200 no-underline dark:border-zinc-700"
-        >
-          비밀번호 변경
-        </TextLink>
-      </FormField>
-
-      <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 text-sm font-medium">약관 동의</legend>
-        <CheckboxField
-          id="profile-terms-service"
-          name="termsService"
-          label="서비스 이용약관 (필수)"
-          required
-        />
-        <CheckboxField
-          id="profile-terms-privacy"
-          name="termsPrivacy"
-          label="개인정보 처리방침 (필수)"
-          required
-        />
-      </fieldset>
-
-      <SubmitButton>저장</SubmitButton>
+      <div className="dl-actions">
+        <SubmitButton variant="brand">변경사항 저장</SubmitButton>
+      </div>
     </form>
   );
 }

@@ -1,28 +1,36 @@
 "use client";
 
-import { IconButton, PageTitle, Separator, TextLink } from "@/components/atoms";
+import { TextLink } from "@/components/atoms";
+import { Button } from "@/components/ui/button";
 import type { ReactNode } from "react";
 
 type DiaryHeaderProps = {
   onMenuOpen: () => void;
   trailing?: ReactNode;
+  title?: string;
 };
 
-export function DiaryHeader({ onMenuOpen, trailing }: DiaryHeaderProps) {
+/** Figma Hybrid Diary header */
+export function DiaryHeader({
+  onMenuOpen,
+  trailing,
+  title = "다이어리",
+}: DiaryHeaderProps) {
   return (
-    <header className="plip-diary-header">
-      <div className="plip-diary-header__bar">
-        <PageTitle className="plip-diary-header__title">Personal Clip</PageTitle>
-        <IconButton
-          label="다이어리 메뉴 열기"
-          className="plip-diary-header__menu-btn"
+    <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-white/70 bg-white/50 px-4 py-3.5 backdrop-blur-xl">
+      <h1 className="text-[22px] font-bold tracking-tight text-[#161823]">{title}</h1>
+      <div className="flex items-center gap-2">
+        {trailing}
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="h-auto px-2 text-[13px] font-semibold text-muted-foreground"
           onClick={onMenuOpen}
-        />
-        {trailing ? (
-          <div className="plip-diary-header__trailing">{trailing}</div>
-        ) : null}
+        >
+          메뉴
+        </Button>
       </div>
-      <Separator className="plip-diary-header__separator" />
     </header>
   );
 }
@@ -35,7 +43,7 @@ export function DiaryMenuLink({
   children: ReactNode;
 }) {
   return (
-    <TextLink href={href} className="block py-1 text-sm no-underline hover:underline">
+    <TextLink href={href} className="plip-diary-sheet__link">
       {children}
     </TextLink>
   );

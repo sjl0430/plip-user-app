@@ -1,19 +1,48 @@
-import { TextLink } from "@/components/atoms";
-import type { ComponentProps } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type ThemeChipProps = {
   name: string;
   href: string;
-} & Omit<ComponentProps<typeof TextLink>, "href" | "children">;
+  accent?: "pink" | "cyan" | "neutral" | "add";
+  className?: string;
+};
 
-export function ThemeChip({ name, href, className = "", ...props }: ThemeChipProps) {
+const RING_SRC: Record<NonNullable<ThemeChipProps["accent"]>, string> = {
+  add: "/plip/figma/rings/story-add.svg",
+  pink: "/plip/figma/rings/story-pink.svg",
+  cyan: "/plip/figma/rings/story-cyan.svg",
+  neutral: "/plip/figma/rings/story-add.svg",
+};
+
+/** Figma Hybrid Diary 스토리 링 + shadcn 톤 */
+export function ThemeChip({
+  name,
+  href,
+  accent = "neutral",
+  className = "",
+}: ThemeChipProps) {
   return (
-    <TextLink
+    <Link
       href={href}
-      className={`flex size-14 shrink-0 items-center justify-center rounded-md bg-zinc-200 text-sm font-medium no-underline sm:size-16 dark:bg-zinc-700 ${className}`}
-      {...props}
+      className={cn(
+        "inline-flex w-16 shrink-0 flex-col items-center gap-1.5 text-[#161823] no-underline",
+        className,
+      )}
     >
-      {name}
-    </TextLink>
+      <span className="relative block size-14 overflow-hidden rounded-full">
+        <Image
+          src={RING_SRC[accent]}
+          alt=""
+          width={64}
+          height={52}
+          className="absolute inset-0 size-full object-contain"
+        />
+      </span>
+      <span className="max-w-16 truncate text-center text-[10px] font-semibold leading-tight">
+        {name}
+      </span>
+    </Link>
   );
 }

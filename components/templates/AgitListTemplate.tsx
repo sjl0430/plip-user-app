@@ -47,7 +47,7 @@ export function AgitListTemplate() {
         />
         <AgitListSection />
       </main>
-      <BottomNavigation active="agit" variant="diary" />
+      <BottomNavigation active="azit" variant="diary" />
     </div>
   );
 }

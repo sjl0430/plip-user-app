@@ -10,7 +10,7 @@ export function MyPageMenuItem({ href, children }: MyPageMenuItemProps) {
   return (
     <TextLink
       href={href}
-      className="flex w-full items-center border-b border-zinc-100 px-4 py-4 no-underline dark:border-zinc-800"
+      className="flex w-full items-center border-b border-white/10 px-4 py-4 text-sm text-white no-underline"
     >
       {children}
     </TextLink>

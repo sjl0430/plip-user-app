@@ -6,7 +6,7 @@ export function SocialLoginSection() {
       aria-label="소셜 로그인"
       className="flex w-full flex-col items-center gap-3 sm:gap-3.5"
     >
-      <p className="w-full text-center font-[family-name:var(--font-manrope)] text-xs font-semibold text-white/50 sm:text-sm">
+      <p className="w-full text-center text-xs font-medium text-[var(--dc-fg-secondary)] sm:text-sm">
         You Can Sign In with
       </p>
 

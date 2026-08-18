@@ -1,12 +1,14 @@
 import type { ComponentProps } from "react";
 
-type InputProps = ComponentProps<"input">;
+type InputProps = ComponentProps<"input"> & {
+  variant?: "glass" | "daily";
+};
 
-export function Input({ className = "", ...props }: InputProps) {
-  return (
-    <input
-      className={`h-9 w-full rounded-md border border-zinc-200 px-3 text-sm sm:h-10 sm:text-base dark:border-zinc-700 ${className}`}
-      {...props}
-    />
-  );
+export function Input({ className = "", variant = "glass", ...props }: InputProps) {
+  const base =
+    variant === "daily"
+      ? "dl-input"
+      : "dc-glass h-10 w-full px-3 text-sm outline-none sm:h-11 sm:text-base";
+
+  return <input className={`${base} ${className}`} {...props} />;
 }

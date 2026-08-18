@@ -4,21 +4,15 @@ import { SubmitButton } from "@/components/atoms";
 import { AgitListItem } from "@/components/molecules/AgitListItem";
 import { AgitSearchBar } from "@/components/molecules/AgitSearchBar";
 import { AGIT_LIST_ITEMS } from "@/config/agit-mock";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 export function AgitListSection() {
   const [query, setQuery] = useState("");
   const [appliedQuery, setAppliedQuery] = useState("");
-
-  const filteredItems = useMemo(() => {
-    const keyword = appliedQuery.trim().toLowerCase();
-    if (!keyword) {
-      return AGIT_LIST_ITEMS;
-    }
-    return AGIT_LIST_ITEMS.filter((item) =>
-      item.title.toLowerCase().includes(keyword),
-    );
-  }, [appliedQuery]);
+  const keyword = appliedQuery.trim().toLowerCase();
+  const filteredItems = keyword
+    ? AGIT_LIST_ITEMS.filter((item) => item.title.toLowerCase().includes(keyword))
+    : AGIT_LIST_ITEMS;
 
   return (
     <div className="flex w-full flex-col gap-4">

@@ -13,13 +13,18 @@ export { Input } from "./Input";
 export { Label } from "./Label";
 export {
   NavAgitIcon,
+  NavAzitIcon,
   NavCaptureIcon,
+  NavCreateIcon,
   NavDiaryIcon,
   NavHeartIcon,
   NavHomeIcon,
+  NavInboxIcon,
   NavMyPageIcon,
 } from "./NavIcons";
 export { CursorSpark } from "./CursorSpark";
+export { DailyIcon, type DailyIconName } from "./DailyIcon";
+export { Pill } from "./Pill";
 export { PageTitle } from "./PageTitle";
 export { PlipLogo } from "./PlipLogo";
 export { Separator } from "./Separator";

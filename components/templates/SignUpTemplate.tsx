@@ -1,10 +1,10 @@
 import { SignUpForm } from "@/components/organisms";
-import { AuthTemplate } from "@/components/templates/AuthTemplate";
+import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 
 export function SignUpTemplate() {
   return (
-    <AuthTemplate>
+    <DailyLoopAuthTemplate>
       <SignUpForm />
-    </AuthTemplate>
+    </DailyLoopAuthTemplate>
   );
 }

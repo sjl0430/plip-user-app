@@ -1,28 +1,32 @@
 import {
-  NavAgitIcon,
-  NavCaptureIcon,
+  NavAzitIcon,
+  NavCreateIcon,
   NavDiaryIcon,
-  NavHeartIcon,
+  NavHomeIcon,
   NavMyPageIcon,
 } from "@/components/atoms/NavIcons";
-import { TextLink } from "@/components/atoms";
+import { PlipLogo, TextLink } from "@/components/atoms";
 import { ROUTES } from "@/config/routes";
 import type { ReactNode } from "react";
 
-export type BottomNavId = "diary" | "heart" | "capture" | "agit" | "mypage";
+/**
+ * 요구사항정의서 #3 하단 nav:
+ * 다이어리(홈) / 아지트 / 카메라 / 피드(소속 아지트 그룹영상) / 설정
+ */
+export type BottomNavTab = "diary" | "azit" | "create" | "feed" | "mypage";
 
 type BottomNavigationProps = {
-  active?: BottomNavId;
-  variant?: "default" | "diary";
+  active?: BottomNavTab;
+  /** feed = TikTok black bar; light = white profile-style bar */
+  variant?: "feed" | "light" | "diary";
 };
 
 type NavItem = {
-  id: BottomNavId;
+  id: BottomNavTab;
+  href: string;
   label: string;
   icon: ReactNode;
-  href?: string;
-  disabled?: boolean;
-  capture?: boolean;
+  create?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
@@ -30,67 +34,63 @@ const NAV_ITEMS: NavItem[] = [
     id: "diary",
     href: ROUTES.diary.root,
     label: "다이어리",
-    icon: <NavDiaryIcon className="plip-bottom-nav__icon" />,
+    icon: <NavDiaryIcon className="plip-tt-nav__icon" />,
   },
   {
-    id: "heart",
-    label: "하트",
-    icon: <NavHeartIcon className="plip-bottom-nav__icon" />,
-    disabled: true,
-  },
-  {
-    id: "capture",
-    label: "촬영",
-    icon: <NavCaptureIcon className="plip-bottom-nav__icon" />,
-    disabled: true,
-    capture: true,
-  },
-  {
-    id: "agit",
-    href: ROUTES.agit.root,
+    id: "azit",
+    href: ROUTES.azit.root,
     label: "아지트",
-    icon: <NavAgitIcon className="plip-bottom-nav__icon" />,
+    icon: <NavAzitIcon className="plip-tt-nav__icon" />,
+  },
+  {
+    id: "create",
+    href: ROUTES.create,
+    label: "카메라",
+    icon: <NavCreateIcon className="plip-tt-nav__create-icon" />,
+    create: true,
+  },
+  {
+    id: "feed",
+    href: ROUTES.home,
+    label: "피드",
+    icon: <NavHomeIcon className="plip-tt-nav__icon" />,
   },
   {
     id: "mypage",
     href: ROUTES.mypage.root,
-    label: "마이페이지",
-    icon: <NavMyPageIcon className="plip-bottom-nav__icon" />,
+    label: "설정",
+    icon: <NavMyPageIcon className="plip-tt-nav__icon" />,
   },
 ];
 
 export function BottomNavigation({
-  active = "mypage",
-  variant = "default",
+  active = "diary",
+  variant = "feed",
 }: BottomNavigationProps) {
-  const usePlipStyle = variant === "diary";
+  const isLight = variant === "light" || variant === "diary";
 
   return (
     <nav
-      aria-label="하단 메뉴"
-      className={usePlipStyle ? "plip-bottom-nav" : "plip-bottom-nav plip-bottom-nav--light"}
+      aria-label="주 메뉴"
+      className={isLight ? "plip-tt-nav plip-tt-nav--light" : "plip-tt-nav"}
     >
+      <div className="plip-tt-nav__brand" aria-hidden>
+        <PlipLogo width={112} height={64} className="plip-tt-nav__brand-logo" />
+      </div>
       {NAV_ITEMS.map((item) => {
         const isActive = active === item.id;
-        const itemClass = [
-          "plip-bottom-nav__item",
-          item.capture ? "plip-bottom-nav__item--capture" : "",
-          isActive ? "is-active" : "",
-        ]
-          .filter(Boolean)
-          .join(" ");
 
-        if (item.disabled || !item.href) {
+        if (item.create) {
           return (
-            <button
+            <TextLink
               key={item.id}
-              type="button"
+              href={item.href}
               aria-label={item.label}
-              aria-disabled="true"
-              className={itemClass}
+              className="plip-tt-nav__create"
             >
-              {item.icon}
-            </button>
+              <span className="plip-tt-nav__create-btn">{item.icon}</span>
+              <span className="plip-tt-nav__label plip-tt-nav__label--desktop">{item.label}</span>
+            </TextLink>
           );
         }
 
@@ -100,9 +100,10 @@ export function BottomNavigation({
             href={item.href}
             aria-label={item.label}
             aria-current={isActive ? "page" : undefined}
-            className={itemClass}
+            className={`plip-tt-nav__item ${isActive ? "is-active" : ""}`.trim()}
           >
             {item.icon}
+            <span className="plip-tt-nav__label">{item.label}</span>
           </TextLink>
         );
       })}
