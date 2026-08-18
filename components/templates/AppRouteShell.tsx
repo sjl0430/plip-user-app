@@ -1,24 +1,15 @@
 "use client";
 
-import { MobileDeviceFrame } from "@/components/organisms/MobileDeviceFrame";
-import { useDesktopViewport } from "@/hooks/useDesktopViewport";
-import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-
-const INTRO_PATHS = new Set(["/"]);
 
 type AppRouteShellProps = {
   children: ReactNode;
 };
 
+/**
+ * PC / 모바일 모두 네이티브 반응형 레이아웃을 사용합니다.
+ * (과거 Desktop에서 MobileDeviceFrame으로 가두던 방식은 제거)
+ */
 export function AppRouteShell({ children }: AppRouteShellProps) {
-  const pathname = usePathname();
-  const isDesktop = useDesktopViewport();
-  const isIntro = INTRO_PATHS.has(pathname);
-
-  if (isIntro || !isDesktop) {
-    return children;
-  }
-
-  return <MobileDeviceFrame>{children}</MobileDeviceFrame>;
+  return children;
 }

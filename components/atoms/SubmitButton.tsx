@@ -1,17 +1,26 @@
 import type { ComponentProps } from "react";
 
-type SubmitButtonProps = ComponentProps<"button">;
+type SubmitButtonProps = ComponentProps<"button"> & {
+  variant?: "glass" | "brand" | "outline";
+};
+
+const variantClass: Record<NonNullable<SubmitButtonProps["variant"]>, string> = {
+  glass: "dc-btn dc-btn--block",
+  brand: "dl-btn dl-btn--primary",
+  outline: "dl-btn dl-btn--secondary",
+};
 
 export function SubmitButton({
   className = "",
   type = "submit",
+  variant = "glass",
   children,
   ...props
 }: SubmitButtonProps) {
   return (
     <button
       type={type}
-      className={`flex h-9 w-full items-center justify-center rounded-md bg-zinc-900 px-4 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 ${className}`}
+      className={`${variantClass[variant]} disabled:opacity-50 ${className}`}
       {...props}
     >
       {children}

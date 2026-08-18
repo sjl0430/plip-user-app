@@ -4,6 +4,10 @@ type MobileDeviceFrameProps = {
   children: ReactNode;
 };
 
+/**
+ * Optional phone chrome preview.
+ * Default app shell is responsive PC + mobile — this is no longer used by AppRouteShell.
+ */
 export function MobileDeviceFrame({ children }: MobileDeviceFrameProps) {
   return (
     <div className="plip-device-stage">

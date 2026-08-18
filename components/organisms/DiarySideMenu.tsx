@@ -10,31 +10,62 @@ type DiarySideMenuProps = {
   onClose: () => void;
 };
 
-const CALENDAR_DAYS = Array.from({ length: 31 }, (_, index) => index + 1);
+const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"] as const;
+
+function buildAugust2026Days() {
+  // Align with diary mock entries (August 2026 starts Saturday)
+  const leading = 6;
+  const daysInMonth = 31;
+  const cells: Array<{ day: number; date?: string; outside?: boolean }> = [];
+
+  for (let i = 0; i < leading; i += 1) {
+    cells.push({ day: 26 + i, outside: true });
+  }
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const dd = String(day).padStart(2, "0");
+    cells.push({ day, date: `2026-08-${dd}` });
+  }
+  while (cells.length % 7 !== 0) {
+    const overflow = cells.length - (leading + daysInMonth) + 1;
+    cells.push({ day: overflow, outside: true });
+  }
+  return cells;
+}
 
 export function DiarySideMenu({ open, onClose }: DiarySideMenuProps) {
   if (!open) {
     return null;
   }
 
+  const cells = buildAugust2026Days();
+
   return (
     <>
       <button
         type="button"
         aria-label="메뉴 닫기"
-        className="fixed inset-0 z-40 bg-black/40"
+        className="plip-diary-sheet__overlay"
         onClick={onClose}
       />
 
-      <aside
-        aria-label="다이어리 메뉴"
-        className="fixed inset-y-0 right-0 z-50 flex w-[min(100%,280px)] flex-col gap-4 overflow-y-auto bg-white p-6 shadow-xl dark:bg-zinc-900"
-      >
-        <DiaryMenuLink href={ROUTES.diary.themes.root}>전체보기</DiaryMenuLink>
-        <Separator />
+      <aside aria-label="다이어리 메뉴" className="plip-diary-sheet">
+        <div className="plip-diary-sheet__top">
+          <p className="plip-diary-sheet__title">Menu</p>
+          <button
+            type="button"
+            className="plip-diary-sheet__close"
+            aria-label="닫기"
+            onClick={onClose}
+          >
+            ✕
+          </button>
+        </div>
 
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium">테마</p>
+        <DiaryMenuLink href={ROUTES.diary.themes.root}>전체보기</DiaryMenuLink>
+        <Separator className="plip-diary-sheet__separator" />
+
+        <p className="plip-diary-sheet__label">Themes</p>
+        <div className="plip-diary-sheet__themes">
           {DIARY_THEMES.map((theme) => (
             <DiaryMenuLink
               key={theme.id}
@@ -45,31 +76,45 @@ export function DiarySideMenu({ open, onClose }: DiarySideMenuProps) {
           ))}
         </div>
 
-        <Separator />
-
-        <nav aria-label="캘린더" className="flex flex-col gap-3">
-          <div className="flex items-center justify-between text-sm font-medium">
-            <span>2026. 08</span>
+        <div className="plip-diary-calendar" aria-label="캘린더">
+          <div className="plip-diary-calendar__nav">
+            <button type="button" aria-label="이전 달">
+              ‹
+            </button>
+            <p>August 2026</p>
+            <button type="button" aria-label="다음 달">
+              ›
+            </button>
           </div>
-          <div className="grid grid-cols-7 gap-1 text-center text-xs text-zinc-500">
-            {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
+          <div className="plip-diary-calendar__weekdays">
+            {WEEKDAYS.map((day) => (
               <span key={day}>{day}</span>
             ))}
-            {CALENDAR_DAYS.map((day) => {
-              const date = `2026-08-${String(day).padStart(2, "0")}`;
-              return (
+          </div>
+          <div className="plip-diary-calendar__grid">
+            {cells.map((cell, index) =>
+              cell.date && !cell.outside ? (
                 <TextLink
-                  key={day}
-                  href={ROUTES.diary.date(date)}
-                  className="rounded p-1 no-underline hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  key={`${cell.day}-${index}`}
+                  href={ROUTES.diary.date(cell.date)}
+                  className={`plip-diary-calendar__day ${
+                    cell.day === 11 ? "is-selected" : ""
+                  }`}
                   onClick={onClose}
                 >
-                  {day}
+                  {cell.day}
                 </TextLink>
-              );
-            })}
+              ) : (
+                <span
+                  key={`${cell.day}-${index}`}
+                  className="plip-diary-calendar__day is-outside"
+                >
+                  {cell.day}
+                </span>
+              ),
+            )}
           </div>
-        </nav>
+        </div>
       </aside>
     </>
   );

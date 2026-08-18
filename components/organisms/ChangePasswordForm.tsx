@@ -36,7 +36,7 @@ export function ChangePasswordForm() {
         />
       </FormField>
 
-      <SubmitButton>변경 적용</SubmitButton>
+      <SubmitButton variant="brand">변경 적용</SubmitButton>
     </form>
   );
 }

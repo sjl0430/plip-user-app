@@ -11,8 +11,17 @@ export { IconButton } from "./IconButton";
 export { InlineCode } from "./InlineCode";
 export { Input } from "./Input";
 export { Label } from "./Label";
-export { NavDiaryIcon, NavHomeIcon, NavMyPageIcon } from "./NavIcons";
+export {
+  NavAzitIcon,
+  NavCreateIcon,
+  NavDiaryIcon,
+  NavHomeIcon,
+  NavInboxIcon,
+  NavMyPageIcon,
+} from "./NavIcons";
 export { CursorSpark } from "./CursorSpark";
+export { DailyIcon, type DailyIconName } from "./DailyIcon";
+export { Pill } from "./Pill";
 export { PageTitle } from "./PageTitle";
 export { PlipLogo } from "./PlipLogo";
 export { Separator } from "./Separator";

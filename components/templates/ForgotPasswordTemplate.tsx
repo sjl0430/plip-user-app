@@ -1,10 +1,13 @@
 import { ForgotPasswordForm } from "@/components/organisms";
-import { AuthTemplate } from "@/components/templates/AuthTemplate";
+import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
+import { ROUTES } from "@/config/routes";
 
 export function ForgotPasswordTemplate() {
   return (
-    <AuthTemplate>
+    <DailyLoopAuthTemplate>
+      <AuthTopBar title="" backHref={ROUTES.login} />
       <ForgotPasswordForm />
-    </AuthTemplate>
+    </DailyLoopAuthTemplate>
   );
 }

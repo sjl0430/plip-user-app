@@ -1,3 +1,4 @@
+import { IconButton } from "@/components/atoms";
 import { DiaryThemeClipGroup } from "@/components/molecules";
 import { DIARY_THEME_DATE_GROUPS } from "@/config/diary-mock";
 
@@ -13,8 +14,8 @@ export function DiaryThemeDetailSection({
   const groups = DIARY_THEME_DATE_GROUPS[themeId] ?? [];
 
   return (
-    <div className="flex w-full flex-col gap-8">
-      <h2 className="text-lg font-semibold sm:text-xl">{themeName}</h2>
+    <div className="plip-diary-detail">
+      <h2 className="plip-diary-detail__date">{themeName}</h2>
 
       {groups.length > 0 ? (
         groups.map((group) => (
@@ -27,8 +28,14 @@ export function DiaryThemeDetailSection({
           />
         ))
       ) : (
-        <p className="text-sm text-zinc-500">해당 테마의 클립이 없습니다.</p>
+        <p className="plip-diary-empty">해당 테마의 클립이 없습니다.</p>
       )}
+
+      <div className="plip-diary-detail__more">
+        <IconButton label="테마 옵션" className="plip-diary-detail__more-btn">
+          <span aria-hidden>⋮</span>
+        </IconButton>
+      </div>
     </div>
   );
 }

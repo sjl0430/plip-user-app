@@ -1,16 +1,15 @@
-import { AuthCopyright } from "@/components/atoms";
 import { LoginForm } from "@/components/organisms";
+import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
+import { ROUTES } from "@/config/routes";
 
 export function LoginTemplate() {
   return (
-    <main className="plip-login-bg plip-auth-page">
-      <div aria-hidden className="hidden h-11 w-full shrink-0 sm:block" />
-
-      <h1 className="plip-auth-heading">Glad to meet you again!</h1>
-
+    <DailyLoopAuthTemplate>
+      <AuthTopBar title="" backHref={ROUTES.intro} />
+      <h2 className="dl-title">다시 만나 반가워요</h2>
+      <p className="dl-subtitle">PLIP에서 오늘의 5초를 이어가세요.</p>
       <LoginForm />
-
-      <AuthCopyright variant="light" className="mt-auto w-full max-w-xs px-2 sm:max-w-md md:max-w-lg" />
-    </main>
+    </DailyLoopAuthTemplate>
   );
 }

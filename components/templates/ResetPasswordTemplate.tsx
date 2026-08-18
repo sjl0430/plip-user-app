@@ -1,12 +1,13 @@
 import { ResetPasswordForm } from "@/components/organisms";
-import { PageHeader } from "@/components/molecules";
-import { AuthTemplate } from "@/components/templates/AuthTemplate";
+import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
+import { ROUTES } from "@/config/routes";
 
 export function ResetPasswordTemplate() {
   return (
-    <AuthTemplate>
-      <PageHeader title="비밀번호 재설정" />
+    <DailyLoopAuthTemplate>
+      <AuthTopBar title="" backHref={ROUTES.forgotPassword} />
       <ResetPasswordForm />
-    </AuthTemplate>
+    </DailyLoopAuthTemplate>
   );
 }
