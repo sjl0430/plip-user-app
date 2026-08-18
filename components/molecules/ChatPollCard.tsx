@@ -8,7 +8,7 @@ export type ChatPollOption = {
 };
 
 type ChatPollCardProps = {
-  azitId: string;
+  agitId: string;
   question: string;
   meta: string;
   options: ChatPollOption[];
@@ -17,7 +17,7 @@ type ChatPollCardProps = {
 };
 
 export function ChatPollCard({
-  azitId,
+  agitId,
   question,
   meta,
   options,
@@ -45,7 +45,7 @@ export function ChatPollCard({
           </button>
         );
       })}
-      <TextLink href={ROUTES.azit.pollEdit(azitId)} className="dl-btn dl-btn--secondary no-underline">
+      <TextLink href={ROUTES.agit.pollEdit(agitId)} className="dl-btn dl-btn--secondary no-underline">
         투표 수정
       </TextLink>
     </article>

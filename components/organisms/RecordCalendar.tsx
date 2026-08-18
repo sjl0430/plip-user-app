@@ -17,7 +17,7 @@ const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 const WEEKDAY_NAMES = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
 
 type RecordCalendarProps = {
-  azitId: string;
+  agitId: string;
 };
 
 function pad(value: number) {
@@ -39,7 +39,7 @@ function monthCells(year: number, month: number) {
   return cells;
 }
 
-export function RecordCalendar({ azitId }: RecordCalendarProps) {
+export function RecordCalendar({ agitId }: RecordCalendarProps) {
   const [year, setYear] = useState(2026);
   const [month, setMonth] = useState(7);
   const [selectedDay, setSelectedDay] = useState(14);
@@ -205,7 +205,7 @@ export function RecordCalendar({ azitId }: RecordCalendarProps) {
         ) : null}
       </article>
 
-      <RoomNav azitId={azitId} active="calendar" />
+      <RoomNav agitId={agitId} active="calendar" />
     </section>
   );
 }

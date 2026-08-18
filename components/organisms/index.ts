@@ -1,4 +1,4 @@
-export { AzitMenuDrawer } from "./AzitMenuDrawer";
+export { AgitMenuDrawer } from "./AgitMenuDrawer";
 export { MoveTopicSheet } from "./MoveTopicSheet";
 export { TopicCreateForm } from "./TopicCreateForm";
 export { TopicViewerSection } from "./TopicViewerSection";
@@ -21,16 +21,15 @@ export { InviteConfirmSection } from "./InviteConfirmSection";
 export { JoinCompleteSection } from "./JoinCompleteSection";
 export { PublicRoomDetail } from "./PublicRoomDetail";
 export { RoomProfileSelect } from "./RoomProfileSelect";
-export { AzitDetailSection } from "./AzitDetailSection";
-export { AzitListSection } from "./AzitListSection";
+export { AgitDetailSection } from "./AgitDetailSection";
 export { AgitListSection } from "./AgitListSection";
 export {
-  AzitChatSection,
-  AzitEnterSection,
-  AzitMembersSection,
-  AzitSearchSection,
-  AzitTopicsSection,
-} from "./AzitSubSections";
+  AgitChatSection,
+  AgitEnterSection,
+  AgitMembersSection,
+  AgitSearchSection,
+  AgitTopicsSection,
+} from "./AgitSubSections";
 export { ChangePasswordForm } from "./ChangePasswordForm";
 export { ClipViewerSection } from "./ClipViewerSection";
 export { CreateClipSection } from "./CreateClipSection";

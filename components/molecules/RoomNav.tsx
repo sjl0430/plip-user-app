@@ -4,7 +4,7 @@ import { ROUTES } from "@/config/routes";
 export type RoomNavTab = "video" | "chat" | "calendar" | "members";
 
 type RoomNavProps = {
-  azitId: string;
+  agitId: string;
   active?: RoomNavTab;
 };
 
@@ -13,27 +13,27 @@ const TABS: {
   label: string;
   icon: DailyIconName;
   activeIcon?: DailyIconName;
-  href: (azitId: string) => string;
+  href: (agitId: string) => string;
 }[] = [
-  { id: "video", label: "영상", icon: "video", href: ROUTES.azit.detail },
-  { id: "chat", label: "채팅", icon: "message", activeIcon: "messageBrand", href: ROUTES.azit.chat },
+  { id: "video", label: "영상", icon: "video", href: ROUTES.agit.detail },
+  { id: "chat", label: "채팅", icon: "message", activeIcon: "messageBrand", href: ROUTES.agit.chat },
   {
     id: "calendar",
     label: "캘린더",
     icon: "calendar",
     activeIcon: "calendarBrand",
-    href: ROUTES.azit.calendar,
+    href: ROUTES.agit.calendar,
   },
   {
     id: "members",
     label: "멤버",
     icon: "users",
     activeIcon: "usersBrand",
-    href: ROUTES.azit.manage,
+    href: ROUTES.agit.manage,
   },
 ];
 
-export function RoomNav({ azitId, active = "members" }: RoomNavProps) {
+export function RoomNav({ agitId, active = "members" }: RoomNavProps) {
   return (
     <nav className="dl-room-nav" aria-label="방 메뉴">
       {TABS.map((tab) => {
@@ -41,7 +41,7 @@ export function RoomNav({ azitId, active = "members" }: RoomNavProps) {
         return (
           <TextLink
             key={tab.id}
-            href={tab.href(azitId)}
+            href={tab.href(agitId)}
             className={`dl-room-nav__item no-underline ${isActive ? "dl-room-nav__item--active" : ""}`}
             aria-current={isActive ? "page" : undefined}
           >

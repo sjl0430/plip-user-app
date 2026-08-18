@@ -2,9 +2,9 @@
 
 import { DailyIcon, TextLink } from "@/components/atoms";
 import { ChatBubble, ChatPollCard, DailyToggle, RoomNav } from "@/components/molecules";
-import { AZIT_CHAT } from "@/config/azit-mock";
+import { AGIT_CHAT } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
-import type { UiAzit, UiChatMessage } from "@/types/azit/ui";
+import type { UiAgit, UiChatMessage } from "@/types/agit/ui";
 import { useState } from "react";
 
 const POLL_OPTIONS = [
@@ -14,7 +14,7 @@ const POLL_OPTIONS = [
 ];
 
 type RoomChatSectionProps = {
-  azit: UiAzit;
+  agit: UiAgit;
 };
 
 function roomInitials(name: string) {
@@ -22,11 +22,11 @@ function roomInitials(name: string) {
   return name.replace(/\s+/g, "").slice(0, 2);
 }
 
-export function RoomChatSection({ azit }: RoomChatSectionProps) {
+export function RoomChatSection({ agit }: RoomChatSectionProps) {
   const [notify, setNotify] = useState(true);
   const [draft, setDraft] = useState("");
   const [selectedOption, setSelectedOption] = useState("run");
-  const [messages, setMessages] = useState<UiChatMessage[]>(AZIT_CHAT);
+  const [messages, setMessages] = useState<UiChatMessage[]>(AGIT_CHAT);
 
   function sendMessage() {
     const body = draft.trim();
@@ -47,9 +47,9 @@ export function RoomChatSection({ azit }: RoomChatSectionProps) {
   return (
     <section className="dl-chat" aria-label="채팅">
       <header className="dl-chat-head">
-        <span className="dl-chat-head__avatar">{roomInitials(azit.name)}</span>
+        <span className="dl-chat-head__avatar">{roomInitials(agit.name)}</span>
         <div className="dl-chat-head__body">
-          <h1 className="dl-chat-head__title">{azit.name}</h1>
+          <h1 className="dl-chat-head__title">{agit.name}</h1>
           <p className="dl-chat-head__meta">채팅 · 알림 {notify ? "켜짐" : "꺼짐"}</p>
         </div>
         <DailyToggle checked={notify} label="채팅 알림" onChange={setNotify} />
@@ -57,7 +57,7 @@ export function RoomChatSection({ azit }: RoomChatSectionProps) {
 
       <div className="dl-chat-notice">
         <p className="dl-chat-notice__text">영상과 채팅은 분리되어 있어요</p>
-        <TextLink href={ROUTES.azit.detail(azit.id)} className="dl-chat-notice__link no-underline">
+        <TextLink href={ROUTES.agit.detail(agit.id)} className="dl-chat-notice__link no-underline">
           영상 보기
           <DailyIcon name="chevronRightBrand" size={16} />
         </TextLink>
@@ -68,7 +68,7 @@ export function RoomChatSection({ azit }: RoomChatSectionProps) {
           <ChatBubble key={message.id} message={message} />
         ))}
         <ChatPollCard
-          azitId={azit.id}
+          agitId={agit.id}
           question="오늘 러닝 영상 태그는?"
           meta="익명 투표 · 6명 참여 · 오늘 마감"
           options={POLL_OPTIONS}
@@ -94,7 +94,7 @@ export function RoomChatSection({ azit }: RoomChatSectionProps) {
           aria-label="메시지 입력"
           onChange={(event) => setDraft(event.target.value)}
         />
-        <TextLink href={ROUTES.azit.poll(azit.id)} className="dl-composer__poll no-underline">
+        <TextLink href={ROUTES.agit.poll(agit.id)} className="dl-composer__poll no-underline">
           투표
         </TextLink>
         <button type="submit" className="dl-composer__send" aria-label="전송">
@@ -102,7 +102,7 @@ export function RoomChatSection({ azit }: RoomChatSectionProps) {
         </button>
       </form>
 
-      <RoomNav azitId={azit.id} active="chat" />
+      <RoomNav agitId={agit.id} active="chat" />
     </section>
   );
 }

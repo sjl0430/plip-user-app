@@ -1,18 +1,18 @@
 import { TextLink } from "@/components/atoms";
 import { RoomInfoRow } from "@/components/molecules";
 import { ROUTES } from "@/config/routes";
-import type { UiAzit } from "@/types/azit/ui";
+import type { UiAgit } from "@/types/agit/ui";
 
 type JoinCompleteSectionProps = {
-  azit: UiAzit;
+  agit: UiAgit;
   profileName?: string;
 };
 
 export function JoinCompleteSection({
-  azit,
+  agit,
   profileName = "데일리러너",
 }: JoinCompleteSectionProps) {
-  const maxMembers = azit.maxMembers ?? azit.memberCount;
+  const maxMembers = agit.maxMembers ?? agit.memberCount;
 
   return (
     <section className="flex w-full flex-col gap-3.5">
@@ -29,11 +29,11 @@ export function JoinCompleteSection({
 
       <div className="dl-panel dl-panel--stack">
         <p className="m-0 text-[18px] font-semibold leading-[26px] text-[var(--dl-color-text-primary)]">
-          {azit.name}
+          {agit.name}
         </p>
         <RoomInfoRow
           icon="users"
-          title={`${azit.memberCount} / ${maxMembers}명`}
+          title={`${agit.memberCount} / ${maxMembers}명`}
           description={`프로필: ${profileName}`}
         />
       </div>
@@ -50,10 +50,10 @@ export function JoinCompleteSection({
       </div>
 
       <div className="dl-actions">
-        <TextLink href={ROUTES.azit.detail(azit.id)} className="dl-btn dl-btn--primary no-underline">
+        <TextLink href={ROUTES.agit.detail(agit.id)} className="dl-btn dl-btn--primary no-underline">
           방으로 들어가기
         </TextLink>
-        <TextLink href={ROUTES.azit.search} className="dl-btn dl-btn--secondary no-underline">
+        <TextLink href={ROUTES.agit.search} className="dl-btn dl-btn--secondary no-underline">
           공개 방 더 둘러보기
         </TextLink>
       </div>

@@ -1,19 +1,18 @@
 export { AppChromeTemplate } from "./AppChromeTemplate";
-export { AgitListTemplate } from "./AgitListTemplate";
 export { AppRouteShell } from "./AppRouteShell";
 export { AuthTemplate } from "./AuthTemplate";
 export { DailyLoopAuthTemplate } from "./DailyLoopAuthTemplate";
 export {
-  AzitChatTemplate,
-  AzitDetailTemplate,
-  AzitEnterTemplate,
-  AzitListTemplate,
-  AzitMembersTemplate,
-  AzitSearchTemplate,
-  AzitTopicsTemplate,
-  AzitManageTemplate,
-  AzitSafetyTemplate,
-} from "./AzitTemplates";
+  AgitChatTemplate,
+  AgitDetailTemplate,
+  AgitEnterTemplate,
+  AgitListTemplate,
+  AgitMembersTemplate,
+  AgitSearchTemplate,
+  AgitTopicsTemplate,
+  AgitManageTemplate,
+  AgitSafetyTemplate,
+} from "./AgitTemplates";
 export { ChangePasswordTemplate } from "./ChangePasswordTemplate";
 export { CreateTemplate } from "./CreateTemplate";
 export { DiaryDateTemplate } from "./DiaryDateTemplate";

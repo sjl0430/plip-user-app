@@ -28,7 +28,7 @@ export function CreateRoomBasicForm() {
       capacity,
     };
     sessionStorage.setItem(CREATE_ROOM_DRAFT_KEY, JSON.stringify(draft));
-    router.push(ROUTES.azit.createSettings);
+    router.push(ROUTES.agit.createSettings);
   }
 
   return (

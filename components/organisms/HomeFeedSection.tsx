@@ -23,7 +23,7 @@ function FeedSlide({ clip, index, total }: { clip: UiFeedClip; index: number; to
 
       <div className="dl-shorts-meta">
         <p className="m-0 text-[26px] font-bold leading-[31px]">피드</p>
-        <p className="mt-1 text-[13px] text-white/80">{clip.azitName} · 오늘 4/5명</p>
+        <p className="mt-1 text-[13px] text-white/80">{clip.agitName} · 오늘 4/5명</p>
       </div>
 
       <div className="dl-reaction-rail" aria-label="리액션">

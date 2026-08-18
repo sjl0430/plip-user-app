@@ -1,4 +1,4 @@
-import type { UiChatMessage } from "@/types/azit/ui";
+import type { UiChatMessage } from "@/types/agit/ui";
 
 type ChatBubbleProps = {
   message: UiChatMessage;

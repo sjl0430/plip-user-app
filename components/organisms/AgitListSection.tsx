@@ -1,45 +1,33 @@
-"use client";
-
-import { SubmitButton } from "@/components/atoms";
-import { AgitListItem } from "@/components/molecules/AgitListItem";
-import { AgitSearchBar } from "@/components/molecules/AgitSearchBar";
-import { AGIT_LIST_ITEMS } from "@/config/agit-mock";
-import { useState } from "react";
+import { DailyIcon, TextLink } from "@/components/atoms";
+import { AgitListRow } from "@/components/molecules/AgitListRow";
+import { AGIT_LIST } from "@/config/agit-mock";
+import { ROUTES } from "@/config/routes";
 
 export function AgitListSection() {
-  const [query, setQuery] = useState("");
-  const [appliedQuery, setAppliedQuery] = useState("");
-  const keyword = appliedQuery.trim().toLowerCase();
-  const filteredItems = keyword
-    ? AGIT_LIST_ITEMS.filter((item) => item.title.toLowerCase().includes(keyword))
-    : AGIT_LIST_ITEMS;
+  const rooms = AGIT_LIST;
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <AgitSearchBar
-          value={query}
-          onChange={setQuery}
-          onSearch={() => setAppliedQuery(query)}
-        />
-        <SubmitButton type="button" className="w-full shrink-0 px-3 sm:w-auto">
-          + 아지트 생성
-        </SubmitButton>
-      </div>
+    <section aria-label="내 아지트" className="flex flex-1 flex-col gap-4 px-6 pb-8 pt-3">
+      <header className="dl-page-head">
+        <h1 className="dl-page-head__title">아지트</h1>
+        <TextLink href={ROUTES.agit.search} className="dl-icon-sq no-underline" aria-label="검색">
+          <DailyIcon name="search" size={20} />
+        </TextLink>
+      </header>
 
-      <ul className="flex flex-col gap-2">
-        {filteredItems.map((item) => (
-          <li key={item.id}>
-            <AgitListItem item={item} />
-          </li>
+      <label className="dl-field">
+        <span className="dl-field__label">내 아지트 검색</span>
+        <input className="dl-input" placeholder="제목 또는 프로필로 검색" />
+      </label>
+
+      <p className="m-0 text-[16px] font-semibold text-[var(--dl-color-text-primary)]">
+        참여 중인 아지트  {rooms.length}
+      </p>
+      <div className="flex flex-col gap-2.5">
+        {rooms.map((room) => (
+          <AgitListRow key={room.id} id={room.id} name={room.name} />
         ))}
-      </ul>
-
-      {filteredItems.length === 0 ? (
-        <p className="py-8 text-center text-sm text-zinc-500">
-          검색 결과가 없습니다.
-        </p>
-      ) : null}
-    </div>
+      </div>
+    </section>
   );
 }

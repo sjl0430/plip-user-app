@@ -1,6 +1,6 @@
 import { TopicChip } from "@/components/molecules/TopicChip";
 
-export type DestinationId = "diary" | "azit";
+export type DestinationId = "diary" | "agit";
 
 type DestinationToggleProps = {
   value: DestinationId;
@@ -9,7 +9,7 @@ type DestinationToggleProps = {
 
 const OPTIONS: { id: DestinationId; label: string }[] = [
   { id: "diary", label: "다이어리" },
-  { id: "azit", label: "아지트" },
+  { id: "agit", label: "아지트" },
 ];
 
 export function DestinationToggle({ value, onChange }: DestinationToggleProps) {

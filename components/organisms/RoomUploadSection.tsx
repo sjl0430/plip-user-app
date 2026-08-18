@@ -13,10 +13,10 @@ const TOPICS = [
 ] as const;
 
 type RoomUploadSectionProps = {
-  azitId: string;
+  agitId: string;
 };
 
-export function RoomUploadSection({ azitId }: RoomUploadSectionProps) {
+export function RoomUploadSection({ agitId }: RoomUploadSectionProps) {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("");
@@ -32,7 +32,7 @@ export function RoomUploadSection({ azitId }: RoomUploadSectionProps) {
     <section className="flex w-full flex-col gap-3.5" aria-label="영상 올리기">
       <header className="dl-hub-head">
         <h1 className="dl-hub-head__title">영상 올리기</h1>
-        <TextLink href={ROUTES.azit.detail(azitId)} className="text-[14px] font-medium text-[var(--dl-color-text-secondary)] no-underline">
+        <TextLink href={ROUTES.agit.detail(agitId)} className="text-[14px] font-medium text-[var(--dl-color-text-secondary)] no-underline">
           닫기
         </TextLink>
       </header>
@@ -95,7 +95,7 @@ export function RoomUploadSection({ azitId }: RoomUploadSectionProps) {
       <SubmitButton
         variant="brand"
         disabled={!agreed}
-        onClick={() => router.push(ROUTES.azit.detail(azitId))}
+        onClick={() => router.push(ROUTES.agit.detail(agitId))}
       >
         업로드
       </SubmitButton>

@@ -12,14 +12,14 @@ export function CreateRoomAccessForm() {
 
   function handleSubmit() {
     if (!agreed) return;
-    router.push(ROUTES.azit.joined("azit-walk"));
+    router.push(ROUTES.agit.joined("agit-walk"));
   }
 
   return (
     <form className="flex w-full flex-col gap-3.5" action={handleSubmit}>
       <p className="m-0 text-[16px] font-semibold text-[var(--dl-color-text-primary)]">사진과 닉네임</p>
       <div className="dl-profile-card">
-        <span className="dl-azit-row__avatar" />
+        <span className="dl-agit-row__avatar" />
         <div className="min-w-0 flex-1">
           <p className="dl-notice-card__title">프로필 사진</p>
           <p className="dl-notice-card__body">안지민</p>

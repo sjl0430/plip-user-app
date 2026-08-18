@@ -2,16 +2,16 @@
 
 import { DailyIcon, Pill, TextLink } from "@/components/atoms";
 import { ExploreNav } from "@/components/molecules";
-import { AZIT_LIST } from "@/config/azit-mock";
+import { AGIT_LIST } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import { useState } from "react";
 
 const CATEGORIES = ["추천", "운동", "공부", "일상"] as const;
-const FEATURED_ID = "azit-run";
-const ACTIVE_IDS = ["azit-study", "azit-dish"];
+const FEATURED_ID = "agit-run";
+const ACTIVE_IDS = ["agit-study", "agit-dish"];
 
 function roomHref(id: string, joined?: boolean) {
-  return joined ? ROUTES.azit.detail(id) : ROUTES.azit.enter(id);
+  return joined ? ROUTES.agit.detail(id) : ROUTES.agit.enter(id);
 }
 
 function memberLabel(count: number, max?: number) {
@@ -22,9 +22,9 @@ export function ExploreSection() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("추천");
 
-  const featured = AZIT_LIST.find((room) => room.id === FEATURED_ID);
+  const featured = AGIT_LIST.find((room) => room.id === FEATURED_ID);
   const keyword = query.trim();
-  const rooms = AZIT_LIST.filter((room) => {
+  const rooms = AGIT_LIST.filter((room) => {
     if (category !== "추천" && room.category !== category) return false;
     if (category === "추천" && !ACTIVE_IDS.includes(room.id) && room.id !== FEATURED_ID) {
       return Boolean(keyword);
@@ -97,7 +97,7 @@ export function ExploreSection() {
       </h2>
       <div className="flex w-full flex-col gap-2.5">
         {(category === "추천" && !query.trim()
-          ? AZIT_LIST.filter((room) => ACTIVE_IDS.includes(room.id))
+          ? AGIT_LIST.filter((room) => ACTIVE_IDS.includes(room.id))
           : listRooms
         ).map((room) => (
           <TextLink
