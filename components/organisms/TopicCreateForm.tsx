@@ -3,7 +3,6 @@
 import { SubmitButton } from "@/components/atoms";
 import { AuthField } from "@/components/molecules";
 import { NoticeCard } from "@/components/molecules/NoticeCard";
-import { TopicChip } from "@/components/molecules/TopicChip";
 import { useState } from "react";
 
 export function TopicCreateForm() {
@@ -26,22 +25,28 @@ export function TopicCreateForm() {
         defaultValue="2026.08.18 — 2026.08.31"
         required
       />
+
       <p className="m-0 text-[16px] font-semibold text-[var(--dl-color-text-primary)]">아이템</p>
       <button
         type="button"
-        className="dl-manage-tile w-full max-w-[170px]"
+        className={`dl-item-card${itemSelected ? " dl-item-card--selected" : ""}`}
         onClick={() => setItemSelected((current) => !current)}
       >
-        <p className="m-0 text-[24px] leading-[29px]">＋</p>
-        <p className="dl-notice-card__title">아이템 적용</p>
-        <p className="dl-notice-card__body">보유 아이템에서 선택</p>
-        <TopicChip selected={itemSelected}>{itemSelected ? "선택됨" : "선택"}</TopicChip>
+        <p className="dl-item-card__plus">＋</p>
+        <p className="dl-item-card__title">아이템 적용</p>
+        <p className="dl-item-card__desc">보유 아이템에서 선택</p>
+        {itemSelected ? <span className="dl-item-card__pill">선택됨</span> : null}
       </button>
+
       <NoticeCard
+        tone="brand"
         title="등록 규칙"
         body="한 사용자는 이 토픽에 영상 1개만 등록할 수 있어요. 방장은 이후 표시 형식을 변경할 수 있습니다."
       />
-      <SubmitButton variant="brand">토픽 만들기</SubmitButton>
+
+      <div className="dl-actions">
+        <SubmitButton variant="brand">토픽 만들기</SubmitButton>
+      </div>
     </form>
   );
 }

@@ -1,8 +1,9 @@
-import { TextLink } from "@/components/atoms";
+import { DailyIcon, TextLink } from "@/components/atoms";
 import { AuthTopBar } from "@/components/molecules/AuthTopBar";
 import { InvitesSafetySection } from "@/components/organisms/InvitesSafetySection";
 import { MembersPermissionsSection } from "@/components/organisms/MembersPermissionsSection";
 import { RoomManageHub } from "@/components/organisms/RoomManageHub";
+import { TopicCreateForm } from "@/components/organisms/TopicCreateForm";
 import { TopicsLayoutSection } from "@/components/organisms/TopicsLayoutSection";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { getAzitById } from "@/config/azit-mock";
@@ -27,8 +28,18 @@ export function RoomManageHubTemplate({ azitId }: AzitIdProps) {
 
   return (
     <DailyLoopAuthTemplate>
-      <AuthTopBar title="방 관리" backHref={ROUTES.azit.detail(azit.id)} />
-      <RoomManageHub azit={azit} />
+      <div className="dl-manage-page px-6 pb-8 pt-3">
+        <header className="dl-page-head">
+          <TextLink href={ROUTES.azit.detail(azit.id)} className="dl-icon-sq no-underline" aria-label="뒤로">
+            <DailyIcon name="chevronLeft" size={20} />
+          </TextLink>
+          <div className="dl-page-head__copy">
+            <h1 className="dl-page-head__title">방 관리</h1>
+            <p className="dl-manage-subtitle">방장 · {azit.ownerName ?? "안지민"}</p>
+          </div>
+        </header>
+        <RoomManageHub azit={azit} />
+      </div>
     </DailyLoopAuthTemplate>
   );
 }
@@ -36,8 +47,21 @@ export function RoomManageHubTemplate({ azitId }: AzitIdProps) {
 export function TopicsLayoutTemplate({ azitId }: AzitIdProps) {
   return (
     <DailyLoopAuthTemplate>
-      <AuthTopBar title="토픽 만들기" backHref={ROUTES.azit.manage(azitId)} />
-      <TopicsLayoutSection />
+      <AuthTopBar title="토픽 관리" backHref={ROUTES.azit.manage(azitId)} />
+      <TopicsLayoutSection azitId={azitId} />
+    </DailyLoopAuthTemplate>
+  );
+}
+
+export function TopicCreateTemplate({ azitId }: AzitIdProps) {
+  return (
+    <DailyLoopAuthTemplate>
+      <AuthTopBar
+        title="토픽 만들기"
+        backHref={ROUTES.azit.topics(azitId)}
+        step="토픽 진행 기간과 적용 아이템을 정합니다"
+      />
+      <TopicCreateForm />
     </DailyLoopAuthTemplate>
   );
 }

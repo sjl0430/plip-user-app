@@ -1,7 +1,7 @@
 "use client";
 
-import { DailyIcon, SubmitButton } from "@/components/atoms";
-import { TopicCreateForm } from "@/components/organisms/TopicCreateForm";
+import { DailyIcon, TextLink } from "@/components/atoms";
+import { ROUTES } from "@/config/routes";
 import { useState } from "react";
 
 const INITIAL_TOPICS = [
@@ -12,10 +12,13 @@ const INITIAL_TOPICS = [
 
 type LayoutId = "grid" | "list" | "relay";
 
-export function TopicsLayoutSection() {
+type TopicsLayoutSectionProps = {
+  azitId: string;
+};
+
+export function TopicsLayoutSection({ azitId }: TopicsLayoutSectionProps) {
   const [topics, setTopics] = useState([...INITIAL_TOPICS]);
   const [layout, setLayout] = useState<LayoutId>("grid");
-  const [creating, setCreating] = useState(false);
 
   return (
     <section className="flex w-full flex-col gap-3.5">
@@ -26,11 +29,10 @@ export function TopicsLayoutSection() {
         <span className="dl-badge">{topics.length}개 사용 중</span>
       </div>
 
-      <button type="button" className="dl-btn dl-btn--secondary" onClick={() => setCreating((current) => !current)}>
+      <TextLink href={ROUTES.azit.topicCreate(azitId)} className="dl-btn dl-btn--secondary no-underline">
         <DailyIcon name="plus" size={16} />
         토픽 만들기
-      </button>
-      {creating ? <TopicCreateForm /> : null}
+      </TextLink>
 
       {topics.map((topic) => (
         <div key={topic.id} className="dl-manage-card">
@@ -86,7 +88,6 @@ export function TopicsLayoutSection() {
         ))}
       </div>
       <p className="dl-subtitle text-[12px]">선택한 형식은 다음 업로드부터 적용됩니다.</p>
-      <SubmitButton variant="brand">변경사항 저장</SubmitButton>
     </section>
   );
 }

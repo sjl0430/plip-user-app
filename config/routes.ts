@@ -26,6 +26,7 @@ export const ROUTES = {
     joined: (azitId: string) => `/azit/${azitId}/joined` as const,
     members: (azitId: string) => `/azit/${azitId}/members` as const,
     topics: (azitId: string) => `/azit/${azitId}/topics` as const,
+    topicCreate: (azitId: string) => `/azit/${azitId}/topics/create` as const,
     manage: (azitId: string) => `/azit/${azitId}/manage` as const,
     calendar: (azitId: string) => `/azit/${azitId}/calendar` as const,
     upload: (azitId: string) => `/azit/${azitId}/upload` as const,

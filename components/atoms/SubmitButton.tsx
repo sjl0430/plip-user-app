@@ -1,13 +1,14 @@
 import type { ComponentProps } from "react";
 
 type SubmitButtonProps = ComponentProps<"button"> & {
-  variant?: "glass" | "brand" | "outline";
+  variant?: "glass" | "brand" | "outline" | "danger";
 };
 
 const variantClass: Record<NonNullable<SubmitButtonProps["variant"]>, string> = {
   glass: "dc-btn dc-btn--block",
   brand: "dl-btn dl-btn--primary",
   outline: "dl-btn dl-btn--secondary",
+  danger: "dl-btn dl-btn--danger",
 };
 
 export function SubmitButton({

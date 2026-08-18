@@ -34,6 +34,7 @@ export function CreateRoomBasicForm() {
   return (
     <form className="flex w-full flex-col gap-3.5" action={handleSubmit}>
       <ThumbnailUpload />
+
       <AuthField
         id="room-title"
         name="title"
@@ -54,14 +55,19 @@ export function CreateRoomBasicForm() {
         maxLength={120}
         required
       />
-      <div className="dl-notice-card">
-        <p className="dl-notice-card__title">최대 인원</p>
-        <p className="dl-notice-card__body">기본 5명 · 최대 20명</p>
-        <CapacityStepper value={capacity} min={2} max={20} onChange={setCapacity} />
+
+      <p className="m-0 text-[14px] font-medium text-[var(--dl-color-text-primary)]">최대 인원</p>
+      <div className="dl-capacity-card">
+        <div className="dl-capacity-card__body">
+          <p className="dl-capacity-card__value">{capacity}명</p>
+          <p className="dl-capacity-card__hint">기본 5명 · 최대 20명</p>
+        </div>
+        <CapacityStepper value={capacity} min={2} max={20} onChange={setCapacity} compact />
       </div>
-      <p className="m-0 text-[12px] text-[var(--dl-color-text-tertiary)]">
+      <p className="m-0 text-[11px] text-[var(--dl-color-text-tertiary)]">
         기본 정원 5명 · 최대 20명까지 설정할 수 있어요.
       </p>
+
       <div className="dl-actions">
         <SubmitButton variant="brand">다음</SubmitButton>
       </div>
