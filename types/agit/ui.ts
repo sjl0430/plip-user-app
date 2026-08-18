@@ -1,5 +1,10 @@
 export type UiAgitVisibility = "public" | "private";
 
+export type UiMyAgit = {
+  id: string;
+  name: string;
+};
+
 export type UiAgit = {
   id: string;
   name: string;
