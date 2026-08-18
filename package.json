@@ -11,7 +11,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "npm run typecheck && npm run lint",
     "prebuild": "npm run test",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
