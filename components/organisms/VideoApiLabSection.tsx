@@ -1,5 +1,6 @@
 "use client";
 
+import { ROUTES } from "@/config/routes";
 import {
   completeVideoAction,
   getDownloadUrlAction,
@@ -123,8 +124,8 @@ export function VideoApiLabSection() {
         </p>
         <p className="text-xs text-black/50">
           촬영 Phase 0-F (Step 4 PR):{" "}
-          <a href="/video" className="underline">
-            /video
+          <a href={ROUTES.capture.video} className="underline">
+            {ROUTES.capture.video}
           </a>
         </p>
       </header>
