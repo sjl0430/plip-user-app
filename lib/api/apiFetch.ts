@@ -14,10 +14,16 @@ export class ApiError extends Error {
 type ApiFetchOptions = Omit<RequestInit, "body"> & {
   body?: unknown;
   searchParams?: Record<string, string | undefined>;
+  /** 생략 시 기존처럼 VIDEO_API_BASE_URL */
+  baseUrl?: string;
 };
 
-function buildUrl(path: string, searchParams?: Record<string, string | undefined>): string {
-  const base = getVideoApiBaseUrl().replace(/\/$/, "");
+function buildUrl(
+  path: string,
+  searchParams?: Record<string, string | undefined>,
+  baseUrl?: string,
+): string {
+  const base = (baseUrl ?? getVideoApiBaseUrl()).replace(/\/$/, "");
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   const url = new URL(`${base}${normalizedPath}`);
 
@@ -33,10 +39,10 @@ function buildUrl(path: string, searchParams?: Record<string, string | undefined
 }
 
 export async function apiFetch<T>(path: string, options: ApiFetchOptions = {}): Promise<T> {
-  const { body, searchParams, headers, ...rest } = options;
+  const { body, searchParams, headers, baseUrl, ...rest } = options;
   const hasJsonBody = body !== undefined;
 
-  const response = await fetch(buildUrl(path, searchParams), {
+  const response = await fetch(buildUrl(path, searchParams, baseUrl), {
     ...rest,
     headers: {
       ...(hasJsonBody ? { "Content-Type": "application/json" } : {}),
@@ -70,10 +76,10 @@ export async function apiFetchWithStatus<T>(
   path: string,
   options: ApiFetchOptions = {},
 ): Promise<{ status: number; data: T }> {
-  const { body, searchParams, headers, ...rest } = options;
+  const { body, searchParams, headers, baseUrl, ...rest } = options;
   const hasJsonBody = body !== undefined;
 
-  const response = await fetch(buildUrl(path, searchParams), {
+  const response = await fetch(buildUrl(path, searchParams, baseUrl), {
     ...rest,
     headers: {
       ...(hasJsonBody ? { "Content-Type": "application/json" } : {}),
