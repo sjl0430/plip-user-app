@@ -9,11 +9,18 @@ import { AppChromeTemplate } from "@/components/templates/AppChromeTemplate";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
+import type { UiMyAgit } from "@/types/agit/ui";
 
-export function AgitListTemplate() {
+export function AgitListTemplate({
+  items,
+  error,
+}: {
+  items: UiMyAgit[];
+  error?: string;
+}) {
   return (
     <AppChromeTemplate activeTab="agit" variant="light">
-      <AgitListSection />
+      <AgitListSection items={items} error={error} />
     </AppChromeTemplate>
   );
 }
