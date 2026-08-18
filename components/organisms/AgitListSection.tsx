@@ -1,11 +1,14 @@
 import { DailyIcon, TextLink } from "@/components/atoms";
 import { AgitListRow } from "@/components/molecules/AgitListRow";
-import { AGIT_LIST } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
+import type { UiMyAgit } from "@/types/agit/ui";
 
-export function AgitListSection() {
-  const rooms = AGIT_LIST;
+type AgitListSectionProps = {
+  items: UiMyAgit[];
+  error?: string;
+};
 
+export function AgitListSection({ items, error }: AgitListSectionProps) {
   return (
     <section aria-label="내 아지트" className="flex flex-1 flex-col gap-4 px-6 pb-8 pt-3">
       <header className="dl-page-head">
@@ -17,15 +20,25 @@ export function AgitListSection() {
 
       <label className="dl-field">
         <span className="dl-field__label">내 아지트 검색</span>
-        <input className="dl-input" placeholder="제목 또는 프로필로 검색" />
+        <input
+          className="dl-input"
+          placeholder="제목 또는 프로필로 검색"
+          disabled
+        />
       </label>
 
+      {error ? (
+        <p className="m-0 text-[14px] text-[var(--dl-color-text-secondary)]" role="alert">
+          {error}
+        </p>
+      ) : null}
+
       <p className="m-0 text-[16px] font-semibold text-[var(--dl-color-text-primary)]">
-        참여 중인 아지트  {rooms.length}
+        참여 중인 아지트  {items.length}
       </p>
       <div className="flex flex-col gap-2.5">
-        {rooms.map((room) => (
-          <AgitListRow key={room.id} id={room.id} name={room.name} />
+        {items.map((item) => (
+          <AgitListRow key={item.id} id={item.id} name={item.name} />
         ))}
       </div>
     </section>
