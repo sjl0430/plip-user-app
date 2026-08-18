@@ -1,28 +1,28 @@
 "use client";
 
 import { PlipLogo, TextLink } from "@/components/atoms";
-import { AZIT_LIST, AZIT_TOPICS } from "@/config/azit-mock";
+import { AGIT_LIST, AGIT_TOPICS } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import { useState } from "react";
 
-type Destination = "azit" | "diary";
+type Destination = "agit" | "diary";
 
 const CAPTURE_TOOLS = ["타이머", "필터", "배속", "뷰티"] as const;
 const DURATIONS = ["3분", "60초", "15초", "지금"] as const;
 
 export function CreateClipSection() {
   const [step, setStep] = useState<"capture" | "upload">("capture");
-  const [destination, setDestination] = useState<Destination>("azit");
-  const [selectedAzit, setSelectedAzit] = useState(AZIT_LIST[0]?.id ?? "");
-  const [selectedTopic, setSelectedTopic] = useState(AZIT_TOPICS[0]?.id ?? "");
+  const [destination, setDestination] = useState<Destination>("agit");
+  const [selectedAgit, setSelectedAgit] = useState(AGIT_LIST[0]?.id ?? "");
+  const [selectedTopic, setSelectedTopic] = useState(AGIT_TOPICS[0]?.id ?? "");
 
-  const azit = AZIT_LIST.find((item) => item.id === selectedAzit);
+  const agit = AGIT_LIST.find((item) => item.id === selectedAgit);
   const uploadHref =
     destination === "diary"
       ? ROUTES.diary.root
-      : selectedAzit
-        ? ROUTES.azit.detail(selectedAzit)
-        : ROUTES.azit.root;
+      : selectedAgit
+        ? ROUTES.agit.detail(selectedAgit)
+        : ROUTES.agit.root;
 
   if (step === "upload") {
     return (
@@ -58,8 +58,8 @@ export function CreateClipSection() {
               <input
                 type="radio"
                 name="destination"
-                checked={destination === "azit"}
-                onChange={() => setDestination("azit")}
+                checked={destination === "agit"}
+                onChange={() => setDestination("agit")}
               />
               <span>아지트 토픽</span>
             </label>
@@ -74,15 +74,15 @@ export function CreateClipSection() {
             </label>
           </div>
 
-          {destination === "azit" ? (
+          {destination === "agit" ? (
             <div className="plip-create-upload__fields">
               <label className="plip-create-upload__field">
                 <span>아지트</span>
                 <select
-                  value={selectedAzit}
-                  onChange={(event) => setSelectedAzit(event.target.value)}
+                  value={selectedAgit}
+                  onChange={(event) => setSelectedAgit(event.target.value)}
                 >
-                  {AZIT_LIST.map((item) => (
+                  {AGIT_LIST.map((item) => (
                     <option key={item.id} value={item.id}>
                       {item.name}
                     </option>
@@ -95,7 +95,7 @@ export function CreateClipSection() {
                   value={selectedTopic}
                   onChange={(event) => setSelectedTopic(event.target.value)}
                 >
-                  {AZIT_TOPICS.map((topic) => (
+                  {AGIT_TOPICS.map((topic) => (
                     <option key={topic.id} value={topic.id}>
                       {topic.title}
                     </option>
@@ -113,8 +113,8 @@ export function CreateClipSection() {
           )}
 
           <TextLink href={uploadHref} className="plip-create-upload__send">
-            {destination === "azit"
-              ? `${azit?.name ?? "아지트"}에 보내기`
+            {destination === "agit"
+              ? `${agit?.name ?? "아지트"}에 보내기`
               : "다이어리에 보내기"}
           </TextLink>
         </div>

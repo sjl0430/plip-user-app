@@ -16,18 +16,18 @@ const DEFAULT_CHOICES = [
 ];
 
 type PollEditorProps = {
-  azitId: string;
+  agitId: string;
   mode: "create" | "edit";
 };
 
-export function PollEditor({ azitId, mode }: PollEditorProps) {
+export function PollEditor({ agitId, mode }: PollEditorProps) {
   const router = useRouter();
   const [question, setQuestion] = useState(DEFAULT_QUESTION);
   const [choices, setChoices] = useState(DEFAULT_CHOICES);
   const [anonymous, setAnonymous] = useState(true);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
 
-  const chatHref = ROUTES.azit.chat(azitId);
+  const chatHref = ROUTES.agit.chat(agitId);
   const canAdd = choices.length < MAX_CHOICES;
   const canRemove = choices.length > MIN_CHOICES;
 

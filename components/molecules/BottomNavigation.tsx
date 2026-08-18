@@ -1,5 +1,5 @@
 import {
-  NavAzitIcon,
+  NavAgitIcon,
   NavCreateIcon,
   NavDiaryIcon,
   NavHomeIcon,
@@ -13,7 +13,7 @@ import type { ReactNode } from "react";
  * 요구사항정의서 #3 하단 nav:
  * 다이어리(홈) / 아지트 / 카메라 / 피드(소속 아지트 그룹영상) / 설정
  */
-export type BottomNavTab = "diary" | "azit" | "create" | "feed" | "mypage";
+export type BottomNavTab = "diary" | "agit" | "create" | "feed" | "mypage";
 
 type BottomNavigationProps = {
   active?: BottomNavTab;
@@ -37,10 +37,10 @@ const NAV_ITEMS: NavItem[] = [
     icon: <NavDiaryIcon className="plip-tt-nav__icon" />,
   },
   {
-    id: "azit",
-    href: ROUTES.azit.root,
+    id: "agit",
+    href: ROUTES.agit.root,
     label: "아지트",
-    icon: <NavAzitIcon className="plip-tt-nav__icon" />,
+    icon: <NavAgitIcon className="plip-tt-nav__icon" />,
   },
   {
     id: "create",

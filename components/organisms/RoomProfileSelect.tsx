@@ -20,15 +20,15 @@ const PROFILES = [
 ] as const;
 
 type RoomProfileSelectProps = {
-  azitId: string;
+  agitId: string;
 };
 
-export function RoomProfileSelect({ azitId }: RoomProfileSelectProps) {
+export function RoomProfileSelect({ agitId }: RoomProfileSelectProps) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState<string>(PROFILES[0].id);
 
   function handleSubmit() {
-    router.push(ROUTES.azit.joined(azitId));
+    router.push(ROUTES.agit.joined(agitId));
   }
 
   return (

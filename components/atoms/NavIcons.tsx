@@ -11,7 +11,7 @@ export function NavHomeIcon({ className = "" }: NavIconProps) {
   );
 }
 
-export function NavAzitIcon({ className = "" }: NavIconProps) {
+export function NavAgitIcon({ className = "" }: NavIconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden focusable="false">
       <path d="M8.8 11.2a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2Zm6.5 1.1a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.2ZM3.7 18.8c.7-2.7 2.7-4.2 5.1-4.2s4.4 1.5 5.1 4.2c.1.35-.15.7-.5.7H4.2c-.35 0-.6-.35-.5-.7Zm9.8-.2c-.35-1.55-1.2-2.75-2.35-3.5 1.05-.2 2.2-.05 3.25.55 1.45.85 2.4 2.3 2.75 3.95.05.3-.15.6-.45.6h-3.45c.2-.5.25-1.05.25-1.6Z" />
@@ -98,55 +98,6 @@ export function NavCaptureIcon({ className = "" }: NavIconProps) {
         strokeWidth="1.75"
       />
       <circle cx="12" cy="13.25" r="3" stroke="currentColor" strokeWidth="1.75" />
-    </svg>
-  );
-}
-
-export function NavAgitIcon({ className = "" }: NavIconProps) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <rect
-        x="4.5"
-        y="4.5"
-        width="6"
-        height="6"
-        rx="1.25"
-        stroke="currentColor"
-        strokeWidth="1.75"
-      />
-      <rect
-        x="13.5"
-        y="4.5"
-        width="6"
-        height="6"
-        rx="1.25"
-        stroke="currentColor"
-        strokeWidth="1.75"
-      />
-      <rect
-        x="4.5"
-        y="13.5"
-        width="6"
-        height="6"
-        rx="1.25"
-        stroke="currentColor"
-        strokeWidth="1.75"
-      />
-      <rect
-        x="13.5"
-        y="13.5"
-        width="6"
-        height="6"
-        rx="1.25"
-        stroke="currentColor"
-        strokeWidth="1.75"
-      />
     </svg>
   );
 }

@@ -1,14 +1,14 @@
 import { TextLink } from "@/components/atoms";
 import { RoomInfoRow } from "@/components/molecules";
 import { ROUTES } from "@/config/routes";
-import type { UiAzit } from "@/types/azit/ui";
+import type { UiAgit } from "@/types/agit/ui";
 
 type InviteConfirmSectionProps = {
-  azit: UiAzit;
+  agit: UiAgit;
 };
 
-export function InviteConfirmSection({ azit }: InviteConfirmSectionProps) {
-  const maxMembers = azit.maxMembers ?? azit.memberCount;
+export function InviteConfirmSection({ agit }: InviteConfirmSectionProps) {
+  const maxMembers = agit.maxMembers ?? agit.memberCount;
 
   return (
     <section className="flex w-full flex-col gap-3.5">
@@ -16,19 +16,19 @@ export function InviteConfirmSection({ azit }: InviteConfirmSectionProps) {
         <RoomInfoRow icon="link" title="비공개 방 초대" description="초대 링크가 유효합니다" />
       </div>
 
-      <h2 className="dl-title">{azit.name}</h2>
-      <p className="dl-subtitle">{azit.description}</p>
+      <h2 className="dl-title">{agit.name}</h2>
+      <p className="dl-subtitle">{agit.description}</p>
 
       <div className="dl-panel dl-panel--stack">
         <RoomInfoRow
           icon="users"
-          title={`${azit.memberCount} / ${maxMembers}명`}
-          description={`방장 ${azit.ownerName ?? "방장"}`}
+          title={`${agit.memberCount} / ${maxMembers}명`}
+          description={`방장 ${agit.ownerName ?? "방장"}`}
         />
         <RoomInfoRow
           icon="video"
-          title={`토픽 ${azit.topicCount}개`}
-          description={azit.topicSummary ?? "초대된 방의 토픽"}
+          title={`토픽 ${agit.topicCount}개`}
+          description={agit.topicSummary ?? "초대된 방의 토픽"}
         />
       </div>
 
@@ -40,10 +40,10 @@ export function InviteConfirmSection({ azit }: InviteConfirmSectionProps) {
       </div>
 
       <div className="dl-actions">
-        <TextLink href={ROUTES.azit.profile(azit.id)} className="dl-btn dl-btn--primary no-underline">
+        <TextLink href={ROUTES.agit.profile(agit.id)} className="dl-btn dl-btn--primary no-underline">
           초대 수락하기
         </TextLink>
-        <TextLink href={ROUTES.azit.root} className="dl-btn dl-btn--secondary no-underline">
+        <TextLink href={ROUTES.agit.root} className="dl-btn dl-btn--secondary no-underline">
           나중에 하기
         </TextLink>
       </div>

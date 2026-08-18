@@ -6,7 +6,7 @@ export type UiFeedClip = {
   likeCount: number;
   commentCount: number;
   shareCount: number;
-  azitName?: string;
+  agitName?: string;
   /** 아지트 토픽 라벨 (그룹피드) */
   topicTitle?: string;
   gradient: string;
@@ -15,4 +15,4 @@ export type UiFeedClip = {
 };
 
 /** 그룹영상 피드 탭 (개인 For You 제거) */
-export type UiFeedTab = "myAzits" | "groupClips";
+export type UiFeedTab = "myAgits" | "groupClips";

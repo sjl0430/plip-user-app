@@ -14,7 +14,7 @@ const TOPICS = ["#7시_러닝_인증", "#아침_식단"] as const;
 
 export function UploadWizard() {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
-  const [destination, setDestination] = useState<DestinationId>("azit");
+  const [destination, setDestination] = useState<DestinationId>("agit");
   const [topic, setTopic] = useState<(typeof TOPICS)[number]>("#7시_러닝_인증");
 
   if (step === 1) {
@@ -109,7 +109,7 @@ export function UploadWizard() {
           {topic} · 8월 14일
         </p>
       </div>
-      <TextLink href={ROUTES.azit.detail("azit-walk")} className="dl-btn dl-btn--primary no-underline">
+      <TextLink href={ROUTES.agit.detail("agit-walk")} className="dl-btn dl-btn--primary no-underline">
         방에서 보기
       </TextLink>
       <button type="button" className="dl-btn dl-btn--secondary">

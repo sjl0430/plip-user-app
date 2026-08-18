@@ -13,7 +13,6 @@ export { Input } from "./Input";
 export { Label } from "./Label";
 export {
   NavAgitIcon,
-  NavAzitIcon,
   NavCaptureIcon,
   NavCreateIcon,
   NavDiaryIcon,
