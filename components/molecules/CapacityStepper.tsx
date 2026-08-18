@@ -5,9 +5,41 @@ type CapacityStepperProps = {
   min?: number;
   max?: number;
   onChange: (value: number) => void;
+  compact?: boolean;
 };
 
-export function CapacityStepper({ value, min = 2, max = 30, onChange }: CapacityStepperProps) {
+export function CapacityStepper({
+  value,
+  min = 2,
+  max = 30,
+  onChange,
+  compact = false,
+}: CapacityStepperProps) {
+  if (compact) {
+    return (
+      <div className="dl-stepper dl-stepper--compact">
+        <button
+          type="button"
+          className="dl-stepper__btn"
+          aria-label="인원 줄이기"
+          disabled={value <= min}
+          onClick={() => onChange(Math.max(min, value - 1))}
+        >
+          −
+        </button>
+        <button
+          type="button"
+          className="dl-stepper__btn"
+          aria-label="인원 늘리기"
+          disabled={value >= max}
+          onClick={() => onChange(Math.min(max, value + 1))}
+        >
+          +
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="dl-stepper">
       <button

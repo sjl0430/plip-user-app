@@ -1,23 +1,16 @@
-import {
-  NavAzitIcon,
-  NavCreateIcon,
-  NavDiaryIcon,
-  NavHomeIcon,
-  NavMyPageIcon,
-} from "@/components/atoms/NavIcons";
-import { PlipLogo, TextLink } from "@/components/atoms";
+import { TextLink } from "@/components/atoms";
 import { ROUTES } from "@/config/routes";
+import { BookOpen, Camera, Clapperboard, Settings, UsersRound } from "lucide-react";
 import type { ReactNode } from "react";
 
 /**
- * 요구사항정의서 #3 하단 nav:
- * 다이어리(홈) / 아지트 / 카메라 / 피드(소속 아지트 그룹영상) / 설정
+ * Figma Global Navigation · 402×80
+ * 다이어리 / 아지트 / 카메라 / 피드 / 설정
  */
 export type BottomNavTab = "diary" | "azit" | "create" | "feed" | "mypage";
 
 type BottomNavigationProps = {
   active?: BottomNavTab;
-  /** feed = TikTok black bar; light = white profile-style bar */
   variant?: "feed" | "light" | "diary";
 };
 
@@ -34,49 +27,40 @@ const NAV_ITEMS: NavItem[] = [
     id: "diary",
     href: ROUTES.diary.root,
     label: "다이어리",
-    icon: <NavDiaryIcon className="plip-tt-nav__icon" />,
+    icon: <BookOpen className="plip-gnav__icon" strokeWidth={2} />,
   },
   {
     id: "azit",
     href: ROUTES.azit.root,
     label: "아지트",
-    icon: <NavAzitIcon className="plip-tt-nav__icon" />,
+    icon: <UsersRound className="plip-gnav__icon" strokeWidth={2} />,
   },
   {
     id: "create",
     href: ROUTES.create,
     label: "카메라",
-    icon: <NavCreateIcon className="plip-tt-nav__create-icon" />,
+    icon: <Camera className="plip-gnav__camera-icon" strokeWidth={2} />,
     create: true,
   },
   {
     id: "feed",
     href: ROUTES.home,
     label: "피드",
-    icon: <NavHomeIcon className="plip-tt-nav__icon" />,
+    icon: <Clapperboard className="plip-gnav__icon" strokeWidth={2} />,
   },
   {
     id: "mypage",
     href: ROUTES.mypage.root,
     label: "설정",
-    icon: <NavMyPageIcon className="plip-tt-nav__icon" />,
+    icon: <Settings className="plip-gnav__icon" strokeWidth={2} />,
   },
 ];
 
 export function BottomNavigation({
   active = "diary",
-  variant = "feed",
 }: BottomNavigationProps) {
-  const isLight = variant === "light" || variant === "diary";
-
   return (
-    <nav
-      aria-label="주 메뉴"
-      className={isLight ? "plip-tt-nav plip-tt-nav--light" : "plip-tt-nav"}
-    >
-      <div className="plip-tt-nav__brand" aria-hidden>
-        <PlipLogo width={112} height={64} className="plip-tt-nav__brand-logo" />
-      </div>
+    <nav aria-label="주 메뉴" className="plip-gnav">
       {NAV_ITEMS.map((item) => {
         const isActive = active === item.id;
 
@@ -86,10 +70,10 @@ export function BottomNavigation({
               key={item.id}
               href={item.href}
               aria-label={item.label}
-              className="plip-tt-nav__create"
+              className="plip-gnav__item plip-gnav__item--camera no-underline"
             >
-              <span className="plip-tt-nav__create-btn">{item.icon}</span>
-              <span className="plip-tt-nav__label plip-tt-nav__label--desktop">{item.label}</span>
+              <span className="plip-gnav__camera">{item.icon}</span>
+              <span className="plip-gnav__label">{item.label}</span>
             </TextLink>
           );
         }
@@ -100,10 +84,10 @@ export function BottomNavigation({
             href={item.href}
             aria-label={item.label}
             aria-current={isActive ? "page" : undefined}
-            className={`plip-tt-nav__item ${isActive ? "is-active" : ""}`.trim()}
+            className={`plip-gnav__item no-underline${isActive ? " is-active" : ""}`}
           >
             {item.icon}
-            <span className="plip-tt-nav__label">{item.label}</span>
+            <span className="plip-gnav__label">{item.label}</span>
           </TextLink>
         );
       })}

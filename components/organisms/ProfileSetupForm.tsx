@@ -6,7 +6,7 @@ export function ProfileSetupForm() {
   return (
     <form className="flex w-full flex-col gap-4" action={ROUTES.diary.root} method="get">
       <button type="button" className="dl-avatar-pick" aria-label="프로필 사진 등록">
-        <img src="/plip/daily-loop/profile-photo.png" alt="" width={96} height={96} />
+        <img src="/plip/v13/profile-avatar.svg" alt="" width={96} height={96} />
         <img
           src="/plip/daily-loop/icon-camera.svg"
           alt=""

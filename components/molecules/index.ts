@@ -1,4 +1,5 @@
 export { ActionSheet } from "./ActionSheet";
+export { AnimatedDialog, AnimatedDropdown, AnimatedSideSheet } from "./AnimatedOverlays";
 export { AgitListItem } from "./AgitListItem";
 export { AgitSearchBar } from "./AgitSearchBar";
 export { AzitListRow } from "./AzitListRow";
@@ -34,7 +35,7 @@ export { FeedActionRail } from "./FeedActionRail";
 export { FeedTopBar } from "./FeedTopBar";
 export { FormField } from "./FormField";
 export { LinkButton } from "./LinkButton";
-export { MyPageMenuItem } from "./MyPageMenuItem";
+export { NotificationIconToggle } from "./NotificationIconToggle";
 export { PageHeader } from "./PageHeader";
 export { UploadProgress } from "./UploadProgress";
 export { DailyToggle } from "./DailyToggle";

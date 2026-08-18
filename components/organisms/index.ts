@@ -1,4 +1,4 @@
-export { AzitMenuDrawer } from "./AzitMenuDrawer";
+export { ChatMoreSheet } from "./ChatMoreSheet";
 export { MoveTopicSheet } from "./MoveTopicSheet";
 export { TopicCreateForm } from "./TopicCreateForm";
 export { TopicViewerSection } from "./TopicViewerSection";

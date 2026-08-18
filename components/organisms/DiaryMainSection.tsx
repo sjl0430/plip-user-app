@@ -9,7 +9,9 @@ export function DiaryMainSection() {
     <section className="flex flex-col gap-4 px-6 pb-8 pt-2" aria-label="다이어리 홈">
       <header className="dl-page-head">
         <div>
-          <h1 className="dl-page-head__title">안녕하세요, 지민님</h1>
+          <h1 className="m-0 text-[22px] font-bold leading-normal text-[var(--dl-color-text-primary)]">
+            안녕하세요, 지민님
+          </h1>
           <p className="dl-page-head__sub">오늘의 5초를 자유롭게 남겨보세요.</p>
         </div>
         <TextLink href={ROUTES.mypage.notifications} className="dl-icon-sq no-underline" aria-label="알림">
