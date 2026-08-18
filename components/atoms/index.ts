@@ -11,7 +11,14 @@ export { IconButton } from "./IconButton";
 export { InlineCode } from "./InlineCode";
 export { Input } from "./Input";
 export { Label } from "./Label";
-export { NavDiaryIcon, NavHomeIcon, NavMyPageIcon } from "./NavIcons";
+export {
+  NavAgitIcon,
+  NavCaptureIcon,
+  NavDiaryIcon,
+  NavHeartIcon,
+  NavHomeIcon,
+  NavMyPageIcon,
+} from "./NavIcons";
 export { CursorSpark } from "./CursorSpark";
 export { PageTitle } from "./PageTitle";
 export { PlipLogo } from "./PlipLogo";
