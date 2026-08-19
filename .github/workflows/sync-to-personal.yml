@@ -23,4 +23,4 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           git remote add target https://x-access-token:${TOKEN}@github.com/sjl0430/plip-user-app.git
-          git push target main:main --force
+          git push target develop:develop --force
