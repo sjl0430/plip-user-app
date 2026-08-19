@@ -3,7 +3,16 @@ import { DEFAULT_UPLOAD_CONTENT_TYPE } from "@/lib/video/constants";
 export async function requestCameraStream(
   facingMode: "user" | "environment" = "user",
 ): Promise<MediaStream> {
+  const portraitVideo: MediaTrackConstraints = {
+    facingMode,
+    width: { ideal: 1080 },
+    height: { ideal: 1920 },
+    aspectRatio: { ideal: 9 / 16 },
+  };
+
   const attempts: MediaStreamConstraints[] = [
+    { video: portraitVideo, audio: true },
+    { video: { facingMode, aspectRatio: { ideal: 9 / 16 } }, audio: true },
     { video: { facingMode }, audio: true },
     { video: true, audio: true },
   ];

@@ -3,12 +3,14 @@
 import { DailyIcon, SubmitButton, TextLink } from "@/components/atoms";
 import { AuthField } from "@/components/molecules";
 import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { CaptureVideoFrame } from "@/components/molecules/CaptureVideoFrame";
 import { DestinationToggle, type DestinationId } from "@/components/molecules/DestinationToggle";
 import { NoticeCard } from "@/components/molecules/NoticeCard";
 import { TopicChip } from "@/components/molecules/TopicChip";
+import { CaptureCameraStage } from "@/components/organisms/CaptureCameraStage";
 import { ROUTES } from "@/config/routes";
-import Image from "next/image";
-import { useState } from "react";
+import { useVideoRecorder } from "@/hooks/useVideoRecorder";
+import { useCallback, useState } from "react";
 
 const TOPICS = ["#7시_러닝_인증", "#아침_식단"] as const;
 
@@ -17,35 +19,67 @@ export function UploadWizard() {
   const [destination, setDestination] = useState<DestinationId>("agit");
   const [topic, setTopic] = useState<(typeof TOPICS)[number]>("#7시_러닝_인증");
 
+  const handleRecordingComplete = useCallback(() => {
+    setStep(2);
+  }, []);
+
+  const {
+    videoRef,
+    status,
+    error,
+    elapsedMs,
+    maxDurationMs,
+    previewUrl,
+    startRecording,
+    flipCamera,
+    discardRecording,
+  } = useVideoRecorder({
+    autoPrepare: true,
+    onRecordingComplete: handleRecordingComplete,
+  });
+
+  const handleRetake = () => {
+    void discardRecording();
+    setStep(1);
+  };
+
+  const handleBackToCapture = () => {
+    void discardRecording();
+    setStep(1);
+  };
+
   if (step === 1) {
     return (
-      <section className="dl-camera -mx-5 -mt-6" aria-label="카메라">
-        <Image src="/plip/figma/camera.png" alt="" fill className="object-cover" sizes="402px" />
-        <AuthTopBar title="" onBack={() => history.back()} />
-        <div className="absolute inset-x-6 bottom-8 flex items-center justify-between">
-          <button type="button" className="dl-icon-sq" aria-label="플래시">
-            <DailyIcon name="alert" size={20} />
-          </button>
-          <button type="button" className="dl-camera__shutter" aria-label="촬영" onClick={() => setStep(2)}>
-            <span className="dl-camera__shutter-inner" />
-          </button>
-          <button type="button" className="dl-icon-sq" aria-label="전환">
-            <DailyIcon name="camera" size={20} />
-          </button>
-        </div>
-      </section>
+      <CaptureCameraStage
+        videoRef={videoRef}
+        status={status}
+        error={error}
+        elapsedMs={elapsedMs}
+        maxDurationMs={maxDurationMs}
+        onBack={() => history.back()}
+        onStartRecording={() => void startRecording()}
+        onFlipCamera={() => void flipCamera()}
+      />
     );
   }
 
   if (step === 2) {
     return (
       <section className="flex w-full flex-col gap-3.5">
-        <AuthTopBar title="영상 확인" onBack={() => setStep(1)} />
-        <div className="relative h-[450px] overflow-hidden rounded-2xl">
-          <Image src="/plip/daily-loop/recent-video-1.png" alt="" fill className="object-cover" sizes="354px" />
-        </div>
+        <AuthTopBar title="영상 확인" onBack={handleBackToCapture} />
+        <CaptureVideoFrame variant="card">
+          <video
+            key={previewUrl ?? "preview-empty"}
+            ref={videoRef}
+            src={previewUrl ?? undefined}
+            className="h-full w-full object-contain"
+            autoPlay
+            playsInline
+            controls
+          />
+        </CaptureVideoFrame>
         <div className="grid grid-cols-2 gap-3">
-          <SubmitButton type="button" variant="outline" onClick={() => setStep(1)}>
+          <SubmitButton type="button" variant="outline" onClick={handleRetake}>
             다시 촬영
           </SubmitButton>
           <SubmitButton type="button" variant="brand" onClick={() => setStep(3)}>
