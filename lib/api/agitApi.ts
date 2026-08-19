@@ -1,8 +1,8 @@
 import { API_ENDPOINTS } from "@/config/api-endpoints";
 import { getActorUserHeaders } from "@/lib/api/actorHeaders";
-import { ApiError, apiFetch } from "@/lib/api/apiFetch";
-import { clearDevAccessToken } from "@/lib/api/devAccessToken";
+import { apiFetch } from "@/lib/api/apiFetch";
 import { getApiUrl } from "@/lib/api/env";
+import { withAuthRetry } from "@/lib/api/withAuthRetry";
 import type { ApiAgitDetail, ApiMyAgitItem } from "@/types/agit/api";
 
 export async function getMyAgits(): Promise<ApiMyAgitItem[]> {
@@ -23,16 +23,4 @@ export async function getAgit(agitUuid: string): Promise<ApiAgitDetail> {
       headers: await getActorUserHeaders(),
     }),
   );
-}
-
-async function withAuthRetry<T>(request: () => Promise<T>): Promise<T> {
-  try {
-    return await request();
-  } catch (error) {
-    if (!(error instanceof ApiError) || error.status !== 401) {
-      throw error;
-    }
-    clearDevAccessToken();
-    return request();
-  }
 }

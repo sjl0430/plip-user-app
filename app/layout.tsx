@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Geist_Mono, Gothic_A1, Inter, Manrope, Montserrat, Poppins, Geist } from "next/font/google";
+import { AuthSessionProvider } from "@/components/providers/AuthSessionProvider";
 import { AppRouteShell } from "@/components/templates/AppRouteShell";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -57,7 +58,9 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", poppins.variable, gothicA1.variable, montserrat.variable, manrope.variable, geistMono.variable, inter.variable, "font-sans", geist.variable)}
     >
       <body className="flex min-h-dvh flex-col">
-        <AppRouteShell>{children}</AppRouteShell>
+        <AuthSessionProvider>
+          <AppRouteShell>{children}</AppRouteShell>
+        </AuthSessionProvider>
       </body>
     </html>
   );
