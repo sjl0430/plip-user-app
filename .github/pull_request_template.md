@@ -42,3 +42,4 @@ Close #
 - [ ] 커밋 메시지 형식: `Type: 변경 요약`
 - [ ] base branch: **develop**
 - [ ] CI Test workflow 통과
+- [ ] @headdrop 승인
