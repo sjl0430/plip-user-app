@@ -13,3 +13,13 @@ export function getVideoApiBaseUrl(): string {
 export function getDevUserUuid(): string {
   return process.env.DEV_USER_UUID?.trim() || DEFAULT_DEV_USER_UUID;
 }
+
+export function getDevLoginEmail(): string | undefined {
+  const email = process.env.DEV_LOGIN_EMAIL?.trim();
+  return email || undefined;
+}
+
+export function getDevLoginPassword(): string | undefined {
+  const password = process.env.DEV_LOGIN_PASSWORD?.trim();
+  return password || undefined;
+}

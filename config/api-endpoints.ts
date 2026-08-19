@@ -1,6 +1,15 @@
+/** Gateway `/api/{serviceId}/**` + StripPrefix=2 */
+function gatewayPath(serviceId: string, servicePath: string): string {
+  const normalized = servicePath.startsWith("/") ? servicePath : `/${servicePath}`;
+  return `/api/${serviceId}${normalized}`;
+}
+
 export const API_ENDPOINTS = {
+  auth: {
+    loginLocal: gatewayPath("user", "/api/v1/auth/login/local"),
+  },
   agit: {
-    me: "/api/v1/agits/me",
+    me: gatewayPath("agit", "/api/v1/agits/me"),
   },
   video: {
     uploadUrl: "/api/videos/upload-url",
