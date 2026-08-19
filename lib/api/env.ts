@@ -1,4 +1,4 @@
-const DEFAULT_API_URL = "http://localhost:8080";
+const DEFAULT_API_URL = "http://localhost:8000";
 const DEFAULT_VIDEO_API_BASE_URL = "http://localhost:8085";
 const DEFAULT_DEV_USER_UUID = "00000000-0000-4000-8000-000000000001";
 
