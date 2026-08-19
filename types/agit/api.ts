@@ -2,3 +2,33 @@ export type ApiMyAgitItem = {
   agitUuid: string;
   agitName: string;
 };
+
+export type ApiAgitMemberRole = "HOST" | "GUEST";
+
+export type ApiAgitStatus = "ACTIVE" | "DELETED";
+
+export type ApiAgitDetailMember = {
+  userUuid: string;
+  nickname: string;
+  profileImagePath: string | null;
+  role: ApiAgitMemberRole;
+};
+
+export type ApiAgitDetailTopic = {
+  topicId: string;
+  startedAt: string | null;
+};
+
+export type ApiAgitDetail = {
+  agitUuid: string;
+  agitName: string;
+  description: string | null;
+  thumbnailPath: string | null;
+  status: ApiAgitStatus;
+  maximumCapacity: number;
+  currentMemberCount: number;
+  hostNickname: string;
+  myRole: ApiAgitMemberRole;
+  members: ApiAgitDetailMember[];
+  topics: ApiAgitDetailTopic[];
+};
