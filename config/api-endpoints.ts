@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
   },
   agit: {
     me: gatewayPath("agit", "/api/v1/agits/me"),
+    detail: (agitUuid: string) => gatewayPath("agit", `/api/v1/agits/${agitUuid}`),
   },
   video: {
     uploadUrl: "/api/videos/upload-url",

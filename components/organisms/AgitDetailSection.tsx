@@ -3,17 +3,28 @@
 import { DailyIcon, TextLink } from "@/components/atoms";
 import { AgitMenuDrawer } from "@/components/organisms/AgitMenuDrawer";
 import { TopicViewerSection } from "@/components/organisms/TopicViewerSection";
-import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
+import type { UiAgit } from "@/types/agit/ui";
 import { useState } from "react";
 
 type AgitDetailSectionProps = {
-  agitId: string;
+  agit: UiAgit | null;
+  error?: string;
 };
 
-export function AgitDetailSection({ agitId }: AgitDetailSectionProps) {
-  const agit = getAgitById(agitId);
+export function AgitDetailSection({ agit, error }: AgitDetailSectionProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  if (error) {
+    return (
+      <section className="px-6 py-8">
+        <p className="dl-subtitle">{error}</p>
+        <TextLink href={ROUTES.agit.root} className="dl-link">
+          목록으로
+        </TextLink>
+      </section>
+    );
+  }
 
   if (!agit) {
     return (
@@ -26,6 +37,14 @@ export function AgitDetailSection({ agitId }: AgitDetailSectionProps) {
     );
   }
 
+  const coverStyle = agit.thumbnailSrc
+    ? {
+        backgroundImage: `url(${agit.thumbnailSrc})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }
+    : { background: agit.coverGradient };
+
   return (
     <section aria-label="아지트 메인" className="relative flex flex-col gap-4 px-6 pb-8 pt-3">
       <header className="flex items-start justify-between gap-3">
@@ -37,8 +56,11 @@ export function AgitDetailSection({ agitId }: AgitDetailSectionProps) {
             {agit.name}
           </h1>
           <p className="mt-1 text-[12px] text-[var(--dl-color-text-secondary)]">
-            루틴 · {agit.memberCount}
-            {agit.maxMembers ? `/${agit.maxMembers}` : ""}명 · {agit.visibility === "private" ? "비공개" : "공개"}
+            {agit.memberCount}
+            {agit.maxMembers ? `/${agit.maxMembers}` : ""}명
+            {agit.visibility
+              ? ` · ${agit.visibility === "private" ? "비공개" : "공개"}`
+              : ""}
           </p>
         </div>
         <button type="button" className="dl-icon-sq" aria-label="아지트 메뉴" onClick={() => setMenuOpen(true)}>
@@ -46,11 +68,7 @@ export function AgitDetailSection({ agitId }: AgitDetailSectionProps) {
         </button>
       </header>
 
-      <div
-        className="h-[110px] overflow-hidden rounded-2xl"
-        style={{ background: agit.coverGradient }}
-        aria-hidden
-      />
+      <div className="h-[110px] overflow-hidden rounded-2xl" style={coverStyle} aria-hidden />
 
       <nav className="flex gap-2" aria-label="아지트 로컬 메뉴">
         {(
