@@ -1,32 +1,18 @@
 "use client";
 
-import { DailyIcon, Pill, TextLink } from "@/components/atoms";
-import { CalendarClipCard, CalendarDay, RoomNav } from "@/components/molecules";
+import { DailyIcon, TextLink } from "@/components/atoms";
 import {
-  CALENDAR_CLIPS,
-  CALENDAR_LEGEND,
-  CALENDAR_RECORDS,
-  CALENDAR_STATS,
-  CALENDAR_TOPICS,
-  type CalendarTopic,
-} from "@/config/calendar-mock";
+  getCompactCalendarDetail,
+  listCompactCalendarActiveDays,
+} from "@/config/compact-calendar-mock";
 import { ROUTES } from "@/config/routes";
 import { useMemo, useState } from "react";
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
-const WEEKDAY_NAMES = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
 
 type RecordCalendarProps = {
   agitId: string;
 };
-
-function pad(value: number) {
-  return String(value).padStart(2, "0");
-}
-
-function dateKey(year: number, month: number, day: number) {
-  return `${year}-${pad(month + 1)}-${pad(day)}`;
-}
 
 function monthCells(year: number, month: number) {
   const startPad = new Date(year, month, 1).getDay();
@@ -43,169 +29,99 @@ export function RecordCalendar({ agitId }: RecordCalendarProps) {
   const [year, setYear] = useState(2026);
   const [month, setMonth] = useState(7);
   const [selectedDay, setSelectedDay] = useState(14);
-  const [view, setView] = useState<"month" | "week">("month");
-  const [topic, setTopic] = useState<CalendarTopic>("전체");
-
   const cells = useMemo(() => monthCells(year, month), [year, month]);
-  const selectedKey = dateKey(year, month, selectedDay);
-  const selectedRecord = CALENDAR_RECORDS[selectedKey];
-  const selectedClips = (CALENDAR_CLIPS[selectedKey] ?? []).filter(
-    (clip) => topic === "전체" || clip.topic === topic,
-  );
-  const weekday = new Date(year, month, selectedDay).getDay();
-
-  const visibleCells = useMemo(() => {
-    if (view === "month") return cells;
-    const index = cells.findIndex((day) => day === selectedDay);
-    const start = index >= 0 ? index - (index % 7) : 0;
-    return cells.slice(start, start + 7);
-  }, [cells, selectedDay, view]);
+  const activeDays = useMemo(() => new Set(listCompactCalendarActiveDays(year, month)), [year, month]);
+  const selectedDetail = getCompactCalendarDetail(year, month, selectedDay);
 
   function shiftMonth(delta: number) {
     const next = new Date(year, month + delta, 1);
-    setYear(next.getFullYear());
-    setMonth(next.getMonth());
-    setSelectedDay(1);
-  }
+    const nextYear = next.getFullYear();
+    const nextMonth = next.getMonth();
+    const nextActive = listCompactCalendarActiveDays(nextYear, nextMonth);
 
-  function recordFor(day?: number) {
-    if (!day) return undefined;
-    const record = CALENDAR_RECORDS[dateKey(year, month, day)];
-    if (!record) return undefined;
-    if (topic !== "전체" && !record.topics[topic]) return undefined;
-    return record;
+    setYear(nextYear);
+    setMonth(nextMonth);
+    setSelectedDay(nextActive[0] ?? 1);
   }
 
   return (
-    <section className="flex w-full flex-col gap-3" aria-label="기록 캘린더">
-      <header className="dl-hub-head">
-        <div>
-          <h1 className="dl-hub-head__title">기록 캘린더</h1>
-          <p className="dl-hub-head__sub">활성 날짜를 누르면 해당 일자의 영상·내역으로 바로 이동합니다.</p>
-        </div>
-        <div className="dl-view-toggle" role="tablist" aria-label="보기">
-          <button
-            type="button"
-            className={`dl-view-toggle__item ${view === "month" ? "dl-view-toggle__item--active" : ""}`}
-            onClick={() => setView("month")}
-          >
-            월
-          </button>
-          <button
-            type="button"
-            className={`dl-view-toggle__item ${view === "week" ? "dl-view-toggle__item--active" : ""}`}
-            onClick={() => setView("week")}
-          >
-            주
-          </button>
+    <section className="dl-compact-cal px-[23px] pb-8 pt-3" aria-label="기록 캘린더">
+      <header className="dl-page-head">
+        <TextLink href={ROUTES.agit.detail(agitId)} className="dl-icon-sq no-underline" aria-label="뒤로">
+          <DailyIcon name="chevronLeft" size={20} />
+        </TextLink>
+        <div className="dl-page-head__copy">
+          <h1 className="dl-compact-cal__title">기록 캘린더</h1>
         </div>
       </header>
 
-      <div className="dl-summary">
-        <div className="dl-stat">
-          <p className="dl-summary__value">{CALENDAR_STATS.recordedDays}일</p>
-          <p className="dl-summary__label">기록한 날</p>
-        </div>
-        <div className="dl-stat">
-          <p className="dl-summary__value">{CALENDAR_STATS.monthVideos}개</p>
-          <p className="dl-summary__label">이번 달 영상</p>
-        </div>
-        <div className="dl-stat">
-          <p className="dl-summary__value">{CALENDAR_STATS.streak}일</p>
-          <p className="dl-summary__label">연속 기록</p>
-        </div>
+      <div className="dl-compact-cal__nav">
+        <button type="button" className="dl-icon-sq" aria-label="이전 달" onClick={() => shiftMonth(-1)}>
+          <DailyIcon name="chevronLeft" size={20} />
+        </button>
+        <p className="dl-compact-cal__month">
+          {year}년 {month + 1}월
+        </p>
+        <button type="button" className="dl-icon-sq" aria-label="다음 달" onClick={() => shiftMonth(1)}>
+          <DailyIcon name="chevronRight" size={20} />
+        </button>
       </div>
 
-      <div className="dl-pills">
-        {CALENDAR_TOPICS.map((item) => (
-          <Pill
-            key={item}
-            selected={topic === item}
-            className="dl-pill--compact"
-            onClick={() => setTopic(item)}
+      <div className="dl-compact-cal__weekdays">
+        {WEEKDAYS.map((label, index) => (
+          <span
+            key={label}
+            className={index === 0 ? "dl-compact-cal__weekday dl-compact-cal__weekday--sun" : "dl-compact-cal__weekday"}
           >
-            {item}
-          </Pill>
+            {label}
+          </span>
         ))}
       </div>
 
-      <div className="dl-cal">
-        <div className="dl-cal__nav">
-          <button type="button" className="dl-cal__nav-btn" aria-label="이전 달" onClick={() => shiftMonth(-1)}>
-            <DailyIcon name="chevronLeft" size={20} />
-          </button>
-          <p className="dl-cal__month">
-            {year}년 {month + 1}월
-          </p>
-          <button type="button" className="dl-cal__nav-btn" aria-label="다음 달" onClick={() => shiftMonth(1)}>
-            <DailyIcon name="chevronRight" size={20} />
-          </button>
-        </div>
-        <div className="dl-cal__weekdays">
-          {WEEKDAYS.map((label) => (
-            <p key={label} className="dl-cal__weekday">
-              {label}
-            </p>
-          ))}
-        </div>
-        <div className="dl-cal__grid">
-          {visibleCells.map((day, index) => {
-            const record = recordFor(day);
-            return (
-              <CalendarDay
-                key={`${year}-${month}-${day ?? `empty-${index}`}`}
-                day={day}
-                count={record?.count}
-                selected={day === selectedDay}
-                onSelect={setSelectedDay}
-              />
-            );
-          })}
-        </div>
-        <div className="dl-cal__legend">
-          {CALENDAR_LEGEND.map((item) => (
-            <span key={item.label} className="dl-cal__legend-item">
-              <span className="dl-cal__legend-dot">
-                <img src={item.src} alt="" width={7} height={7} />
-              </span>
-              {item.label}
-            </span>
-          ))}
-        </div>
+      <div className="dl-compact-cal__grid">
+        {cells.map((day, index) => {
+          if (!day) return <span key={`empty-${index}`} className="dl-compact-cal__cell" aria-hidden />;
+
+          const available = activeDays.has(day);
+          const selected = day === selectedDay;
+
+          return (
+            <button
+              key={day}
+              type="button"
+              className={`dl-compact-cal__cell ${available ? "dl-compact-cal__cell--available" : "dl-compact-cal__cell--empty"} ${selected ? "dl-compact-cal__cell--selected" : ""}`}
+              disabled={!available}
+              aria-pressed={selected}
+              onClick={() => available && setSelectedDay(day)}
+            >
+              {day}
+              {available ? <span className="dl-compact-cal__dot" aria-hidden /> : null}
+            </button>
+          );
+        })}
       </div>
 
-      <article className="dl-date-card">
-        <div className="dl-section-row">
-          <div>
-            <p className="m-0 text-[14px] font-semibold leading-[19px] text-[var(--dl-color-text-primary)]">
-              {month + 1}월 {selectedDay}일 · {WEEKDAY_NAMES[weekday]}
+      {selectedDetail ? (
+        <>
+          <div className="dl-compact-cal__detail">
+            <p className="dl-compact-cal__detail-title">
+              {month + 1}월 {selectedDay}일 · 영상 {selectedDetail.videoCount}개
             </p>
-            <p className="m-0 text-[10px] leading-[14px] text-[var(--dl-color-text-secondary)]">
-              {selectedRecord
-                ? Object.entries(selectedRecord.topics)
-                    .map(([name, count]) => `${name} ${count}`)
-                    .join(" · ")
-                : "기록이 없는 날이에요"}
-            </p>
+            <p className="dl-compact-cal__detail-tags">{selectedDetail.tags.join("   ")}</p>
+            <p className="dl-compact-cal__detail-body">{selectedDetail.summary}</p>
           </div>
-          <TextLink
-            href={ROUTES.diary.date(selectedKey)}
-            className="dl-section-row__link no-underline"
-          >
-            {selectedRecord ? `${selectedRecord.count}개 영상` : "영상 보기"}
-            <DailyIcon name="chevronRight" size={16} />
-          </TextLink>
-        </div>
-        {selectedClips.length > 0 ? (
-          <div className="dl-clip-row">
-            {selectedClips.map((clip) => (
-              <CalendarClipCard key={clip.id} clip={clip} />
-            ))}
-          </div>
-        ) : null}
-      </article>
 
-      <RoomNav agitId={agitId} active="calendar" />
+          <TextLink href={ROUTES.agit.detail(agitId)} className="dl-compact-cal__link no-underline">
+            <span className="dl-compact-cal__link-icon" aria-hidden />
+            <span>
+              <span className="dl-compact-cal__link-title">오늘의 영상 보기</span>
+              <span className="dl-compact-cal__link-sub">태그와 리액션 확인</span>
+            </span>
+          </TextLink>
+        </>
+      ) : null}
+
+      <p className="dl-compact-cal__hint">활성 날짜를 누르면 해당 일자의 영상·내역으로 바로 이동합니다.</p>
     </section>
   );
 }

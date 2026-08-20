@@ -1,9 +1,9 @@
 import { AgitListTemplate } from "@/components/templates";
 import { listMyAgits } from "@/services/agitService";
-import type { UiMyAgit } from "@/types/agit/ui";
+import type { UiAgit } from "@/types/agit/ui";
 
 export default async function AgitListPage() {
-  let items: UiMyAgit[] = [];
+  let items: UiAgit[] = [];
   let error: string | undefined;
 
   try {

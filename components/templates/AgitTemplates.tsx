@@ -9,13 +9,13 @@ import { AppChromeTemplate } from "@/components/templates/AppChromeTemplate";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
-import type { UiAgit, UiMyAgit } from "@/types/agit/ui";
+import type { UiAgit } from "@/types/agit/ui";
 
 export function AgitListTemplate({
   items,
   error,
 }: {
-  items: UiMyAgit[];
+  items: UiAgit[];
   error?: string;
 }) {
   return (
@@ -45,6 +45,7 @@ export {
   InvitesSafetyTemplate as AgitSafetyTemplate,
   MembersPermissionsTemplate as AgitMembersTemplate,
   RoomManageHubTemplate as AgitManageTemplate,
+  TopicCreateTemplate as AgitTopicCreateTemplate,
   TopicsLayoutTemplate as AgitTopicsTemplate,
 } from "./RoomManageTemplates";
 
@@ -61,9 +62,9 @@ export function AgitChatTemplate({ agitId }: { agitId: string }) {
   }
 
   return (
-    <DailyLoopAuthTemplate>
+    <AppChromeTemplate activeTab="agit" variant="light">
       <AgitChatSection agitId={agitId} />
-    </DailyLoopAuthTemplate>
+    </AppChromeTemplate>
   );
 }
 

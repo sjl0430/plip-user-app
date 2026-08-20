@@ -1,36 +1,24 @@
 "use client";
 
-import { logoutAction } from "@/actions/authActions";
 import { SubmitButton, TextLink } from "@/components/atoms";
-import { DailyToggle } from "@/components/molecules/DailyToggle";
+import { NotificationIconToggle } from "@/components/molecules/NotificationIconToggle";
 import { SettingsRow } from "@/components/molecules/SettingsRow";
 import { ROUTES } from "@/config/routes";
-import { signOut } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function ProfileHubSection() {
-  const router = useRouter();
   const [notify, setNotify] = useState(true);
-  const [loggingOut, setLoggingOut] = useState(false);
-
-  async function handleLogout() {
-    setLoggingOut(true);
-    await logoutAction();
-    await signOut({ redirect: false });
-    router.push(ROUTES.login);
-    router.refresh();
-  }
 
   return (
-    <section className="flex w-full flex-col gap-3.5">
-      <h1 className="dl-page-head__title">설정</h1>
-      <TextLink href={ROUTES.mypage.profile} className="dl-profile-card no-underline">
-        <div className="dl-avatar size-16 overflow-hidden rounded-full">
-          <Image src="/plip/daily-loop/profile-hub.png" alt="" width={64} height={64} />
+    <section className="flex w-full flex-col gap-3.5" aria-label="설정">
+      <h1 className="dl-settings-head m-0">설정</h1>
+
+      <TextLink href={ROUTES.mypage.profile} className="dl-settings-profile no-underline">
+        <div className="dl-settings-profile__avatar">
+          <Image src="/plip/v13/profile-avatar.svg" alt="" width={64} height={64} />
         </div>
-        <p className="m-0 text-[16px] font-semibold leading-5 text-[var(--dl-color-text-primary)]">
+        <p className="dl-settings-profile__name">
           안지민
           <br />
           기본 프로필 관리
@@ -40,7 +28,9 @@ export function ProfileHubSection() {
       <SettingsRow
         title="알림 설정"
         description="채팅과 업로드 알림을 따로 관리"
-        trailing={<DailyToggle checked={notify} label="알림" onChange={setNotify} />}
+        trailing={
+          <NotificationIconToggle checked={notify} label="알림" onChange={setNotify} />
+        }
         showChevron={false}
       />
       <SettingsRow href={ROUTES.shop.points} title="포인트" description="보유 1,240 P" />
@@ -48,10 +38,10 @@ export function ProfileHubSection() {
       <SettingsRow href={ROUTES.shop.myItems} title="내 다운로드" description="저장한 내 영상 관리" />
       <SettingsRow href={ROUTES.mypage.settings} title="도움말·약관" description="신고·개인정보·서비스 정책" />
 
-      <SubmitButton type="button" variant="outline" disabled={loggingOut} onClick={handleLogout}>
+      <SubmitButton variant="outline" className="w-full">
         로그아웃
       </SubmitButton>
-      <TextLink href={ROUTES.mypage.settings} className="text-center text-[12px] text-[var(--dl-color-text-tertiary)]">
+      <TextLink href={ROUTES.mypage.settings} className="dl-settings-delete">
         계정 삭제
       </TextLink>
     </section>
