@@ -5638,11 +5638,6 @@ button.plip-bottom-nav__item {
   box-shadow: 0 8px 24px rgba(23, 23, 28, 0.04);
 }
 
-.dl-azit-card--active {
-  border-color: rgba(123, 92, 250, 0.28);
-  background: linear-gradient(180deg, rgba(247, 244, 255, 0.72), rgba(255, 255, 255, 1));
-}
-
 .dl-azit-card__main {
   display: flex;
   min-width: 0;
@@ -5668,30 +5663,9 @@ button.plip-bottom-nav__item {
   object-fit: cover;
 }
 
-.dl-azit-card__cover-badge {
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  min-width: 18px;
-  padding: 2px 5px;
-  border-radius: 999px;
-  background: rgba(23, 23, 28, 0.72);
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: #fff;
-  text-align: center;
-}
-
 .dl-azit-card__body {
   min-width: 0;
   flex: 1;
-}
-
-.dl-azit-card__title-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .dl-azit-card__name {
@@ -5705,16 +5679,6 @@ button.plip-bottom-nav__item {
   white-space: nowrap;
 }
 
-.dl-azit-card__visibility {
-  flex-shrink: 0;
-  padding: 3px 7px;
-  border-radius: 999px;
-  background: var(--dl-color-bg-surface);
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--dl-color-text-secondary);
-}
-
 .dl-azit-card__topic {
   margin: 4px 0 0;
   overflow: hidden;
@@ -5725,26 +5689,10 @@ button.plip-bottom-nav__item {
   white-space: nowrap;
 }
 
-.dl-azit-card__meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-  margin-top: 6px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--dl-color-text-secondary);
-}
-
-.dl-azit-card__meta--hot {
-  color: var(--dl-color-text-brand);
-  font-weight: 600;
-}
-
 .dl-azit-card__actions {
   display: flex;
   flex-shrink: 0;
-  flex-direction: column;
+  flex-direction: row;
   gap: 8px;
 }
 
@@ -6867,6 +6815,36 @@ button.plip-bottom-nav__item {
   font-size: 14px;
   font-weight: 600;
   text-decoration: none !important;
+}
+
+.dl-drawer__invite-row {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #e3e0ed;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.dl-drawer__invite-body {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 14px;
+}
+
+.dl-drawer__invite-code {
+  margin: 0;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #262433;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* v1.4 · Compact Calendar */

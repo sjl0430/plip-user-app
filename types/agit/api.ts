@@ -29,6 +29,7 @@ export type ApiAgitDetail = {
   currentMemberCount: number;
   hostNickname: string;
   myRole: ApiAgitMemberRole;
+  code?: string;
   members: ApiAgitDetailMember[];
   topics: ApiAgitDetailTopic[];
 };

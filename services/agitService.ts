@@ -27,6 +27,7 @@ function mapAgitDetail(item: ApiAgitDetail): UiAgit {
     maxMembers: item.maximumCapacity,
     ownerName: item.hostNickname,
     thumbnailSrc: item.thumbnailPath ?? undefined,
+    inviteCode: item.code,
     joined: true,
   };
 }
@@ -52,6 +53,7 @@ function mapCreatedAgit(item: ApiCreateAgitResponse): UiAgit {
     maxMembers: item.maximumCapacity,
     ownerName: item.nickname,
     thumbnailSrc: item.thumbnailPath ?? undefined,
+    inviteCode: item.code,
     joined: true,
   };
 }
