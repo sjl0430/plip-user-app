@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>로그인 · 회원가입 프로세스 — plip-user-app</title>
+  <style>
+    :root {
+      --bg: #f6f6f4;
+      --surface: #fff;
+      --text: #1b1b18;
+      --muted: #5c5c56;
+      --stroke: #d8d6cf;
+      --accent: #1f6feb;
+      --accent-bg: #e8f1fc;
+      --ok: #0f6b3a;
+      --ok-bg: #e5f6ec;
+      --warn: #8a5a00;
+      --warn-bg: #fff4d6;
+      --danger: #b42318;
+      --danger-bg: #fdecea;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 14px/1.5 system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    main { max-width: 980px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { font-size: 24px; font-weight: 650; margin: 0 0 8px; }
+    h2 { font-size: 18px; margin: 0 0 8px; }
+    h3 { font-size: 15px; margin: 20px 0 8px; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+    .tabs button {
+      border: 1px solid var(--stroke);
+      background: var(--surface);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .tabs button[aria-selected="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat, .card, .callout {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .stat strong { display: block; font-size: 16px; margin-bottom: 4px; }
+    .stat span, .stat-label { color: var(--muted); font-size: 12px; }
+    .stat.warn { background: var(--warn-bg); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--stroke); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    .callout { margin: 16px 0; }
+    .callout.warn { background: var(--warn-bg); border-color: #e6d08a; }
+    .callout.danger { background: var(--danger-bg); border-color: #f0b8b3; }
+    .callout strong { display: block; margin-bottom: 6px; }
+    .flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 20px 0; }
+    .node {
+      width: 220px;
+      min-height: 52px;
+      border: 1px solid var(--stroke);
+      border-radius: 6px;
+      background: var(--surface);
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .node small { display: block; color: var(--muted); font-size: 11px; }
+    .node.accent { background: var(--accent-bg); border-color: var(--accent); }
+    .node.ok { background: var(--ok-bg); border-color: var(--ok); }
+    .node.warn { background: var(--warn-bg); border-color: #c9a227; }
+    .node.danger { background: var(--danger-bg); border-color: var(--danger); }
+    .arrow { color: var(--muted); height: 20px; line-height: 20px; }
+    .branch { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+    code {
+      font: 12px/1.4 ui-monospace, monospace;
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .paths { margin-top: 24px; }
+    .path-row { display: flex; gap: 10px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
+    @media (max-width: 800px) {
+      .stats, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>로그인 · 회원가입 프로세스</h1>
+    <p class="muted">plip-user-app 코드와 user-service OpenAPI 기준. Source: auth.ts, LoginForm, SignUpForm, api-endpoints.ts, plip-user docs/openapi.yaml</p>
+
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" aria-selected="true" data-tab="overview">한눈에</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="local-login">로컬 로그인</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="local-signup">로컬 가입</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="social">소셜 로그인</button>
+    </div>
+
+    <section id="overview" class="panel active">
+      <div class="stats">
+        <div class="stat"><strong>NextAuth v5</strong><span>프론트 세션</span></div>
+        <div class="stat"><strong>/api/user + /api/v1</strong><span>Gateway 경로</span></div>
+        <div class="stat"><strong>8000</strong><span>Develop PC Gateway</span></div>
+        <div class="stat warn"><strong>K3s Ingress</strong><span>운영 예정</span></div>
+      </div>
+      <div class="callout warn">
+        <strong>지금 쓰는 게이트웨이</strong>
+        API_URL은 Develop PC Spring Cloud Gateway (192.168.10.144:8000)입니다.
+        운영 K3s에서는 Ingress가 Gateway를 대체할 예정이며, 경로 규칙은 인프라 매니페스트가 공개되면 다시 맞춰야 합니다.
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>액터</h3>
+          <table>
+            <thead><tr><th>구분</th><th>역할</th></tr></thead>
+            <tbody>
+              <tr><td>브라우저 /login · /signup</td><td>폼 · OAuth 시작</td></tr>
+              <tr><td>NextAuth /api/auth/*</td><td>Google/Kakao/Naver 토큰 교환</td></tr>
+              <tr><td>Gateway :8000</td><td>/api/{service} 라우팅</td></tr>
+              <tr><td>plip-user</td><td>로컬/소셜 로그인 · JWT 발급</td></tr>
+              <tr><td>JWT 세션</td><td>access/refresh를 NextAuth JWT에 저장</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>백엔드 계약</h3>
+          <table>
+            <thead><tr><th>상태</th><th>의미</th><th>앱 동작</th></tr></thead>
+            <tbody>
+              <tr><td>200</td><td>기존 회원 JWT</td><td>/home</td></tr>
+              <tr><td>401 SOCIAL_002</td><td>소셜 토큰 검증 실패</td><td>로그인 에러</td></tr>
+              <tr><td>401 (빈 본문)</td><td>Gateway 경로 불일치</td><td>social_backend</td></tr>
+              <tr><td>422 SOCIAL_003</td><td>신규 소셜 · 약관 필요</td><td>/signup/social-terms</td></tr>
+              <tr><td>AUTH_010</td><td>탈퇴 복구 대기</td><td>복구 다이얼로그</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="local-login" class="panel">
+      <h2>로컬 로그인</h2>
+      <p class="muted">LoginForm이 NextAuth credentials를 호출하고, authorize()가 user-service POST /api/v1/auth/login/local 을 Gateway 경유(/api/user/...)로 칩니다.</p>
+      <div class="flow">
+        <div class="node">로그인 폼<small>email + password</small></div>
+        <div class="arrow">↓</div>
+        <div class="node">signIn(credentials)<small>redirect: false</small></div>
+        <div class="arrow">↓</div>
+        <div class="node">authorize()<small>auth.ts</small></div>
+        <div class="arrow">↓</div>
+        <div class="node accent">login/local<small>/api/user/api/v1/...</small></div>
+        <div class="arrow">↓</div>
+        <div class="branch">
+          <div class="node ok">JWT 세션<small>access · refresh → /home</small></div>
+          <div class="node danger">이메일/비밀번호 오류</div>
+          <div class="node warn">복구 다이얼로그<small>AUTH_010</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="local-signup" class="panel">
+      <h2>로컬 회원가입</h2>
+      <p class="muted">SignUpForm은 3단계 UI입니다. 1·2단계는 화면만 있고, 약관 후 /signup/profile 로 이동합니다. OTP·signup/local API 호출은 아직 폼에 연결되지 않았습니다.</p>
+      <div class="grid-3">
+        <div class="card"><h3>1 이메일 · 비밀번호</h3><p>이메일, 비밀번호, 비밀번호 확인 후 다음.</p></div>
+        <div class="card"><h3>2 OTP 화면</h3><p>6자리 코드 입력 UI. otp-request / otp-verify는 미연결.</p></div>
+        <div class="card"><h3>3 약관 → 프로필</h3><p>필수 약관 동의 후 /signup/profile. signup/local 미연결.</p></div>
+      </div>
+      <div class="flow">
+        <div class="node">1. 이메일·비밀번호</div>
+        <div class="arrow">↓</div>
+        <div class="node">2. OTP 입력<small>UI only</small></div>
+        <div class="arrow">↓</div>
+        <div class="node">3. 약관 동의</div>
+        <div class="arrow">↓</div>
+        <div class="branch">
+          <div class="node accent">/signup/profile</div>
+          <div class="node warn">signup/local<small>엔드포인트만 정의</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="social" class="panel">
+      <h2>소셜 로그인 (NextAuth)</h2>
+      <p class="muted">OAuth는 NextAuth가 처리합니다. 콜백의 signIn에서 provider access_token을 user-service 소셜 로그인으로 넘깁니다.</p>
+      <div class="flow">
+        <div class="node">소셜 버튼<small>google / kakao / naver</small></div>
+        <div class="arrow">↓</div>
+        <div class="node">제공자 동의<small>NextAuth OAuth</small></div>
+        <div class="arrow">↓</div>
+        <div class="node accent">/api/auth/callback</div>
+        <div class="arrow">↓</div>
+        <div class="node">account.access_token</div>
+        <div class="arrow">↓</div>
+        <div class="node">Gateway<small>/api/user/api/v1/auth/login/social/{p}</small></div>
+        <div class="arrow">↓</div>
+        <div class="branch">
+          <div class="node ok">기존 회원 200<small>JWT → /home</small></div>
+          <div class="node warn">신규 422<small>SOCIAL_003 → /signup/social-terms</small></div>
+          <div class="node danger">401<small>경로 오류 또는 SOCIAL_002</small></div>
+        </div>
+      </div>
+      <div class="callout danger">
+        <strong>최근 401의 실제 원인</strong>
+        Google/Kakao 콜백(302)은 성공했습니다. 앱이 Gateway 없이 /api/v1/auth/login/social/google 을 쳐 빈 401이 났습니다.
+        올바른 전체 경로는 /api/user/api/v1/auth/login/social/{provider} 입니다.
+      </div>
+      <h3>소셜 신규 가입 갭</h3>
+      <p>422 시 provider만 쿼리로 넘기고 accessToken은 버려집니다. SocialSignupTermsTemplate는 안내 문구만 있고 termsAgreements를 다시 보내지 않습니다.</p>
+    </section>
+
+    <div class="card paths">
+      <h3>호출 경로</h3>
+      <div class="path-row"><strong>로컬 로그인</strong><code>POST /api/user/api/v1/auth/login/local</code></div>
+      <div class="path-row"><strong>소셜 로그인</strong><code>POST /api/user/api/v1/auth/login/social/{provider}</code></div>
+      <div class="path-row"><strong>로컬 가입</strong><code>POST /api/user/api/v1/auth/signup/local</code></div>
+    </div>
+  </main>
+  <script>
+    const tabs = document.querySelectorAll("[data-tab]");
+    const panels = document.querySelectorAll(".panel");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const id = tab.getAttribute("data-tab");
+        tabs.forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+        panels.forEach((p) => p.classList.toggle("active", p.id === id));
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,16 +1,22 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
+import type { Account, Session, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import type { Provider } from "next-auth/providers";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import Kakao from "next-auth/providers/kakao";
+import type { NextRequest } from "next/server";
 import authConfig from "@/auth.config";
 import { ApiError } from "@/lib/api/apiFetch";
 import { AUTH_ERROR_CODES, getApiErrorCode } from "@/lib/auth/auth-errors";
 import * as authService from "@/services/authService";
-import type { JWT } from "next-auth/jwt";
 
 class PendingRestoreError extends CredentialsSignin {
   code = AUTH_ERROR_CODES.PENDING_RESTORE;
+}
+
+function logLoginAccessToken(source: string, accessToken: string | undefined) {
+  console.log(`[auth] ${source} accessToken`, accessToken);
 }
 
 const KakaoProvider = Kakao({
@@ -103,6 +109,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         try {
           const result = await authService.loginLocal({ email, password });
+          logLoginAccessToken("local", result.accessToken);
           return {
             id: result.userUuid,
             userUuid: result.userUuid,
@@ -123,9 +130,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    authorized({ auth: session, request }) {
+    authorized({ auth: session, request }: { auth: Session | null; request: NextRequest }) {
       const pathname = request.nextUrl.pathname;
-      const isLoggedIn = !!session?.user;
+      const isLoggedIn = session?.isLoggedIn === true;
 
       if (matchesPrefix(pathname, GUEST_ONLY_PREFIXES) && isLoggedIn) {
         return Response.redirect(new URL("/home", request.nextUrl));
@@ -137,7 +144,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return true;
     },
-    async signIn({ account, user }) {
+    async signIn({ account, user }: { account?: Account | null; user: User }) {
       if (account?.provider === "credentials") {
         return !!user?.accessToken;
       }
@@ -150,6 +157,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       try {
         const result = await authService.loginSocial(provider, providerAccessToken);
+        logLoginAccessToken(provider, result.accessToken);
         user.id = result.userUuid;
         user.userUuid = result.userUuid;
         user.accessToken = result.accessToken;
@@ -177,7 +185,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return `/login?error=social_backend&provider=${provider}`;
       }
     },
-    async jwt({ token, user, trigger, session }) {
+    async jwt({
+      token,
+      user,
+      trigger,
+      session,
+    }: {
+      token: JWT;
+      user?: User;
+      trigger?: "signIn" | "signUp" | "update";
+      session?: Session;
+    }) {
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -205,11 +223,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return refreshAccessToken(token);
     },
-    session({ session, token }) {
-      if (typeof token.userUuid === "string") {
-        session.user.id = token.userUuid;
-      }
-      return session;
+    session({ session, token }: { session: Session; token: JWT }): Session {
+      const accessToken =
+        typeof token.accessToken === "string" && token.accessToken.length > 0
+          ? token.accessToken
+          : undefined;
+      const refreshToken =
+        typeof token.refreshToken === "string" && token.refreshToken.length > 0
+          ? token.refreshToken
+          : undefined;
+
+      return {
+        expires: session.expires,
+        isLoggedIn: Boolean(accessToken),
+        accessToken,
+        refreshToken,
+      };
     },
   },
 });

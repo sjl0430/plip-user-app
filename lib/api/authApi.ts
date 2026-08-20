@@ -30,6 +30,7 @@ export async function postLoginLocal(body: ApiLocalLoginRequest): Promise<ApiLoc
     method: "POST",
     baseUrl: getApiUrl(),
     body,
+    auth: false,
   });
 }
 
@@ -41,6 +42,7 @@ export async function postLoginSocial(
     method: "POST",
     baseUrl: getApiUrl(),
     body,
+    auth: false,
   });
 }
 
@@ -49,6 +51,7 @@ export async function postReissue(body: ApiTokenReissueRequest): Promise<ApiToke
     method: "POST",
     baseUrl: getApiUrl(),
     body,
+    auth: false,
   });
 }
 

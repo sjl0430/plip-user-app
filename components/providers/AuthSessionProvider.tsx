@@ -1,12 +1,22 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
+
+type AuthStatus = {
+  isLoggedIn: boolean;
+};
+
+const AuthStatusContext = createContext<AuthStatus>({ isLoggedIn: false });
 
 type AuthSessionProviderProps = {
+  isLoggedIn: boolean;
   children: ReactNode;
 };
 
-export function AuthSessionProvider({ children }: AuthSessionProviderProps) {
-  return <SessionProvider>{children}</SessionProvider>;
+export function AuthSessionProvider({ isLoggedIn, children }: AuthSessionProviderProps) {
+  return <AuthStatusContext.Provider value={{ isLoggedIn }}>{children}</AuthStatusContext.Provider>;
+}
+
+export function useAuthStatus(): AuthStatus {
+  return useContext(AuthStatusContext);
 }

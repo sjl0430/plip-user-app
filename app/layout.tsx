@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Geist_Mono, Gothic_A1, Inter, Manrope, Montserrat, Poppins, Geist } from "next/font/google";
+import { auth } from "@/auth";
 import { AuthSessionProvider } from "@/components/providers/AuthSessionProvider";
 import { AppRouteShell } from "@/components/templates/AppRouteShell";
 import "./globals.css";
@@ -47,18 +48,20 @@ export const metadata: Metadata = {
   description: "PLIP — Personal Clip",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html
       lang="ko"
       className={cn("h-full", "antialiased", poppins.variable, gothicA1.variable, montserrat.variable, manrope.variable, geistMono.variable, inter.variable, "font-sans", geist.variable)}
     >
       <body className="flex min-h-dvh flex-col">
-        <AuthSessionProvider>
+        <AuthSessionProvider isLoggedIn={session?.isLoggedIn === true}>
           <AppRouteShell>{children}</AppRouteShell>
         </AuthSessionProvider>
       </body>
