@@ -40,6 +40,7 @@ async function requestDevAccessToken(email: string, password: string): Promise<s
       method: "POST",
       baseUrl: getApiUrl(),
       body: { email, password },
+      auth: false,
     });
     const token = data.accessToken?.trim();
     cachedAccessToken = token || undefined;
