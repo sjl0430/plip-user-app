@@ -32,3 +32,25 @@ export type ApiAgitDetail = {
   members: ApiAgitDetailMember[];
   topics: ApiAgitDetailTopic[];
 };
+
+export type ApiCreateAgitRequest = {
+  agitName: string;
+  description?: string;
+  maximumCapacity: number;
+  thumbnailPath?: string;
+  nickname: string;
+  profileImagePath?: string;
+};
+
+export type ApiCreateAgitResponse = {
+  agitUuid: string;
+  agitName: string;
+  description: string | null;
+  maximumCapacity: number;
+  code: string;
+  thumbnailPath: string | null;
+  ampId: number;
+  nickname: string;
+  profileImagePath: string | null;
+  role: ApiAgitMemberRole;
+};

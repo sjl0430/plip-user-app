@@ -24,6 +24,7 @@ export const API_ENDPOINTS = {
     restore: gatewayPath("user", "/api/v1/users/me/restore"),
   },
   agit: {
+    create: gatewayPath("agit", "/api/v1/agits"),
     me: gatewayPath("agit", "/api/v1/agits/me"),
     detail: (agitUuid: string) => gatewayPath("agit", `/api/v1/agits/${agitUuid}`),
   },

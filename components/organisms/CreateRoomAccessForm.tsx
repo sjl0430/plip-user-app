@@ -1,19 +1,63 @@
 "use client";
 
+import { createAgitAction } from "@/actions/agitActions";
 import { SubmitButton } from "@/components/atoms";
+import { AuthField } from "@/components/molecules";
 import { AgreementRow } from "@/components/molecules/AgreementRow";
+import { CREATE_ROOM_DRAFT_KEY, readCreateRoomDraft } from "@/lib/agit/createRoomDraft";
 import { ROUTES } from "@/config/routes";
+import {
+  AGIT_NICKNAME_MAX_LENGTH,
+  AGIT_NICKNAME_MIN_LENGTH,
+} from "@/types/agit/schema";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function CreateRoomAccessForm() {
   const router = useRouter();
   const [agreed, setAgreed] = useState(true);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit() {
-    if (!agreed) return;
-    router.push(ROUTES.agit.joined("azit-walk"));
+  useEffect(() => {
+    if (!readCreateRoomDraft()) {
+      router.replace(ROUTES.agit.create);
+    }
+  }, [router]);
+
+  async function handleSubmit(formData: FormData) {
+    if (!agreed || pending) {
+      return;
+    }
+
+    const draft = readCreateRoomDraft();
+    if (!draft) {
+      router.replace(ROUTES.agit.create);
+      return;
+    }
+
+    setError(null);
+    setPending(true);
+
+    const result = await createAgitAction({
+      agitName: draft.title,
+      description: draft.intro,
+      maximumCapacity: draft.capacity,
+      nickname: String(formData.get("nickname") ?? ""),
+      thumbnailPath: draft.thumbnailPath,
+    });
+
+    setPending(false);
+
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+
+    sessionStorage.removeItem(CREATE_ROOM_DRAFT_KEY);
+    router.push(ROUTES.agit.joined(result.data.id));
+    router.refresh();
   }
 
   return (
@@ -26,12 +70,24 @@ export function CreateRoomAccessForm() {
         </div>
         <div className="min-w-0 flex-1">
           <p className="dl-notice-card__title">프로필 사진</p>
-          <p className="dl-notice-card__body">안지민</p>
+          <p className="dl-notice-card__body">아지트에서 사용할 프로필</p>
         </div>
         <button type="button" className="dl-profile-card__action">
           사진 변경
         </button>
       </div>
+
+      <AuthField
+        id="room-nickname"
+        name="nickname"
+        label="닉네임"
+        hint={`영문·숫자·한글 ${AGIT_NICKNAME_MIN_LENGTH}~${AGIT_NICKNAME_MAX_LENGTH}자`}
+        placeholder="보드왕"
+        maxLength={AGIT_NICKNAME_MAX_LENGTH}
+        pattern="[0-9A-Za-z가-힣]{2,12}"
+        title="영문·숫자·한글 2~12자, 특수문자와 공백 불가"
+        required
+      />
 
       <AgreementRow
         id="create-guide"
@@ -42,9 +98,11 @@ export function CreateRoomAccessForm() {
         onChange={setAgreed}
       />
 
+      {error ? <p className="m-0 text-[12px] text-red-600">{error}</p> : null}
+
       <div className="dl-actions">
-        <SubmitButton variant="brand" disabled={!agreed}>
-          아지트 만들기
+        <SubmitButton variant="brand" disabled={!agreed || pending}>
+          {pending ? "만드는 중..." : "아지트 만들기"}
         </SubmitButton>
       </div>
     </form>

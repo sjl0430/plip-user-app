@@ -12,6 +12,8 @@ type AuthFieldProps = {
   required?: boolean;
   defaultValue?: string;
   maxLength?: number;
+  pattern?: string;
+  title?: string;
 };
 
 export function AuthField({
@@ -25,6 +27,8 @@ export function AuthField({
   required,
   defaultValue,
   maxLength,
+  pattern,
+  title,
 }: AuthFieldProps) {
   return (
     <div className="dl-field">
@@ -40,6 +44,8 @@ export function AuthField({
         required={required}
         defaultValue={defaultValue}
         maxLength={maxLength}
+        pattern={pattern}
+        title={title}
         variant="daily"
       />
       {hint ? <p className="dl-hint">{hint}</p> : null}

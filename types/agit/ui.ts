@@ -5,6 +5,22 @@ export type UiMyAgit = {
   name: string;
 };
 
+export type UiCreateAgitDraft = {
+  title: string;
+  intro: string;
+  capacity: number;
+  thumbnailPath?: string;
+};
+
+export type UiCreateAgitInput = {
+  agitName: string;
+  description?: string;
+  maximumCapacity: number;
+  nickname: string;
+  thumbnailPath?: string;
+  profileImagePath?: string;
+};
+
 export type UiAgit = {
   id: string;
   name: string;
