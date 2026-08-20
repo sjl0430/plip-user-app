@@ -1,14 +1,27 @@
 "use client";
 
+import { logoutAction } from "@/actions/authActions";
 import { SubmitButton, TextLink } from "@/components/atoms";
 import { DailyToggle } from "@/components/molecules/DailyToggle";
 import { SettingsRow } from "@/components/molecules/SettingsRow";
 import { ROUTES } from "@/config/routes";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function ProfileHubSection() {
+  const router = useRouter();
   const [notify, setNotify] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  async function handleLogout() {
+    setLoggingOut(true);
+    await logoutAction();
+    await signOut({ redirect: false });
+    router.push(ROUTES.login);
+    router.refresh();
+  }
 
   return (
     <section className="flex w-full flex-col gap-3.5">
@@ -35,7 +48,9 @@ export function ProfileHubSection() {
       <SettingsRow href={ROUTES.shop.myItems} title="내 다운로드" description="저장한 내 영상 관리" />
       <SettingsRow href={ROUTES.mypage.settings} title="도움말·약관" description="신고·개인정보·서비스 정책" />
 
-      <SubmitButton variant="outline">로그아웃</SubmitButton>
+      <SubmitButton type="button" variant="outline" disabled={loggingOut} onClick={handleLogout}>
+        로그아웃
+      </SubmitButton>
       <TextLink href={ROUTES.mypage.settings} className="text-center text-[12px] text-[var(--dl-color-text-tertiary)]">
         계정 삭제
       </TextLink>
