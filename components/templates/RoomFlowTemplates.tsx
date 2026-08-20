@@ -9,6 +9,7 @@ import { RoomProfileSelect } from "@/components/organisms/RoomProfileSelect";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
+import type { UiAgit } from "@/types/agit/ui";
 
 function RoomMissing({ backHref = ROUTES.agit.root }: { backHref?: string }) {
   return (
@@ -81,15 +82,33 @@ export function RoomProfileTemplate({ agitId }: { agitId: string }) {
   );
 }
 
-export function JoinCompleteTemplate({ agitId }: { agitId: string }) {
-  const agit = getAgitById(agitId);
-  if (!agit) return <RoomMissing />;
+export function JoinCompleteTemplate({
+  agit,
+  error,
+}: {
+  agit: UiAgit | null;
+  error?: string;
+}) {
+  if (error) {
+    return (
+      <DailyLoopAuthTemplate>
+        <p className="dl-subtitle">{error}</p>
+        <TextLink href={ROUTES.agit.root} className="dl-link">
+          목록으로
+        </TextLink>
+      </DailyLoopAuthTemplate>
+    );
+  }
+
+  if (!agit) {
+    return <RoomMissing />;
+  }
 
   return (
     <DailyLoopAuthTemplate>
       <p className="dl-eyebrow">R06 · JOIN COMPLETE</p>
       <div className="h-[42px]" />
-      <JoinCompleteSection agit={agit} />
+      <JoinCompleteSection agit={agit} profileName={agit.ownerName} />
     </DailyLoopAuthTemplate>
   );
 }

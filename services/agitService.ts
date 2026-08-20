@@ -1,6 +1,6 @@
 import * as agitApi from "@/lib/api/agitApi";
-import type { ApiAgitDetail, ApiMyAgitItem } from "@/types/agit/api";
-import type { UiAgit } from "@/types/agit/ui";
+import type { ApiAgitDetail, ApiCreateAgitRequest, ApiCreateAgitResponse, ApiMyAgitItem } from "@/types/agit/api";
+import type { UiAgit, UiCreateAgitInput } from "@/types/agit/ui";
 
 const DEFAULT_COVER_GRADIENT = "linear-gradient(104deg, #2e1f52 0%, #7a5cfa 100%)";
 
@@ -39,4 +39,32 @@ export async function listMyAgits(): Promise<UiAgit[]> {
 export async function getAgit(agitId: string): Promise<UiAgit> {
   const item = await agitApi.getAgit(agitId);
   return mapAgitDetail(item);
+}
+
+function mapCreatedAgit(item: ApiCreateAgitResponse): UiAgit {
+  return {
+    id: item.agitUuid,
+    name: item.agitName,
+    memberCount: 1,
+    description: item.description ?? "",
+    coverGradient: DEFAULT_COVER_GRADIENT,
+    topicCount: 0,
+    maxMembers: item.maximumCapacity,
+    ownerName: item.nickname,
+    thumbnailSrc: item.thumbnailPath ?? undefined,
+    joined: true,
+  };
+}
+
+export async function createAgit(input: UiCreateAgitInput): Promise<UiAgit> {
+  const body: ApiCreateAgitRequest = {
+    agitName: input.agitName,
+    maximumCapacity: input.maximumCapacity,
+    nickname: input.nickname,
+    ...(input.description ? { description: input.description } : {}),
+    ...(input.thumbnailPath ? { thumbnailPath: input.thumbnailPath } : {}),
+    ...(input.profileImagePath ? { profileImagePath: input.profileImagePath } : {}),
+  };
+  const created = await agitApi.createAgit(body);
+  return mapCreatedAgit(created);
 }
