@@ -1,5 +1,7 @@
+"use client";
+
 import { DailyIcon, SubmitButton, TextLink } from "@/components/atoms";
-import { NoticeCard } from "@/components/molecules/NoticeCard";
+import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import { ROUTES } from "@/config/routes";
 import type { UiAgit } from "@/types/agit/ui";
 
@@ -18,29 +20,48 @@ const MENU = [
 ];
 
 export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
-  if (!open) return null;
+  const { mounted, visible } = useOverlayTransition(open);
+
+  if (!mounted) return null;
 
   return (
     <>
-      <button type="button" className="dl-drawer-scrim" aria-label="메뉴 닫기" onClick={onClose} />
-      <aside className="dl-drawer" aria-label="아지트 메뉴">
-        <div className="flex items-center justify-between">
-          <h2 className="m-0 text-[22px] font-bold text-[var(--dl-color-text-primary)]">아지트 메뉴</h2>
+      <button
+        type="button"
+        className={`dl-drawer-scrim ${visible ? "dl-drawer-scrim--open" : ""}`}
+        aria-label="메뉴 닫기"
+        onClick={onClose}
+      />
+      <aside
+        className={`dl-drawer dl-drawer--v14 ${visible ? "dl-drawer--open" : ""}`}
+        aria-label="아지트 메뉴"
+        aria-hidden={!visible}
+      >
+        <div className="dl-drawer__header">
+          <h2 className="dl-drawer__title">아지트 메뉴</h2>
           <button type="button" className="dl-icon-sq" aria-label="닫기" onClick={onClose}>
             <DailyIcon name="x" size={20} />
           </button>
         </div>
-        <NoticeCard
-          title={agit.name}
-          body={`${agit.memberCount}${agit.maxMembers ? `/${agit.maxMembers}` : ""}명 · 방장 ${agit.ownerName ?? "안지민"}`}
-        />
+
+        <div className="dl-drawer__summary">
+          <p className="dl-drawer__summary-title">{agit.name}</p>
+          <p className="dl-drawer__summary-body">
+            {agit.memberCount}
+            {agit.maxMembers ? `/${agit.maxMembers}` : ""}명 · 방장 {agit.ownerName ?? "안지민"}
+          </p>
+        </div>
+
         {MENU.map((item) => (
-          <TextLink key={item.id} href={item.href(agit.id)} className="dl-drawer__row">
+          <TextLink key={item.id} href={item.href(agit.id)} className="dl-drawer__menu-row" onClick={onClose}>
             <DailyIcon name={item.icon} size={24} />
             {item.label}
           </TextLink>
         ))}
-        <SubmitButton variant="brand">초대 링크 복사</SubmitButton>
+
+        <SubmitButton variant="outline" className="w-full">
+          아지트 나가기
+        </SubmitButton>
       </aside>
     </>
   );
