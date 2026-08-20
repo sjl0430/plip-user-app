@@ -36,6 +36,7 @@ export type UiAgit = {
   videoCount?: number;
   topicSummary?: string;
   thumbnailSrc?: string;
+  inviteCode?: string;
   joined?: boolean;
   hasNewChat?: boolean;
   hasTodayTopic?: boolean;
