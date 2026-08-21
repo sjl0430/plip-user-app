@@ -64,16 +64,13 @@ export type ApiDiaryDateResponse = {
   sections: ApiDiaryDateSection[];
 };
 
-export type ApiDiaryTimelineDateGroup = {
-  writtenDate: string;
-  videoCount: number;
+export type ApiDiaryTimelineSection = {
+  date: string;
   videos: ApiDiaryVideoSummary[];
 };
 
 export type ApiDiaryTimelineResponse = {
-  themeId: string;
-  themeName: string;
-  dates: ApiDiaryTimelineDateGroup[];
+  sections: ApiDiaryTimelineSection[];
 };
 
 export type ApiDiaryTopicTransferRequest = {

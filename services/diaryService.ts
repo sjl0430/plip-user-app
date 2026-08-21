@@ -4,8 +4,7 @@ import type {
   ApiDiaryDateSection,
   ApiDiaryHomeSection,
   ApiDiaryTheme,
-  ApiDiaryTimelineDateGroup,
-  ApiDiaryTimelineResponse,
+  ApiDiaryTimelineSection,
   ApiDiaryVideoSummary,
 } from "@/types/diary/api";
 import type {
@@ -113,11 +112,11 @@ function mapDateThemeGroup(group: ApiDiaryDateSection, date: string): UiDiaryDat
   };
 }
 
-function mapTimelineDateGroup(group: ApiDiaryTimelineDateGroup, themeId: string): UiDiaryThemeDateGroup {
+function mapTimelineSection(section: ApiDiaryTimelineSection, themeId: string): UiDiaryThemeDateGroup {
   return {
-    date: group.writtenDate,
-    clipCount: group.videoCount,
-    clips: group.videos.map((video) => mapVideoSummary(video, themeId, group.writtenDate)),
+    date: section.date,
+    clipCount: section.videos.length,
+    clips: section.videos.map((video) => mapVideoSummary(video, themeId, section.date)),
   };
 }
 
@@ -126,10 +125,6 @@ function mapDateResponse(response: ApiDiaryDateResponse): UiDiaryDateGroup {
     date: response.date,
     themes: response.sections.map((group) => mapDateThemeGroup(group, response.date)),
   };
-}
-
-function mapTimelineResponse(response: ApiDiaryTimelineResponse): UiDiaryThemeDateGroup[] {
-  return response.dates.map((group) => mapTimelineDateGroup(group, response.themeId));
 }
 
 export async function listDiaryThemes(): Promise<UiDiaryTheme[]> {
@@ -176,13 +171,14 @@ export async function getDiaryThemeTimeline(themeId: string): Promise<{
   theme: UiDiaryTheme;
   dateGroups: UiDiaryThemeDateGroup[];
 }> {
-  const response = await diaryApi.getDiaryThemeTimeline(themeId);
+  const [theme, timeline] = await Promise.all([
+    diaryApi.getDiaryTheme(themeId).then(mapTheme),
+    diaryApi.getDiaryThemeTimeline(themeId),
+  ]);
+
   return {
-    theme: {
-      id: response.themeId,
-      name: response.themeName,
-    },
-    dateGroups: mapTimelineResponse(response),
+    theme,
+    dateGroups: timeline.sections.map((section) => mapTimelineSection(section, themeId)),
   };
 }
 
