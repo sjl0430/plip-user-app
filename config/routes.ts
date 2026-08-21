@@ -8,6 +8,7 @@ export const ROUTES = {
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
   create: "/create",
+  topicPreview: "/topic-preview",
   diary: {
     root: "/diary",
     date: (date: string) => `/diary/${date}` as const,

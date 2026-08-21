@@ -2,6 +2,7 @@ export { AgitMenuDrawer } from "./AgitMenuDrawer";
 export { ChatMoreSheet } from "./ChatMoreSheet";
 export { MoveTopicSheet } from "./MoveTopicSheet";
 export { TopicCreateForm } from "./TopicCreateForm";
+export { TopicGallerySection } from "./TopicGallerySection";
 export { TopicViewerSection } from "./TopicViewerSection";
 export { ViewerActionsSheet } from "./ViewerActionsSheet";
 export { WelcomeSection } from "./WelcomeSection";

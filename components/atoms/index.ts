@@ -32,5 +32,6 @@ export { SubmitButton } from "./SubmitButton";
 export { Switch } from "./Switch";
 export { Text } from "./Text";
 export { TextLink } from "./TextLink";
+export { UserAvatar } from "./UserAvatar";
 export { ThemeChip } from "./ThemeChip";
 export { VideoThumbnail } from "./VideoThumbnail";
