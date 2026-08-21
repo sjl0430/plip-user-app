@@ -1,9 +1,11 @@
+import { ui } from "@/components/atoms/styles";
+
 export function AuthDivider({ label = "또는" }: { label?: string }) {
   return (
-    <div className="dl-divider">
-      <span className="dl-divider__line" />
-      <span className="dl-divider__label">{label}</span>
-      <span className="dl-divider__line" />
+    <div className={ui.divider}>
+      <span className={ui.dividerLine} />
+      <span className={ui.dividerLabel}>{label}</span>
+      <span className={ui.dividerLine} />
     </div>
   );
 }

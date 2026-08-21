@@ -1,3 +1,4 @@
+import leftoverStyles from "@/components/styles/leftover.module.css";
 import { DailyIcon, Input } from "@/components/atoms";
 
 type PollChoiceRowProps = {
@@ -25,7 +26,7 @@ export function PollChoiceRow({
 }: PollChoiceRowProps) {
   return (
     <div
-      className="dl-choice"
+      className={`${leftoverStyles.dlChoice}`}
       draggable={draggable}
       onDragStart={onDragStart}
       onDragOver={(event) => {
@@ -36,7 +37,7 @@ export function PollChoiceRow({
       onDragEnd={onDragEnd}
     >
       {variant === "edit" ? (
-        <span className="dl-choice__icon" aria-hidden>
+        <span className={`${leftoverStyles.dlChoiceIcon}`} aria-hidden>
           <DailyIcon name="grip" size={18} />
         </span>
       ) : null}
@@ -50,7 +51,7 @@ export function PollChoiceRow({
       {variant === "create" ? (
         <button
           type="button"
-          className="dl-choice__icon"
+          className={`${leftoverStyles.dlChoiceIcon}`}
           aria-label="선택지 삭제"
           disabled={!onRemove}
           onClick={onRemove}
@@ -58,7 +59,7 @@ export function PollChoiceRow({
           <DailyIcon name="x" size={18} />
         </button>
       ) : (
-        <button type="button" className="dl-choice__delete" disabled={!onRemove} onClick={onRemove}>
+        <button type="button" className={`${leftoverStyles.dlChoiceDelete}`} disabled={!onRemove} onClick={onRemove}>
           삭제
         </button>
       )}

@@ -35,18 +35,18 @@ const TABS: {
 
 export function RoomNav({ agitId, active = "members" }: RoomNavProps) {
   return (
-    <nav className="dl-room-nav" aria-label="방 메뉴">
+    <nav className="flex w-full items-center justify-between [border-top:1px_solid_var(--dl-color-border-default)] bg-[var(--dl-color-bg-elevated)] p-[10px_12px]" aria-label="방 메뉴">
       {TABS.map((tab) => {
         const isActive = tab.id === active;
         return (
           <TextLink
             key={tab.id}
             href={tab.href(agitId)}
-            className={`dl-room-nav__item no-underline ${isActive ? "dl-room-nav__item--active" : ""}`}
+            className={`flex w-[84px] flex-col items-center justify-center gap-[4px] !no-underline no-underline ${isActive ? "dl-room-nav__item--active" : ""}`}
             aria-current={isActive ? "page" : undefined}
           >
             <DailyIcon name={isActive && tab.activeIcon ? tab.activeIcon : tab.icon} size={20} />
-            <p className="dl-room-nav__label">{tab.label}</p>
+            <p className="m-0 text-xs font-medium leading-[16px] text-[var(--dl-color-text-secondary)] text-[var(--dl-color-text-brand)]">{tab.label}</p>
           </TextLink>
         );
       })}

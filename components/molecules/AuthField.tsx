@@ -1,4 +1,5 @@
 import { Input, Label } from "@/components/atoms";
+import { ui } from "@/components/atoms/styles";
 import type { ComponentProps } from "react";
 
 type AuthFieldProps = {
@@ -31,8 +32,8 @@ export function AuthField({
   title,
 }: AuthFieldProps) {
   return (
-    <div className="dl-field">
-      <Label htmlFor={id} className="dl-field__label">
+    <div className={ui.field}>
+      <Label htmlFor={id} className={ui.fieldLabel}>
         {label}
       </Label>
       <Input
@@ -48,7 +49,7 @@ export function AuthField({
         title={title}
         variant="daily"
       />
-      {hint ? <p className="dl-hint">{hint}</p> : null}
+      {hint ? <p className={ui.hint}>{hint}</p> : null}
     </div>
   );
 }

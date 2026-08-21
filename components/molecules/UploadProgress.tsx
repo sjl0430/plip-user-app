@@ -6,12 +6,12 @@ type UploadProgressProps = {
 export function UploadProgress({ title, step }: UploadProgressProps) {
   return (
     <>
-      <div className="dl-upload-head">
-        <h1 className="dl-upload-head__title">{title}</h1>
-        <span className="dl-topbar__step">{step}/4</span>
+      <div className="flex w-full items-center justify-between">
+        <h1 className="m-0 text-[22px] font-semibold leading-[31px] text-[var(--dl-color-text-primary)]">{title}</h1>
+        <span className="ml-auto text-xs font-semibold leading-[17px] text-[var(--dl-color-text-brand)]">{step}/4</span>
       </div>
-      <div className="dl-progress" aria-hidden>
-        <div className="dl-progress__bar" style={{ width: `${(step / 4) * 100}%` }} />
+      <div className="w-full h-[4px] overflow-hidden rounded-[2px] bg-[var(--dl-color-bg-surface)]" aria-hidden>
+        <div className="h-full rounded-[2px] bg-[var(--dl-color-bg-brand)]" style={{ width: `${(step / 4) * 100}%` }} />
       </div>
     </>
   );

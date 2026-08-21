@@ -1,3 +1,4 @@
+import animStyles from "./CursorSpark.module.css";
 import type { CSSProperties } from "react";
 import { getCursorSparkShape } from "@/config/cursorSparkShapes";
 
@@ -23,7 +24,7 @@ export function CursorSpark({
 
   return (
     <span
-      className="cursor-lightning-spark"
+      className={`${animStyles.cursorLightningSpark}`}
       style={
         {
           "--spark-x": `${x}px`,
@@ -34,7 +35,7 @@ export function CursorSpark({
       }
     >
       <svg
-        className="cursor-lightning-spark__svg"
+        className="block w-full h-full [filter:drop-shadow(0_0_4px_rgba(160,_230,_255,_0.95))_drop-shadow(0_0_12px_rgba(80,_170,_255,_0.75))]"
         viewBox={shape.viewBox}
         aria-hidden="true"
         focusable="false"
@@ -54,7 +55,7 @@ export function CursorSpark({
         </defs>
         <path d={shape.path} fill={`url(#${gradientId})`} />
       </svg>
-      <span className="cursor-lightning-spark__flare" />
+      <span className={`${animStyles.cursorLightningSparkFlare}`} />
     </span>
   );
 }

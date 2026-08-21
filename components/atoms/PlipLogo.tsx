@@ -20,7 +20,7 @@ export function PlipLogo({
       alt="PLIP"
       width={width}
       height={height}
-      className={`plip-logo ${className}`.trim()}
+      className={`w-full h-auto ${className}`.trim()}
       priority={priority}
     />
   );

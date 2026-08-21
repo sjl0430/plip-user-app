@@ -1,4 +1,5 @@
 "use client";
+import animStyles from "./PlipLogoTagline.module.css";
 
 import { useEffect, useState } from "react";
 import {
@@ -80,7 +81,7 @@ export function PlipLogoTagline() {
   const showAll = !motionEnabled;
 
   return (
-    <g className="plip-logo__tagline" aria-label="PERSONAL CLIP">
+    <g aria-label="PERSONAL CLIP">
       {PLIP_TAGLINE_CHARS.map((d, index) => {
         const visible = showAll || index < visibleCount;
         const isTyping = phase === "typing" && index === visibleCount - 1;
@@ -90,10 +91,10 @@ export function PlipLogoTagline() {
           <g
             key={index}
             className={[
-              "plip-logo__tagline-char",
-              visible ? "is-visible" : "",
-              isTyping ? "is-typing" : "",
-              isErasing ? "is-erasing" : "",
+              animStyles.plipLogoTaglineChar,
+              visible ? animStyles.isVisible : "",
+              isTyping ? animStyles.isTyping : "",
+              isErasing ? animStyles.isErasing : "",
             ]
               .filter(Boolean)
               .join(" ")}

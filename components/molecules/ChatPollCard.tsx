@@ -25,10 +25,10 @@ export function ChatPollCard({
   onSelect,
 }: ChatPollCardProps) {
   return (
-    <article className="dl-poll-card">
+    <article className="flex w-full flex-col gap-[12px] border border-[var(--dl-color-border-default)] rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-surface)] p-[16px]">
       <div>
-        <p className="dl-poll-card__title">{question}</p>
-        <p className="dl-poll-card__meta">{meta}</p>
+        <p className="m-0 text-base font-semibold text-[var(--dl-color-text-primary)]">{question}</p>
+        <p className="m-[4px_0_0] text-xs text-[var(--dl-color-text-secondary)]">{meta}</p>
       </div>
       {options.map((option) => {
         const selected = option.id === selectedId;
@@ -36,16 +36,16 @@ export function ChatPollCard({
           <button
             key={option.id}
             type="button"
-            className={`dl-poll-option ${selected ? "dl-poll-option--selected" : ""}`}
+            className={`flex w-full items-center justify-between gap-[10px] min-h-[44px] border-0 rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-canvas)] p-[0_12px] text-left ${selected ? "border border-[var(--dl-color-border-brand)] bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)] m-dlPollOptionSelected" : ""}`}
             onClick={() => onSelect(option.id)}
           >
             <DailyIcon name={selected ? "circleDotBrand" : "circle"} size={16} />
-            <span className="dl-poll-option__label">{option.label}</span>
-            <span className="dl-poll-option__votes">{option.votes}표</span>
+            <span className="flex-1 text-sm font-semibold">{option.label}</span>
+            <span className="text-sm font-semibold text-[var(--dl-color-text-secondary)] text-[var(--dl-color-text-brand)]">{option.votes}표</span>
           </button>
         );
       })}
-      <TextLink href={ROUTES.agit.pollEdit(agitId)} className="dl-btn dl-btn--secondary no-underline">
+      <TextLink href={ROUTES.agit.pollEdit(agitId)} className="inline-flex h-[44px] w-full items-center justify-center gap-[8px] rounded-[var(--dl-radius-md)] p-[12px_20px] text-sm font-medium leading-5 !no-underline border-0 bg-[var(--dl-color-bg-brand-subtle)] border-0 bg-[var(--dl-color-bg-brand-subtle)] !text-[var(--dl-color-text-brand)] shadow-[none] [backdrop-filter:none] m-dlBtnSecondary no-underline">
         투표 수정
       </TextLink>
     </article>
