@@ -30,6 +30,11 @@ export const API_ENDPOINTS = {
     detail: (agitUuid: string) => gatewayPath("agit", `/api/v1/agits/${agitUuid}`),
     leave: (agitUuid: string) => gatewayPath("agit", `/api/v1/agits/${agitUuid}/leave`),
   },
+  topic: {
+    list: gatewayPath("topic", "/api/v1/topics"),
+    videos: (topicUuid: string) =>
+      gatewayPath("topic", `/api/v1/topics/${topicUuid}/videos`),
+  },
   diary: {
     themes: gatewayPath("diary", "/api/v1/diaries/themes"),
     themeDetail: (themeId: string) => gatewayPath("diary", `/api/v1/diaries/themes/${themeId}`),

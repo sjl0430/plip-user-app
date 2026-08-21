@@ -11,3 +11,15 @@ export type UiTopic = {
   id: string;
   videos: UiTopicVideo[];
 };
+
+export type UiTopicSummary = {
+  id: string;
+  title: string;
+  startAt: string;
+  isToday: boolean;
+};
+
+export type UiTopicGallery = {
+  topic: UiTopicSummary | null;
+  videos: UiTopicVideo[];
+};
