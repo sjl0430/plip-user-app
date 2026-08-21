@@ -55,6 +55,7 @@ export {
   ShopWishlistTemplate,
 } from "./ShopTemplates";
 export { SignUpTemplate } from "./SignUpTemplate";
+export { TopicPreviewTemplate } from "./TopicPreviewTemplate";
 export { ClipEditTemplate, ClipViewerTemplate } from "./ViewerTemplates";
 export { CaptureApiTemplate } from "./CaptureApiTemplate";
 export { CaptureVideoTemplate } from "./CaptureVideoTemplate";
