@@ -1,10 +1,17 @@
 import { DiaryMainSection } from "@/components/organisms";
 import { DiaryTemplate } from "@/components/templates/DiaryTemplate";
+import type { UiDiaryDateEntry, UiDiaryTheme } from "@/types/diary/ui";
 
-export function DiaryMainTemplate() {
+type DiaryMainTemplateProps = {
+  entries: UiDiaryDateEntry[];
+  themes: UiDiaryTheme[];
+  error?: string;
+};
+
+export function DiaryMainTemplate({ entries, themes, error }: DiaryMainTemplateProps) {
   return (
     <DiaryTemplate>
-      <DiaryMainSection />
+      <DiaryMainSection entries={entries} themes={themes} error={error} />
     </DiaryTemplate>
   );
 }

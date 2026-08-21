@@ -1,5 +1,19 @@
 import { DiaryMainTemplate } from "@/components/templates";
+import { getDiaryHomeFeed, listDiaryThemes } from "@/services/diaryService";
+import type { UiDiaryDateEntry, UiDiaryTheme } from "@/types/diary/ui";
 
-export default function DiaryPage() {
-  return <DiaryMainTemplate />;
+export default async function DiaryPage() {
+  let entries: UiDiaryDateEntry[] = [];
+  let themes: UiDiaryTheme[] = [];
+  let error: string | undefined;
+
+  try {
+    [entries, themes] = await Promise.all([getDiaryHomeFeed(), listDiaryThemes()]);
+  } catch (caught) {
+    entries = [];
+    themes = [];
+    error = caught instanceof Error ? caught.message : "다이어리 홈을 불러오지 못했습니다.";
+  }
+
+  return <DiaryMainTemplate entries={entries} themes={themes} error={error} />;
 }

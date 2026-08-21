@@ -2,7 +2,7 @@ import * as diaryApi from "@/lib/api/diaryApi";
 import type {
   ApiDiaryDateResponse,
   ApiDiaryDateThemeGroup,
-  ApiDiaryHomeItem,
+  ApiDiaryHomeSection,
   ApiDiaryTheme,
   ApiDiaryTimelineDateGroup,
   ApiDiaryTimelineResponse,
@@ -38,11 +38,21 @@ function mapVideoSummary(video: ApiDiaryVideoSummary, themeId: string, date: str
   };
 }
 
-function resolveRelativeLabel(date: string, today = new Date()): string | undefined {
+const HOME_FEED_MAX_DAYS = 3;
+
+function getTodayKstDateString(today = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(today);
+}
+
+function resolveRelativeLabel(date: string, todayDate = getTodayKstDateString()): string | undefined {
   const target = new Date(`${date}T12:00:00`);
-  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const targetStart = new Date(target.getFullYear(), target.getMonth(), target.getDate());
-  const diffDays = Math.round((todayStart.getTime() - targetStart.getTime()) / 86_400_000);
+  const todayStart = new Date(`${todayDate}T12:00:00`);
+  const diffDays = Math.round((todayStart.getTime() - target.getTime()) / 86_400_000);
 
   if (diffDays === 0) return "오늘";
   if (diffDays === 1) return "어제";
@@ -50,16 +60,44 @@ function resolveRelativeLabel(date: string, today = new Date()): string | undefi
   return undefined;
 }
 
-function mapHomeItem(item: ApiDiaryHomeItem): UiDiaryDateEntry {
-  const thumbnailPaths = item.thumbnailPaths
-    .map((path) => toOptionalThumbnail(path))
+function createEmptyHomeEntry(date: string): UiDiaryDateEntry {
+  return {
+    date,
+    relativeLabel: resolveRelativeLabel(date),
+    hasClips: false,
+    isEmpty: true,
+    thumbnailPaths: [],
+  };
+}
+
+function normalizeHomeFeed(entries: UiDiaryDateEntry[]): UiDiaryDateEntry[] {
+  const todayDate = getTodayKstDateString();
+  const byDate = new Map(entries.map((entry) => [entry.date, entry]));
+
+  if (!byDate.has(todayDate)) {
+    byDate.set(todayDate, createEmptyHomeEntry(todayDate));
+  }
+
+  const todayEntry = byDate.get(todayDate)!;
+  const otherEntries = [...byDate.values()]
+    .filter((entry) => entry.date !== todayDate)
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, HOME_FEED_MAX_DAYS - 1);
+
+  return [todayEntry, ...otherEntries].sort((a, b) => b.date.localeCompare(a.date));
+}
+
+function mapHomeSection(section: ApiDiaryHomeSection): UiDiaryDateEntry {
+  const thumbnailPaths = section.videos
+    .map((video) => toOptionalThumbnail(video.thumbnailUrl))
     .filter((path): path is string => Boolean(path));
+  const hasClips = section.videos.length > 0;
 
   return {
-    date: item.writtenDate,
-    relativeLabel: resolveRelativeLabel(item.writtenDate),
-    hasClips: item.hasVideos,
-    isEmpty: !item.hasVideos,
+    date: section.date,
+    relativeLabel: resolveRelativeLabel(section.date),
+    hasClips,
+    isEmpty: !hasClips,
     thumbnailPaths,
   };
 }
@@ -118,7 +156,8 @@ export async function deleteDiaryTheme(themeId: string): Promise<void> {
 
 export async function getDiaryHomeFeed(): Promise<UiDiaryDateEntry[]> {
   const response = await diaryApi.getDiaryHome();
-  return response.items.map(mapHomeItem);
+  const entries = response.sections.map(mapHomeSection);
+  return normalizeHomeFeed(entries);
 }
 
 export async function getDiaryCalendarDates(year: number, month: number): Promise<string[]> {

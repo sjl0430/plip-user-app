@@ -1,7 +1,6 @@
 "use client";
 
-import { TextLink } from "@/components/atoms";
-import { Button } from "@/components/ui/button";
+import { DailyIcon, TextLink } from "@/components/atoms";
 import type { ReactNode } from "react";
 
 type DiaryHeaderProps = {
@@ -21,15 +20,14 @@ export function DiaryHeader({
       <h1 className="text-[22px] font-bold tracking-tight text-[#161823]">{title}</h1>
       <div className="flex items-center gap-2">
         {trailing}
-        <Button
+        <button
           type="button"
-          variant="ghost"
-          size="sm"
-          className="h-auto px-2 text-[13px] font-semibold text-muted-foreground"
+          className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]"
+          aria-label="다이어리 메뉴"
           onClick={onMenuOpen}
         >
-          메뉴
-        </Button>
+          <DailyIcon name="ellipsis" size={20} />
+        </button>
       </div>
     </header>
   );
