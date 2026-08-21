@@ -1,7 +1,7 @@
 "use client";
-import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
+import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
 type ActionSheetProps = {
@@ -21,12 +21,18 @@ export function ActionSheet({ open, title, description, onClose, children }: Act
     <>
       <button
         type="button"
-        className={`fixed inset-0 z-[41] border-0 bg-[rgba(23,_23,_28,_0.4)] opacity-0 transition-[opacity_280ms_ease] motion-reduce:transition-[none] ${visible ? "opacity-100 m-dlSheetScrimOpen" : ""}`}
+        className={cn(
+          "fixed inset-0 z-[41] border-0 bg-[rgba(23,23,28,0.4)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
+          visible ? "opacity-100" : "opacity-0",
+        )}
         aria-label="닫기"
         onClick={onClose}
       />
       <div
-        className={`${leftoverStyles.dlSheet} ${visible ? "[transform:translateY(0)] m-dlSheetOpen" : ""}`}
+        className={cn(
+          "fixed inset-x-0 bottom-0 z-[42] flex max-h-[70dvh] flex-col gap-3 overflow-auto rounded-t-3xl bg-[var(--dl-color-bg-elevated)] px-6 pb-8 pt-6 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          visible ? "[transform:translateY(0)]" : "[transform:translateY(100%)]",
+        )}
         role="dialog"
         aria-modal
         aria-hidden={!visible}

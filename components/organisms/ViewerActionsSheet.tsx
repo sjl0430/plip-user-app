@@ -2,6 +2,7 @@
 
 import { DailyIcon } from "@/components/atoms";
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
+import { cn } from "@/lib/utils";
 
 type ViewerActionsSheetProps = {
   open: boolean;
@@ -42,12 +43,20 @@ export function ViewerActionsSheet({ open, onClose, onMoveTopic }: ViewerActions
     <>
       <button
         type="button"
-        className={`motion-reduce:transition-[none] fixed inset-0 z-[41] border-0 bg-[rgba(0,_0,_0,_0.32)] opacity-0 transition-[opacity_280ms_ease] ${visible ? "opacity-100 m-dlViewerScrimOpen" : ""}`}
+        className={cn(
+          "fixed inset-0 z-[41] border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
+          visible ? "opacity-100" : "opacity-0",
+        )}
         aria-label="닫기"
         onClick={onClose}
       />
       <div
-        className={`motion-reduce:transition-[none] fixed left-[50%] bottom-[96px] z-[42] flex w-[min(300px,_calc(100vw_-_48px))] flex-col gap-[8px] p-[12px] rounded-[20px] bg-[rgba(252,_251,_255,_0.98)] shadow-[0_8px_24px_rgba(0,_0,_0,_0.22)] opacity-0 [transform:translate(-50%,_12px)_scale(0.96)] transition-[opacity_280ms_ease,_transform_280ms_cubic-bezier(0.32,_0.72,_0,_1)] ${visible ? "opacity-100 [transform:translate(-50%,_0)_scale(1)] m-dlViewerActionsOpen" : ""}`}
+        className={cn(
+          "fixed bottom-[96px] left-1/2 z-[42] flex w-[min(300px,calc(100%-48px))] flex-col gap-2 rounded-[20px] bg-[rgba(252,251,255,0.98)] p-3 shadow-[0_8px_24px_rgba(0,0,0,0.22)] [transition:opacity_280ms_ease,transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          visible
+            ? "opacity-100 [transform:translate(-50%,0)_scale(1)]"
+            : "opacity-0 [transform:translate(-50%,12px)_scale(0.96)]",
+        )}
         role="dialog"
         aria-modal
         aria-label="더보기 메뉴"

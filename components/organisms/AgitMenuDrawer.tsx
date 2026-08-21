@@ -1,9 +1,9 @@
 "use client";
-import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { DailyIcon, SubmitButton, TextLink } from "@/components/atoms";
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import { ROUTES } from "@/config/routes";
+import { cn } from "@/lib/utils";
 import type { UiAgit } from "@/types/agit/ui";
 import { useState } from "react";
 
@@ -40,12 +40,18 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
     <>
       <button
         type="button"
-        className={`fixed inset-0 z-[40] border-0 bg-[rgba(0,_0,_0,_0.32)] opacity-0 pointer-events-none transition-[opacity_280ms_ease] motion-reduce:transition-[none] ${visible ? "opacity-100 pointer-events-auto m-dlDrawerScrimOpen" : ""}`}
+        className={cn(
+          "fixed inset-0 z-[40] border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
+          visible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+        )}
         aria-label="메뉴 닫기"
         onClick={onClose}
       />
       <aside
-        className={`${leftoverStyles.dlDrawer} bg-[#fbfaff] rounded-[24px_0_0_24px] m-dlDrawerV14 ${visible ? "[transform:translateX(0)] m-dlDrawerOpen" : ""}`}
+        className={cn(
+          "fixed top-0 right-0 z-[41] flex h-dvh w-[min(310px,86vw)] flex-col gap-2.5 rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-6 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          visible ? "[transform:translateX(0)]" : "[transform:translateX(100%)]",
+        )}
         aria-label="아지트 메뉴"
         aria-hidden={!visible}
       >
