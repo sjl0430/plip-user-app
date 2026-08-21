@@ -3,12 +3,13 @@
 import { Separator, TextLink } from "@/components/atoms";
 import { AnimatedSideSheet } from "@/components/molecules/AnimatedOverlays";
 import { DiaryMenuLink } from "@/components/organisms/DiaryHeader";
-import { DIARY_THEMES } from "@/config/diary-mock";
 import { ROUTES } from "@/config/routes";
+import type { UiDiaryTheme } from "@/types/diary/ui";
 
 type DiarySideMenuProps = {
   open: boolean;
   onClose: () => void;
+  themes: UiDiaryTheme[];
 };
 
 const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"] as const;
@@ -32,7 +33,7 @@ function buildAugust2026Days() {
   return cells;
 }
 
-export function DiarySideMenu({ open, onClose }: DiarySideMenuProps) {
+export function DiarySideMenu({ open, onClose, themes }: DiarySideMenuProps) {
   const cells = buildAugust2026Days();
 
   return (
@@ -49,7 +50,7 @@ export function DiarySideMenu({ open, onClose }: DiarySideMenuProps) {
 
       <p className="m-[0.15rem_0_0] text-[rgba(0,_0,_0,_0.4)] text-[0.72rem] font-extrabold tracking-[0.06em] uppercase">Themes</p>
       <div className="flex flex-col">
-        {DIARY_THEMES.map((theme) => (
+        {themes.map((theme) => (
           <DiaryMenuLink key={theme.id} href={ROUTES.diary.themes.detail(theme.id)}>
             {theme.name}
           </DiaryMenuLink>

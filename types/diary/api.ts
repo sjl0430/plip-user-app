@@ -1,16 +1,23 @@
 /** Diary Service REST DTO */
 
 export type ApiDiaryTheme = {
-  themeId: string;
-  themeName: string;
+  id: number;
+  themeUuid: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ApiDiaryThemesResponse = {
+  themes: ApiDiaryTheme[];
 };
 
 export type ApiCreateDiaryThemeRequest = {
-  themeName: string;
+  name: string;
 };
 
 export type ApiUpdateDiaryThemeNameRequest = {
-  themeName: string;
+  name: string;
 };
 
 export type ApiDiaryVideoSummary = {

@@ -9,6 +9,7 @@ import type {
   ApiDiaryDateResponse,
   ApiDiaryHomeResponse,
   ApiDiaryTheme,
+  ApiDiaryThemesResponse,
   ApiDiaryTimelineResponse,
   ApiDiaryTopicTransferRequest,
   ApiUpdateDiaryThemeNameRequest,
@@ -24,8 +25,8 @@ function diaryFetch<T>(path: string, options: Parameters<typeof apiFetch>[1] = {
   );
 }
 
-export async function getDiaryThemes(): Promise<ApiDiaryTheme[]> {
-  return diaryFetch<ApiDiaryTheme[]>(API_ENDPOINTS.diary.themes, { method: "GET" });
+export async function getDiaryThemes(): Promise<ApiDiaryThemesResponse> {
+  return diaryFetch<ApiDiaryThemesResponse>(API_ENDPOINTS.diary.themes, { method: "GET" });
 }
 
 export async function getDiaryTheme(themeId: string): Promise<ApiDiaryTheme> {

@@ -19,8 +19,9 @@ import type {
 
 function mapTheme(theme: ApiDiaryTheme): UiDiaryTheme {
   return {
-    id: theme.themeId,
-    name: theme.themeName,
+    // 단건 PATCH/DELETE 경로는 numeric id 사용 (themeUuid 아님)
+    id: String(theme.id),
+    name: theme.name,
   };
 }
 
@@ -92,8 +93,8 @@ function mapTimelineResponse(response: ApiDiaryTimelineResponse): UiDiaryThemeDa
 }
 
 export async function listDiaryThemes(): Promise<UiDiaryTheme[]> {
-  const themes = await diaryApi.getDiaryThemes();
-  return themes.map(mapTheme);
+  const response = await diaryApi.getDiaryThemes();
+  return response.themes.map(mapTheme);
 }
 
 export async function getDiaryTheme(themeId: string): Promise<UiDiaryTheme> {
@@ -102,12 +103,12 @@ export async function getDiaryTheme(themeId: string): Promise<UiDiaryTheme> {
 }
 
 export async function createDiaryTheme(themeName: string): Promise<UiDiaryTheme> {
-  const created = await diaryApi.createDiaryTheme({ themeName });
+  const created = await diaryApi.createDiaryTheme({ name: themeName });
   return mapTheme(created);
 }
 
 export async function updateDiaryThemeName(themeId: string, themeName: string): Promise<UiDiaryTheme> {
-  const updated = await diaryApi.updateDiaryThemeName(themeId, { themeName });
+  const updated = await diaryApi.updateDiaryThemeName(themeId, { name: themeName });
   return mapTheme(updated);
 }
 
