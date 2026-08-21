@@ -18,11 +18,24 @@ type AgitMenuDrawerProps = {
 };
 
 const MENU = [
-  { id: "chat", label: "채팅", icon: "message" as const, href: (id: string) => ROUTES.agit.chat(id) },
-  { id: "members", label: "멤버리스트", icon: "users" as const, href: (id: string) => ROUTES.agit.members(id) },
-  { id: "profile", label: "내프로필관리", href: (id: string) => ROUTES.agit.profile(id) },
-  { id: "manage", label: "아지트관리", href: (id: string) => ROUTES.agit.manage(id) },
+  { id: "chat" as const, label: "채팅", href: (id: string) => ROUTES.agit.chat(id) },
+  { id: "members" as const, label: "멤버리스트", href: (id: string) => ROUTES.agit.members(id) },
+  { id: "profile" as const, label: "내프로필관리", href: (id: string) => ROUTES.agit.profile(id) },
+  { id: "manage" as const, label: "아지트관리", href: (id: string) => ROUTES.agit.manage(id) },
 ];
+
+function MenuItemIcon({ id }: { id: (typeof MENU)[number]["id"] }) {
+  if (id === "chat") {
+    return <DailyIcon name="message" size={24} />;
+  }
+  if (id === "members") {
+    return <DailyIcon name="users" size={24} />;
+  }
+  if (id === "profile") {
+    return <UserRoundCog className="size-6 shrink-0 text-[#262433]" strokeWidth={2} />;
+  }
+  return <Settings className="size-6 shrink-0 text-[#262433]" strokeWidth={2} />;
+}
 
 export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
   const { mounted, visible } = useOverlayTransition(open);
@@ -114,13 +127,7 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
 
           {MENU.map((item) => (
             <TextLink key={item.id} href={item.href(agit.id)} className="flex min-h-[52px] items-center gap-[14px] p-[12px_14px] border border-[#e3e0ed] rounded-[14px] bg-[#fff] !text-[#262433] text-sm font-semibold !no-underline" onClick={onClose}>
-              {"icon" in item ? (
-                <DailyIcon name={item.icon} size={24} />
-              ) : item.id === "profile" ? (
-                <UserRoundCog className="size-6 shrink-0 text-[#262433]" strokeWidth={2} />
-              ) : (
-                <Settings className="size-6 shrink-0 text-[#262433]" strokeWidth={2} />
-              )}
+              <MenuItemIcon id={item.id} />
               {item.label}
             </TextLink>
           ))}
