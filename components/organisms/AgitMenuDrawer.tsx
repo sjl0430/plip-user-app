@@ -5,9 +5,11 @@ import { DailyIcon, Separator, TextLink } from "@/components/atoms";
 import { AGIT_TOPICS } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
+import { toast } from "@/components/ui/toast";
+import { copyText } from "@/lib/copyText";
 import { cn } from "@/lib/utils";
 import type { UiAgit } from "@/types/agit/ui";
-import { Copy, Link2, LogOut, Settings, UserRoundCog } from "lucide-react";
+import { Check, Copy, Link2, LogOut, Settings, UserRoundCog } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -42,30 +44,32 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [leaving, setLeaving] = useState(false);
-  const [leaveError, setLeaveError] = useState<string | null>(null);
   const inviteCode = agit.inviteCode?.trim() ?? "";
 
   async function copyInviteCode() {
     if (!inviteCode) return;
-    try {
-      await navigator.clipboard.writeText(inviteCode);
-      setCopied(true);
-    } catch {
-      setCopied(false);
-    }
+    const ok = await copyText(inviteCode);
+    setCopied(ok);
   }
 
   async function handleLeave() {
     if (leaving) return;
     setLeaving(true);
-    setLeaveError(null);
     const result = await leaveAgitAction(agit.id);
     if (!result.ok) {
-      setLeaveError(result.error);
+      toast.add({
+        type: "error",
+        title: "아지트를 나가지 못했습니다",
+        description: result.error,
+      });
       setLeaving(false);
       return;
     }
     onClose();
+    toast.add({
+      type: "success",
+      title: "아지트에서 나갔습니다",
+    });
     router.push(ROUTES.agit.root);
   }
 
@@ -110,7 +114,11 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
               {inviteCode || "초대코드"}
             </p>
           </div>
-          <Copy className="size-3.5 shrink-0 text-[var(--dl-color-text-brand)]" strokeWidth={2} aria-hidden />
+          {copied ? (
+            <Check className="size-3.5 shrink-0 text-[var(--dl-color-text-brand)]" strokeWidth={2} aria-hidden />
+          ) : (
+            <Copy className="size-3.5 shrink-0 text-[var(--dl-color-text-brand)]" strokeWidth={2} aria-hidden />
+          )}
           <span className="sr-only">{copied ? "복사됨" : "복사"}</span>
         </button>
 
@@ -134,7 +142,6 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
         </div>
 
         <div className="flex shrink-0 flex-col items-end gap-2">
-          {leaveError ? <p className="m-0 w-full text-right text-xs text-[var(--dl-color-text-danger)]">{leaveError}</p> : null}
           <button
             type="button"
             className="grid w-[44px] h-[44px] place-items-center rounded-[var(--dl-radius-md)] border border-[#e3e0ed] bg-[#fff] cursor-pointer disabled:opacity-50"
