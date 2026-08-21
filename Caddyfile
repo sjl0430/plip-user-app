@@ -1,0 +1,54 @@
+# 로컬 개발 전용. 배포(Vercel)에서는 사용하지 않습니다.
+# 게이트웨이 path /api/{serviceId}/** → 서비스에서 /api/{serviceId} 제거 (StripPrefix=2)
+
+:8000 {
+	# user
+	handle_path /api/user/* {
+		reverse_proxy localhost:8080
+	}
+
+	# diary 다이어리
+	handle_path /api/diary/* {
+		reverse_proxy localhost:8081
+	}
+
+	# chat 채팅
+	handle_path /api/chat/* {
+		reverse_proxy localhost:8082
+	}
+
+	# agit 아지트
+	handle_path /api/agit/* {
+		reverse_proxy localhost:8083
+	}
+
+	# topic 토픽
+	handle_path /api/topic/* {
+		reverse_proxy localhost:8084
+	}
+
+	# video — 현재 프론트는 prefix 없이 /api/videos 로 직행
+	handle /api/videos/* {
+		reverse_proxy localhost:8085
+	}
+
+	# video — 게이트웨이형 /api/video/**
+	handle_path /api/video/* {
+		reverse_proxy localhost:8085
+	}
+
+	# point 포인트
+	handle_path /api/point/* {
+		reverse_proxy localhost:8086
+	}
+
+	# shop 가게
+	handle_path /api/shop/* {
+		reverse_proxy localhost:8087
+	}
+
+	# backoffice 백오피스
+	handle_path /api/backoffice/* {
+		reverse_proxy localhost:8088
+	}
+}
