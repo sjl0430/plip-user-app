@@ -10,6 +10,7 @@ import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTempl
 import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import type { UiAgit } from "@/types/agit/ui";
+import type { UiTopicGallery } from "@/types/topic/ui";
 
 export function AgitListTemplate({
   items,
@@ -27,14 +28,18 @@ export function AgitListTemplate({
 
 export function AgitDetailTemplate({
   agit,
+  gallery,
   error,
+  galleryError,
 }: {
   agit: UiAgit | null;
+  gallery: UiTopicGallery;
   error?: string;
+  galleryError?: string;
 }) {
   return (
     <AppChromeTemplate activeTab="agit" variant="light">
-      <AgitDetailSection agit={agit} error={error} />
+      <AgitDetailSection agit={agit} gallery={gallery} error={error} galleryError={galleryError} />
     </AppChromeTemplate>
   );
 }
