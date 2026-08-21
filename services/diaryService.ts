@@ -24,16 +24,32 @@ function mapTheme(theme: ApiDiaryTheme): UiDiaryTheme {
   };
 }
 
-function toOptionalThumbnail(path: string | null): string | undefined {
-  return path?.trim() ? path : undefined;
+function toOptionalThumbnail(path: string | null | undefined): string | undefined {
+  return path?.trim() ? path.trim() : undefined;
 }
 
-function mapVideoSummary(video: ApiDiaryVideoSummary, themeId: string, date: string): UiDiaryClip {
+function mapVideoSummary(
+  video: ApiDiaryVideoSummary,
+  themeId: string,
+  date: string,
+  index: number,
+): UiDiaryClip {
+  const legacyVideo = video as ApiDiaryVideoSummary & {
+    diaryVideoId?: string | number;
+    thumbnailPath?: string | null;
+  };
+  const clipId =
+    legacyVideo.id != null
+      ? String(legacyVideo.id)
+      : legacyVideo.diaryVideoId != null
+        ? String(legacyVideo.diaryVideoId)
+        : legacyVideo.videoUuid ?? `${themeId}-${date}-${index}`;
+
   return {
-    id: String(video.id),
+    id: clipId,
     themeId,
     date,
-    thumbnailSrc: toOptionalThumbnail(video.thumbnailUrl),
+    thumbnailSrc: toOptionalThumbnail(legacyVideo.thumbnailUrl ?? legacyVideo.thumbnailPath),
   };
 }
 
@@ -103,27 +119,45 @@ function mapHomeSection(section: ApiDiaryHomeSection): UiDiaryDateEntry {
 
 function mapDateThemeGroup(group: ApiDiaryDateSection, date: string): UiDiaryDateThemeGroup {
   const themeId = String(group.themeId);
+  const legacyGroup = group as ApiDiaryDateSection & {
+    diaryVideos?: ApiDiaryVideoSummary[];
+  };
+  const videos = Array.isArray(group.videos)
+    ? group.videos
+    : Array.isArray(legacyGroup.diaryVideos)
+      ? legacyGroup.diaryVideos
+      : [];
 
   return {
     themeId,
     themeName: group.themeName,
-    clipCount: group.videos.length,
-    clips: group.videos.map((video) => mapVideoSummary(video, themeId, date)),
+    clipCount: videos.length,
+    clips: videos.map((video, index) => mapVideoSummary(video, themeId, date, index)),
   };
 }
 
 function mapTimelineSection(section: ApiDiaryTimelineSection, themeId: string): UiDiaryThemeDateGroup {
+  const videos = Array.isArray(section.videos) ? section.videos : [];
+
   return {
     date: section.date,
-    clipCount: section.videos.length,
-    clips: section.videos.map((video) => mapVideoSummary(video, themeId, section.date)),
+    clipCount: videos.length,
+    clips: videos.map((video, index) => mapVideoSummary(video, themeId, section.date, index)),
   };
 }
 
-function mapDateResponse(response: ApiDiaryDateResponse): UiDiaryDateGroup {
+function mapDateResponse(
+  response: ApiDiaryDateResponse & {
+    themes?: ApiDiaryDateSection[];
+    writtenDate?: string;
+  },
+): UiDiaryDateGroup {
+  const date = response.date ?? response.writtenDate ?? "";
+  const sections = response.sections ?? response.themes ?? [];
+
   return {
-    date: response.date,
-    themes: response.sections.map((group) => mapDateThemeGroup(group, response.date)),
+    date,
+    themes: sections.map((group) => mapDateThemeGroup(group, date)),
   };
 }
 

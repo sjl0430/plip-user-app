@@ -1,5 +1,8 @@
-import { IconButton } from "@/components/atoms";
+"use client";
+
+import { DailyIcon, IconButton, TextLink } from "@/components/atoms";
 import { DiaryThemeClipGroup } from "@/components/molecules";
+import { ROUTES } from "@/config/routes";
 import type { UiDiaryThemeDateGroup } from "@/types/diary/ui";
 
 type DiaryThemeDetailSectionProps = {
@@ -16,7 +19,17 @@ export function DiaryThemeDetailSection({
 }: DiaryThemeDetailSectionProps) {
   return (
     <div className="flex flex-col gap-[1.15rem] p-[0.9rem_1rem_1.75rem]">
-      <h2 className="m-0 text-center text-[1rem] font-extrabold text-[#111]">{themeName}</h2>
+      <header className="grid grid-cols-[44px_1fr_44px] items-center gap-[10px]">
+        <TextLink
+          href={ROUTES.diary.themes.root}
+          className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline"
+          aria-label="뒤로"
+        >
+          <DailyIcon name="chevronLeft" size={20} />
+        </TextLink>
+        <h2 className="m-0 text-center text-[1rem] font-extrabold text-[#111]">{themeName}</h2>
+        <span className="w-[44px]" aria-hidden />
+      </header>
 
       {error ? <p className="m-0 text-center text-sm text-red-600">{error}</p> : null}
 
@@ -27,6 +40,7 @@ export function DiaryThemeDetailSection({
             themeName={themeName}
             date={group.date}
             clipCount={group.clipCount}
+            clips={group.clips}
             showDateLink
           />
         ))
