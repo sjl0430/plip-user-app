@@ -1,6 +1,8 @@
 "use client";
 
 import { SubmitButton, TextLink } from "@/components/atoms";
+import { ui } from "@/components/atoms/styles";
+import { cn } from "@/lib/utils";
 import { AuthDivider, AuthField } from "@/components/molecules";
 import { RestoreAccountDialog } from "@/components/organisms/RestoreAccountDialog";
 import { ROUTES } from "@/config/routes";
@@ -119,7 +121,7 @@ export function LoginForm() {
         {error ? <p className="text-[12px] text-red-600">{error}</p> : null}
         <TextLink
           href={ROUTES.forgotPassword}
-          className="dl-link self-end text-right text-[12px] leading-[15px]"
+          className={cn(ui.link, "self-end text-right text-[12px] leading-[15px]")}
         >
           비밀번호를 잊으셨나요?
         </TextLink>
@@ -140,7 +142,7 @@ export function LoginForm() {
         ))}
         <p className="text-center text-[13px] font-medium leading-4 text-[var(--dl-color-text-brand)]">
           계정이 없나요?{" "}
-          <TextLink href={ROUTES.signup} className="dl-link text-[13px]">
+          <TextLink href={ROUTES.signup} className={cn(ui.link, "text-[13px]")}>
             회원가입
           </TextLink>
         </p>

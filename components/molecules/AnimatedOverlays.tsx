@@ -1,4 +1,5 @@
 "use client";
+import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import type { ReactNode } from "react";
@@ -30,7 +31,7 @@ export function AnimatedDropdown({
       role={role}
       aria-label={ariaLabel}
       aria-hidden={!visible}
-      className={`dl-dropdown-panel ${visible ? "dl-dropdown-panel--open" : ""} ${className}`.trim()}
+      className={`${leftoverStyles.dlDropdownPanel} ${visible ? "pointer-events-auto opacity-100 [transform:translateY(0)_scale(1)]" : ""} ${className}`.trim()}
     >
       {children}
     </div>
@@ -57,10 +58,10 @@ export function AnimatedDialog({
   if (!mounted) return null;
 
   return (
-    <div className="dl-dialog-root" role="presentation">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-[1rem]" role="presentation">
       <button
         type="button"
-        className={`dl-dialog-scrim ${visible ? "dl-dialog-scrim--open" : ""}`}
+        className={`absolute inset-0 border-0 bg-[rgba(0,_0,_0,_0.45)] opacity-0 transition-[opacity_280ms_ease] motion-reduce:transition-[none] ${visible ? "opacity-100 m-dlDialogScrimOpen" : ""}`}
         aria-label="닫기"
         onClick={onClose}
       />
@@ -69,7 +70,7 @@ export function AnimatedDialog({
         aria-modal
         aria-labelledby={labelledBy}
         aria-hidden={!visible}
-        className={`dl-dialog-panel ${visible ? "dl-dialog-panel--open" : ""} ${className}`.trim()}
+        className={`${leftoverStyles.dlDialogPanel} ${visible ? "opacity-100 [transform:scale(1)_translateY(0)]" : ""} ${className}`.trim()}
       >
         {children}
       </div>
@@ -98,20 +99,23 @@ export function AnimatedSideSheet({
 
   if (!mounted) return null;
 
-  const sideClass = side === "left" ? "dl-side-sheet--left" : "dl-side-sheet--right";
+  const sideClass =
+    side === "left"
+      ? `left-0 -translate-x-full ${leftoverStyles.dlSideSheetLeft}`
+      : `right-0 translate-x-full ${leftoverStyles.dlSideSheetRight}`;
 
   return (
     <>
       <button
         type="button"
-        className={`dl-drawer-scrim ${visible ? "dl-drawer-scrim--open" : ""}`}
+        className={`fixed inset-0 z-[40] border-0 bg-[rgba(0,_0,_0,_0.32)] opacity-0 pointer-events-none transition-[opacity_280ms_ease] motion-reduce:transition-[none] ${visible ? "opacity-100 pointer-events-auto m-dlDrawerScrimOpen" : ""}`}
         aria-label="닫기"
         onClick={onClose}
       />
       <aside
         aria-label={ariaLabel}
         aria-hidden={!visible}
-        className={`dl-side-sheet ${sideClass} ${visible ? "dl-side-sheet--open" : ""} ${className}`.trim()}
+        className={`${leftoverStyles.dlSideSheet} ${sideClass} ${visible ? leftoverStyles.dlSideSheetOpen : ""} ${className}`.trim()}
       >
         {children}
       </aside>

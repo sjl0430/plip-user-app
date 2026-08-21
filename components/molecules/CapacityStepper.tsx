@@ -17,10 +17,10 @@ export function CapacityStepper({
 }: CapacityStepperProps) {
   if (compact) {
     return (
-      <div className="dl-stepper dl-stepper--compact">
+      <div className="flex items-center gap-[14px] flex items-center justify-between w-[68px] h-[30px] p-[0_12px] rounded-[15px] bg-[var(--dl-color-bg-brand)] text-[#fff] text-xs font-medium m-dlStepperCompact">
         <button
           type="button"
-          className="dl-stepper__btn"
+          className="grid place-items-center border border-[var(--dl-color-border-default)] rounded-[22px] bg-[var(--dl-color-bg-surface)] p-[14px] w-auto h-auto border-0 bg-[transparent] text-[inherit] text-sm leading-none p-0"
           aria-label="인원 줄이기"
           disabled={value <= min}
           onClick={() => onChange(Math.max(min, value - 1))}
@@ -29,7 +29,7 @@ export function CapacityStepper({
         </button>
         <button
           type="button"
-          className="dl-stepper__btn"
+          className="grid place-items-center border border-[var(--dl-color-border-default)] rounded-[22px] bg-[var(--dl-color-bg-surface)] p-[14px] w-auto h-auto border-0 bg-[transparent] text-[inherit] text-sm leading-none p-0"
           aria-label="인원 늘리기"
           disabled={value >= max}
           onClick={() => onChange(Math.min(max, value + 1))}
@@ -41,20 +41,20 @@ export function CapacityStepper({
   }
 
   return (
-    <div className="dl-stepper">
+    <div className="flex items-center gap-[14px]">
       <button
         type="button"
-        className="dl-stepper__btn"
+        className="grid place-items-center border border-[var(--dl-color-border-default)] rounded-[22px] bg-[var(--dl-color-bg-surface)] p-[14px] w-auto h-auto border-0 bg-[transparent] text-[inherit] text-sm leading-none p-0"
         aria-label="인원 줄이기"
         disabled={value <= min}
         onClick={() => onChange(Math.max(min, value - 1))}
       >
         <DailyIcon name="minus" size={16} />
       </button>
-      <p className="dl-stepper__value">{value}명</p>
+      <p className="m-0 text-xl font-semibold leading-[29px] text-[var(--dl-color-text-primary)]">{value}명</p>
       <button
         type="button"
-        className="dl-stepper__btn"
+        className="grid place-items-center border border-[var(--dl-color-border-default)] rounded-[22px] bg-[var(--dl-color-bg-surface)] p-[14px] w-auto h-auto border-0 bg-[transparent] text-[inherit] text-sm leading-none p-0"
         aria-label="인원 늘리기"
         disabled={value >= max}
         onClick={() => onChange(Math.min(max, value + 1))}

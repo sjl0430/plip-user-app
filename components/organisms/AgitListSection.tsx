@@ -1,4 +1,5 @@
 "use client";
+import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { DailyIcon, TextLink } from "@/components/atoms";
 import { AgitListRow } from "@/components/molecules/AgitListRow";
@@ -28,21 +29,21 @@ export function AgitListSection({ items, error }: AgitListSectionProps) {
   const totalVideos = rooms.reduce((sum, room) => sum + (room.todayVideoCount ?? 0), 0);
 
   return (
-    <section aria-label="내 아지트" className="dl-azit-list">
-      <header className="dl-azit-list__head">
+    <section aria-label="내 아지트" className="flex flex-1 flex-col gap-[14px] p-[12px_24px_24px]">
+      <header className="flex items-start justify-between gap-[12px]">
         <div>
-          <h1 className="dl-azit-list__title">아지트</h1>
-          <p className="dl-azit-list__subtitle">참여 중인 방에서 오늘의 기록을 이어가요</p>
+          <h1 className="m-0 text-[26px] font-bold leading-[1.15] text-[var(--dl-color-text-primary)]">아지트</h1>
+          <p className="m-[6px_0_0] text-xs font-medium text-[var(--dl-color-text-secondary)]">참여 중인 방에서 오늘의 기록을 이어가요</p>
         </div>
-        <TextLink href={ROUTES.agit.search} className="dl-icon-sq no-underline" aria-label="검색">
+        <TextLink href={ROUTES.agit.search} className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="검색">
           <DailyIcon name="search" size={20} />
         </TextLink>
       </header>
 
-      <label className="dl-azit-search">
+      <label className="flex items-center gap-[10px] min-h-[48px] p-[0_14px] border border-[var(--dl-color-border-default)] rounded-[14px] bg-[var(--dl-color-bg-surface)]">
         <DailyIcon name="search" size={18} />
         <input
-          className="dl-azit-search__input"
+          className="flex-1 border-0 bg-[transparent] text-[15px] text-[var(--dl-color-text-primary)] [outline:none] placeholder:text-[var(--dl-color-text-tertiary)]"
           value={query}
           placeholder="제목 또는 토픽으로 검색"
           onChange={(event) => setQuery(event.target.value)}
@@ -55,29 +56,29 @@ export function AgitListSection({ items, error }: AgitListSectionProps) {
         </p>
       ) : null}
 
-      <div className="dl-azit-list__summary">
+      <div className="flex items-center justify-between gap-[12px] p-[2px_2px_0]">
         <div className="dl-azit-list__summary-copy">
-          <p className="dl-azit-list__summary-title">참여 중인 아지트</p>
-          <p className="dl-azit-list__summary-meta">오늘 업로드 {totalVideos}개</p>
+          <p className="m-0 text-base font-semibold text-[var(--dl-color-text-primary)]">참여 중인 아지트</p>
+          <p className="m-[4px_0_0] text-[11px] font-medium text-[var(--dl-color-text-brand)]">오늘 업로드 {totalVideos}개</p>
         </div>
-        <span className="dl-azit-list__count">{rooms.length}</span>
+        <span className="grid min-w-[34px] h-[34px] place-items-center p-[0_10px] rounded-[999px] bg-[var(--dl-color-bg-brand-subtle)] text-[13px] font-bold text-[var(--dl-color-text-brand)]">{rooms.length}</span>
       </div>
 
-      <div className="dl-azit-list__stack">
+      <div className="flex flex-col gap-[12px]">
         {rooms.length > 0 ? (
           rooms.map((room) => <AgitListRow key={room.id} agit={room} />)
         ) : (
-          <div className="dl-azit-list__empty">
+          <div className="flex flex-col items-center gap-[8px] p-[28px_16px] [border:1px_dashed_var(--dl-color-border-default)] rounded-[16px] text-center text-[var(--dl-color-text-secondary)]">
             <p>{keyword ? "검색 결과가 없어요." : "참여 중인 아지트가 없어요."}</p>
-            <TextLink href={ROUTES.agit.create} className="dl-link">
+            <TextLink href={ROUTES.agit.create} className="!text-[var(--dl-color-text-brand)] text-sm font-medium leading-5 !no-underline hover:!underline">
               새 아지트 만들기
             </TextLink>
           </div>
         )}
       </div>
 
-      <TextLink href={ROUTES.agit.create} className="dl-azit-list__create no-underline">
-        <span className="dl-azit-list__create-icon" aria-hidden>
+      <TextLink href={ROUTES.agit.create} className={`${leftoverStyles.dlAzitListCreate} mt-1 flex items-center gap-3 rounded-2xl border border-[var(--dl-color-border-brand)] bg-[linear-gradient(135deg,rgba(247,244,255,0.95),rgba(255,255,255,0.98))] p-3.5 text-[var(--dl-color-text-primary)] no-underline`}>
+        <span className="grid w-[40px] h-[40px] place-items-center rounded-[12px] bg-[var(--dl-color-bg-brand)] text-[#fff] text-[22px] font-medium leading-none" aria-hidden>
           +
         </span>
         <span>

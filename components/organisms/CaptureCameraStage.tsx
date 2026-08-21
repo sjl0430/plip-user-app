@@ -32,7 +32,7 @@ export function CaptureCameraStage({
   const showTimer = isRecording;
 
   return (
-    <section className="dl-camera -mx-5 -mt-6" aria-label="카메라">
+    <section className="relative min-h-[calc(100dvh_-_80px)] overflow-hidden bg-[#111] -mx-5 -mt-6" aria-label="카메라">
       <video
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-contain"
@@ -61,12 +61,12 @@ export function CaptureCameraStage({
       ) : null}
 
       <div className="absolute inset-x-6 bottom-8 z-10 flex items-center justify-between">
-        <button type="button" className="dl-icon-sq" aria-label="플래시" disabled={isBusy}>
+        <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="플래시" disabled={isBusy}>
           <DailyIcon name="alert" size={20} />
         </button>
         <button
           type="button"
-          className={`dl-camera__shutter${isRecording ? " is-recording" : ""}`}
+          className={`absolute bottom-[36px] left-[50%] w-[84px] h-[84px] [transform:translateX(-50%)] border-0 rounded-[999px] bg-[rgba(255,_255,_255,_0.28)]${isRecording ? " is-recording" : ""}`}
           aria-label={isRecording ? "촬영 중" : "촬영"}
           disabled={status === "requesting"}
           onClick={() => {
@@ -75,11 +75,11 @@ export function CaptureCameraStage({
             }
           }}
         >
-          <span className="dl-camera__shutter-inner" />
+          <span className="absolute inset-[10px] rounded-[999px] bg-[#fff]" />
         </button>
         <button
           type="button"
-          className="dl-icon-sq"
+          className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]"
           aria-label="전환"
           disabled={isBusy}
           onClick={() => void onFlipCamera()}

@@ -51,10 +51,10 @@ export function CreateRoomBasicForm() {
       />
 
       <p className="m-0 text-[14px] font-medium text-[var(--dl-color-text-primary)]">최대 인원</p>
-      <div className="dl-capacity-card">
+      <div className="flex items-center justify-between gap-[12px] min-h-[68px] p-[13px_14px] rounded-[12px] bg-[var(--dl-color-bg-brand-subtle)]">
         <div className="dl-capacity-card__body">
-          <p className="dl-capacity-card__value">{capacity}명</p>
-          <p className="dl-capacity-card__hint">기본 {AGIT_DEFAULT_MAX_CAPACITY}명</p>
+          <p className="m-0 text-sm font-semibold text-[var(--dl-color-text-primary)]">{capacity}명</p>
+          <p className="m-[4px_0_0] text-[11px] text-[var(--dl-color-text-secondary)]">기본 {AGIT_DEFAULT_MAX_CAPACITY}명</p>
         </div>
         <CapacityStepper
           value={capacity}
@@ -68,7 +68,7 @@ export function CreateRoomBasicForm() {
         기본 정원 {AGIT_DEFAULT_MAX_CAPACITY}명까지 설정할 수 있어요.
       </p>
 
-      <div className="dl-actions">
+      <div className="flex w-full flex-col gap-[14px] mt-auto">
         <SubmitButton variant="brand">다음</SubmitButton>
       </div>
     </form>

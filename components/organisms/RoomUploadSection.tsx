@@ -30,8 +30,8 @@ export function RoomUploadSection({ agitId }: RoomUploadSectionProps) {
 
   return (
     <section className="flex w-full flex-col gap-3.5" aria-label="영상 올리기">
-      <header className="dl-hub-head">
-        <h1 className="dl-hub-head__title">영상 올리기</h1>
+      <header className="flex w-full items-center justify-between gap-[12px]">
+        <h1 className="m-0 text-[22px] font-semibold leading-[31px] text-[var(--dl-color-text-primary)]">영상 올리기</h1>
         <TextLink href={ROUTES.agit.detail(agitId)} className="text-[14px] font-medium text-[var(--dl-color-text-secondary)] no-underline">
           닫기
         </TextLink>
@@ -39,14 +39,14 @@ export function RoomUploadSection({ agitId }: RoomUploadSectionProps) {
 
       <button
         type="button"
-        className={`dl-dropzone ${fileName ? "dl-dropzone--ready" : ""}`}
+        className={`flex w-full min-h-[240px] flex-col items-center justify-center gap-[10px] border border-[var(--dl-color-border-brand)] rounded-[20px] bg-[var(--dl-color-bg-brand-subtle)] ${fileName ? "[border-style:dashed] m-dlDropzoneReady" : ""}`}
         onClick={() => fileRef.current?.click()}
       >
-        <span className="dl-dropzone__icon">
+        <span className="grid w-[48px] h-[56px] place-items-center rounded-[28px] bg-[var(--dl-color-bg-elevated)]">
           <DailyIcon name="upload" size={24} />
         </span>
-        <p className="dl-dropzone__title">{fileName || "영상 선택 또는 촬영"}</p>
-        <p className="dl-dropzone__desc">최대 60초 · 내 영상은 다운로드 가능</p>
+        <p className="m-0 text-base font-semibold leading-[23px] text-[var(--dl-color-text-primary)]">{fileName || "영상 선택 또는 촬영"}</p>
+        <p className="m-0 text-xs leading-[17px] text-[var(--dl-color-text-secondary)]">최대 60초 · 내 영상은 다운로드 가능</p>
       </button>
       <input
         ref={fileRef}
@@ -56,7 +56,7 @@ export function RoomUploadSection({ agitId }: RoomUploadSectionProps) {
         onChange={(event) => handleFile(event.target.files?.[0])}
       />
 
-      <div className="dl-section-row">
+      <div className="flex w-full items-center justify-between gap-[8px]">
         <p className="m-0 text-[15px] font-semibold leading-[21px] text-[var(--dl-color-text-primary)]">
           토픽 선택
         </p>
@@ -75,7 +75,7 @@ export function RoomUploadSection({ agitId }: RoomUploadSectionProps) {
         />
       ))}
 
-      <div className="dl-warn">
+      <div className="flex w-full items-center gap-[10px] rounded-[12px] bg-[var(--dl-color-bg-warning)] p-[12px_14px]">
         <DailyIcon name="alert" size={18} />
         <p className="m-0 text-[12px] leading-[17px] text-[var(--dl-color-text-secondary)]">
           이미 등록한 토픽은 선택할 수 없어요.

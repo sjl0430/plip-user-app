@@ -1,0 +1,30 @@
+.cursorShapePickerTrigger {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(170, 220, 255, 0.35);
+  border-radius: 9999px;
+  background: rgba(8, 18, 58, 0.72);
+  color: #d8f3ff;
+  box-shadow: 0 0 16px rgba(90, 180, 255, 0.25);
+  cursor: pointer;
+  animation: cursor-picker-wiggle 2.8s ease-in-out infinite;
+  transition: border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+
+.cursorShapePickerTrigger.isOpen {
+  animation: none;
+}
+
+.cursorShapePickerOption.isSelected svg {
+  filter: drop-shadow(0 0 5px rgba(160, 230, 255, 0.95));
+}
+
+@media (prefers-reduced-motion: reduce) {
+.cursorShapePickerTrigger {
+  animation: none;
+}
+}

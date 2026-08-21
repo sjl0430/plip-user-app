@@ -7,12 +7,12 @@ type VisibilityToggleProps = {
 
 export function VisibilityToggle({ value, onChange }: VisibilityToggleProps) {
   return (
-    <div className="dl-segment" role="tablist" aria-label="방 공개 여부">
+    <div className="flex w-full items-center rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-elevated)] p-[4px]" role="tablist" aria-label="방 공개 여부">
       <button
         type="button"
         role="tab"
         aria-selected={value === "public"}
-        className={`dl-segment__item ${value === "public" ? "dl-segment__item--active" : ""}`}
+        className={`flex-1 border-0 rounded-[12px] bg-[transparent] p-[12px] text-sm font-medium leading-5 text-[var(--dl-color-text-secondary)] ${value === "public" ? "bg-[var(--dl-color-bg-surface)] font-semibold text-[var(--dl-color-text-brand)] m-dlSegmentItemActive" : ""}`}
         onClick={() => onChange("public")}
       >
         공개 방
@@ -21,7 +21,7 @@ export function VisibilityToggle({ value, onChange }: VisibilityToggleProps) {
         type="button"
         role="tab"
         aria-selected={value === "private"}
-        className={`dl-segment__item ${value === "private" ? "dl-segment__item--active" : ""}`}
+        className={`flex-1 border-0 rounded-[12px] bg-[transparent] p-[12px] text-sm font-medium leading-5 text-[var(--dl-color-text-secondary)] ${value === "private" ? "bg-[var(--dl-color-bg-surface)] font-semibold text-[var(--dl-color-text-brand)] m-dlSegmentItemActive" : ""}`}
         onClick={() => onChange("private")}
       >
         비공개 방

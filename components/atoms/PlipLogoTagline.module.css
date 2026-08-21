@@ -1,0 +1,40 @@
+.plipLogoLetterDot {
+  animation: plip-logo-dot-bounce 1.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.plipLogoTaglineChar {
+  transform-box: fill-box;
+  transform-origin: left center;
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+}
+
+.plipLogoTaglineChar.isVisible {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+}
+
+.plipLogoTaglineChar.isTyping {
+  animation: plip-tagline-type-in 0.1s linear forwards;
+}
+
+.plipLogoTaglineChar.isErasing {
+  animation: plip-tagline-type-out 0.1s linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+.plipLogoLetterDot {
+  animation: none;
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+.plipLogoTaglineChar {
+  animation: none;
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+}
+}

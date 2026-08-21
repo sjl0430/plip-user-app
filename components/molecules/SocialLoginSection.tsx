@@ -13,7 +13,7 @@ export function SocialLoginSection() {
       <button
         type="button"
         aria-label="Google로 로그인"
-        className="plip-glass-social flex h-12 w-full items-center justify-center rounded-[22px] sm:h-14"
+        className="bg-[linear-gradient(180deg,_var(--dc-glass-from),_var(--dc-glass-to))] border border-[var(--dc-glass-border)] shadow-[var(--dc-shadow)] backdrop-blur-[20px] flex h-12 w-full items-center justify-center rounded-[22px] sm:h-14"
       >
         <Image src="/plip/google.svg" alt="" width={32} height={32} aria-hidden />
       </button>
@@ -21,7 +21,7 @@ export function SocialLoginSection() {
       <button
         type="button"
         aria-label="Twitter로 로그인"
-        className="plip-glass-social flex h-12 w-full items-center justify-center rounded-[22px] sm:h-14"
+        className="bg-[linear-gradient(180deg,_var(--dc-glass-from),_var(--dc-glass-to))] border border-[var(--dc-glass-border)] shadow-[var(--dc-shadow)] backdrop-blur-[20px] flex h-12 w-full items-center justify-center rounded-[22px] sm:h-14"
       >
         <Image src="/plip/twitter.svg" alt="" width={32} height={32} aria-hidden />
       </button>

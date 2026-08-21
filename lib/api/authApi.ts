@@ -4,12 +4,19 @@ import { getApiUrl } from "@/lib/api/env";
 import type {
   ApiAccountRestoreRequest,
   ApiAccountRestoreResponse,
+  ApiEmailOtpRequest,
+  ApiEmailOtpRequestResponse,
+  ApiEmailOtpVerifyRequest,
+  ApiEmailOtpVerifyResponse,
   ApiLocalLoginRequest,
   ApiLocalLoginResponse,
+  ApiLocalSignupRequest,
+  ApiLocalSignupResponse,
   ApiLogoutRequest,
   ApiLogoutResponse,
   ApiSocialLoginRequest,
   ApiSocialLoginResponse,
+  ApiTermsListResponse,
   ApiTokenReissueRequest,
   ApiTokenReissueResponse,
 } from "@/types/auth/api";
@@ -60,6 +67,45 @@ export async function postLogout(body: ApiLogoutRequest): Promise<ApiLogoutRespo
     method: "POST",
     baseUrl: getApiUrl(),
     body,
+  });
+}
+
+export async function postEmailOtpRequest(
+  body: ApiEmailOtpRequest,
+): Promise<ApiEmailOtpRequestResponse> {
+  return apiFetch<ApiEmailOtpRequestResponse>(API_ENDPOINTS.auth.otpRequest, {
+    method: "POST",
+    baseUrl: getApiUrl(),
+    body,
+    auth: false,
+  });
+}
+
+export async function postEmailOtpVerify(
+  body: ApiEmailOtpVerifyRequest,
+): Promise<ApiEmailOtpVerifyResponse> {
+  return apiFetch<ApiEmailOtpVerifyResponse>(API_ENDPOINTS.auth.otpVerify, {
+    method: "POST",
+    baseUrl: getApiUrl(),
+    body,
+    auth: false,
+  });
+}
+
+export async function getActiveTerms(): Promise<ApiTermsListResponse> {
+  return apiFetch<ApiTermsListResponse>(API_ENDPOINTS.auth.terms, {
+    method: "GET",
+    baseUrl: getApiUrl(),
+    auth: false,
+  });
+}
+
+export async function postSignupLocal(body: ApiLocalSignupRequest): Promise<ApiLocalSignupResponse> {
+  return apiFetch<ApiLocalSignupResponse>(API_ENDPOINTS.auth.signupLocal, {
+    method: "POST",
+    baseUrl: getApiUrl(),
+    body,
+    auth: false,
   });
 }
 

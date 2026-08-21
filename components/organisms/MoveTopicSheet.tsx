@@ -1,4 +1,5 @@
 "use client";
+import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { DailyIcon, SubmitButton } from "@/components/atoms";
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
@@ -25,18 +26,18 @@ export function MoveTopicSheet({ open, onClose }: MoveTopicSheetProps) {
     <>
       <button
         type="button"
-        className={`dl-sheet-scrim ${visible ? "dl-sheet-scrim--open" : ""}`}
+        className={`fixed inset-0 z-[41] border-0 bg-[rgba(23,_23,_28,_0.4)] opacity-0 transition-[opacity_280ms_ease] motion-reduce:transition-[none] ${visible ? "opacity-100 m-dlSheetScrimOpen" : ""}`}
         aria-label="닫기"
         onClick={onClose}
       />
       <div
-        className={`dl-sheet dl-sheet--tall ${visible ? "dl-sheet--open" : ""}`}
+        className={`${leftoverStyles.dlSheet} max-h-[78dvh] rounded-[28px_28px_0_0] bg-[#fbfaff] m-dlSheetTall ${visible ? "[transform:translateY(0)] m-dlSheetOpen" : ""}`}
         role="dialog"
         aria-modal
         aria-labelledby="move-topic-title"
         aria-hidden={!visible}
       >
-        <div className="dl-sheet__header">
+        <div className="flex items-start justify-between gap-[12px]">
           <div>
             <h2 id="move-topic-title" className="m-0 text-[24px] font-bold text-[var(--dl-color-text-primary)]">
               토픽 이동
@@ -45,15 +46,15 @@ export function MoveTopicSheet({ open, onClose }: MoveTopicSheetProps) {
               현재 영상의 토픽을 변경합니다
             </p>
           </div>
-          <button type="button" className="dl-icon-sq" aria-label="닫기" onClick={onClose}>
+          <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="닫기" onClick={onClose}>
             <DailyIcon name="x" size={20} />
           </button>
         </div>
 
-        <div className="dl-topic-summary">
-          <p className="dl-topic-summary__meta">8월 14일 · 00:05</p>
-          <p className="dl-topic-summary__title">새벽 러닝 완료</p>
-          <p className="dl-topic-summary__current">현재&nbsp;&nbsp;#7시_러닝_인증</p>
+        <div className="flex flex-col gap-[4px] p-[14px] rounded-[14px] bg-[var(--dl-color-bg-brand-subtle)]">
+          <p className="m-0 text-xs text-[var(--dl-color-text-secondary)]">8월 14일 · 00:05</p>
+          <p className="m-0 text-[15px] font-semibold text-[var(--dl-color-text-primary)]">새벽 러닝 완료</p>
+          <p className="m-0 text-[11px] text-[var(--dl-color-text-brand)]">현재&nbsp;&nbsp;#7시_러닝_인증</p>
         </div>
 
         <p className="m-0 text-[16px] font-semibold text-[var(--dl-color-text-primary)]">이동할 토픽</p>
@@ -68,21 +69,21 @@ export function MoveTopicSheet({ open, onClose }: MoveTopicSheetProps) {
               type="button"
               disabled={disabled}
               className={[
-                "dl-topic-option",
-                selected ? "dl-topic-option--selected" : "",
-                disabled ? "dl-topic-option--disabled" : "",
+                "flex items-center gap-[8px] w-full min-h-[66px] p-[11px_13px] border border-[var(--dl-color-border-default)] rounded-[12px] bg-[var(--dl-color-bg-elevated)] cursor-pointer text-left",
+                selected ? "border-[var(--dl-color-border-default)] bg-[var(--dl-color-bg-brand-subtle)] m-dlTopicOptionSelected" : "",
+                disabled ? "opacity-[0.92] [cursor:not-allowed] m-dlTopicOptionDisabled" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
               onClick={() => setSelectedId(topic.id)}
             >
               <span className="min-w-0 flex-1 text-left">
-                <p className="dl-topic-option__label">{topic.label}</p>
-                <p className={`dl-topic-option__meta${disabled ? " dl-topic-option__meta--danger" : ""}`}>
+                <p className="m-0 text-sm font-semibold text-[var(--dl-color-text-primary)] text-[var(--dl-color-text-brand)]">{topic.label}</p>
+                <p className={`m-[4px_0_0] text-[11px] text-[var(--dl-color-text-secondary)]${disabled ? " text-[var(--dl-color-text-danger)] m-dlTopicOptionMetaDanger" : ""}`}>
                   {topic.meta}
                 </p>
               </span>
-              {selected ? <span className="dl-topic-option__check">✓</span> : null}
+              {selected ? <span className="text-lg font-bold text-[var(--dl-color-text-brand)]">✓</span> : null}
             </button>
           );
         })}

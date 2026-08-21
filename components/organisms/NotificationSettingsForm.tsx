@@ -37,7 +37,7 @@ export function NotificationSettingsForm() {
         }
       />
 
-      <h2 className="dl-section-title">기능별 알림</h2>
+      <h2 className="m-0 text-base font-semibold leading-[23px] text-[var(--dl-color-text-primary)]">기능별 알림</h2>
       <SettingsRow
         icon="bell"
         title="채팅 알림"
@@ -75,7 +75,7 @@ export function NotificationSettingsForm() {
         }
       />
 
-      <h2 className="dl-section-title">방별 채팅 알림</h2>
+      <h2 className="m-0 text-base font-semibold leading-[23px] text-[var(--dl-color-text-primary)]">방별 채팅 알림</h2>
       <SettingsRow
         icon="users"
         title="러닝 메이트의 30일"

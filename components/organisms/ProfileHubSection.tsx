@@ -12,13 +12,13 @@ export function ProfileHubSection() {
 
   return (
     <section className="flex w-full flex-col gap-3.5" aria-label="설정">
-      <h1 className="dl-settings-head m-0">설정</h1>
+      <h1 className="text-[26px] font-bold text-[var(--dl-color-text-primary)] m-0">설정</h1>
 
-      <TextLink href={ROUTES.mypage.profile} className="dl-settings-profile no-underline">
-        <div className="dl-settings-profile__avatar">
+      <TextLink href={ROUTES.mypage.profile} className="flex items-center gap-[12px] min-h-[100px] p-[14px] rounded-[18px] bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-primary)] no-underline">
+        <div className="w-[64px] h-[64px] overflow-hidden rounded-[999px] shrink-0">
           <Image src="/plip/v13/profile-avatar.svg" alt="" width={64} height={64} />
         </div>
-        <p className="dl-settings-profile__name">
+        <p className="m-0 text-[15px] font-semibold leading-[1.35]">
           안지민
           <br />
           기본 프로필 관리
@@ -41,7 +41,7 @@ export function ProfileHubSection() {
       <SubmitButton variant="outline" className="w-full">
         로그아웃
       </SubmitButton>
-      <TextLink href={ROUTES.mypage.settings} className="dl-settings-delete">
+      <TextLink href={ROUTES.mypage.settings} className="block text-center text-xs font-medium !text-[var(--dl-color-text-danger)] !no-underline">
         계정 삭제
       </TextLink>
     </section>

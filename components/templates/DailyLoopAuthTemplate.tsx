@@ -1,3 +1,4 @@
+import { ui } from "@/components/atoms/styles";
 import type { ReactNode } from "react";
 
 type DailyLoopAuthTemplateProps = {
@@ -6,8 +7,8 @@ type DailyLoopAuthTemplateProps = {
 
 export function DailyLoopAuthTemplate({ children }: DailyLoopAuthTemplateProps) {
   return (
-    <main className="dl-auth-page">
-      <div className="dl-auth-content">{children}</div>
+    <main className={`${ui.authPage} md:h-full md:min-h-full`}>
+      <div className={ui.authContent}>{children}</div>
     </main>
   );
 }

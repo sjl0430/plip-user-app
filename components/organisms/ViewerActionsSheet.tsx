@@ -42,12 +42,12 @@ export function ViewerActionsSheet({ open, onClose, onMoveTopic }: ViewerActions
     <>
       <button
         type="button"
-        className={`dl-viewer-scrim ${visible ? "dl-viewer-scrim--open" : ""}`}
+        className={`motion-reduce:transition-[none] fixed inset-0 z-[41] border-0 bg-[rgba(0,_0,_0,_0.32)] opacity-0 transition-[opacity_280ms_ease] ${visible ? "opacity-100 m-dlViewerScrimOpen" : ""}`}
         aria-label="닫기"
         onClick={onClose}
       />
       <div
-        className={`dl-viewer-actions ${visible ? "dl-viewer-actions--open" : ""}`}
+        className={`motion-reduce:transition-[none] fixed left-[50%] bottom-[96px] z-[42] flex w-[min(300px,_calc(100vw_-_48px))] flex-col gap-[8px] p-[12px] rounded-[20px] bg-[rgba(252,_251,_255,_0.98)] shadow-[0_8px_24px_rgba(0,_0,_0,_0.22)] opacity-0 [transform:translate(-50%,_12px)_scale(0.96)] transition-[opacity_280ms_ease,_transform_280ms_cubic-bezier(0.32,_0.72,_0,_1)] ${visible ? "opacity-100 [transform:translate(-50%,_0)_scale(1)] m-dlViewerActionsOpen" : ""}`}
         role="dialog"
         aria-modal
         aria-label="더보기 메뉴"
@@ -57,7 +57,7 @@ export function ViewerActionsSheet({ open, onClose, onMoveTopic }: ViewerActions
           <button
             key={action.id}
             type="button"
-            className={`dl-viewer-action${action.tone === "danger" ? " dl-viewer-action--danger" : ""}`}
+            className={`flex items-center gap-[12px] min-h-[64px] w-full p-[13px] border border-[var(--dl-color-border-default)] rounded-[14px] bg-[var(--dl-color-bg-elevated)] text-left cursor-pointer${action.tone === "danger" ? " border-[var(--dl-color-border-default)] bg-[var(--dl-color-bg-danger)] m-dlViewerActionDanger" : ""}`}
             onClick={() => {
               if (action.id === "move") {
                 onClose();
@@ -69,10 +69,10 @@ export function ViewerActionsSheet({ open, onClose, onMoveTopic }: ViewerActions
           >
             <DailyIcon name={action.icon} size={24} />
             <span className="min-w-0 flex-1 text-left">
-              <p className="dl-viewer-action__title">{action.title}</p>
-              <p className="dl-viewer-action__desc">{action.description}</p>
+              <p className="text-[var(--dl-color-text-danger)] m-0 text-sm font-semibold text-[var(--dl-color-text-primary)]">{action.title}</p>
+              <p className="text-[var(--dl-color-text-danger)] m-[4px_0_0] text-[11px] text-[var(--dl-color-text-secondary)]">{action.description}</p>
             </span>
-            <span className="dl-viewer-action__chevron" aria-hidden>
+            <span className="text-[var(--dl-color-text-danger)] text-xl text-[var(--dl-color-text-tertiary)]" aria-hidden>
               ›
             </span>
           </button>

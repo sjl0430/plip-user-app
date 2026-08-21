@@ -26,14 +26,14 @@ export function ClipViewerSection({ clipId, mode = "view" }: ClipViewerSectionPr
       <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/80" />
 
       <header className="relative z-10 flex items-start gap-3 px-4 py-3">
-        <TextLink href={ROUTES.home} className="dl-icon-sq no-underline" aria-label="닫기">
+        <TextLink href={ROUTES.home} className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="닫기">
           <DailyIcon name="chevronLeft" size={20} />
         </TextLink>
         <div className="min-w-0 flex-1 text-white">
           <p className="m-0 text-[24px] font-bold leading-[29px]">오늘의 영상</p>
           <p className="mt-1 text-[11px] text-white/78">8월 14일 · #기상 #러닝</p>
         </div>
-        <button type="button" className="dl-icon-sq" aria-label="더보기" onClick={() => setActionsOpen(true)}>
+        <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="더보기" onClick={() => setActionsOpen(true)}>
           <DailyIcon name="ellipsis" size={20} />
         </button>
       </header>
@@ -45,7 +45,7 @@ export function ClipViewerSection({ clipId, mode = "view" }: ClipViewerSectionPr
         00:05
       </p>
 
-      <div className="dl-reaction-rail" aria-label="이모지 리액션">
+      <div className="absolute right-[20px] bottom-[180px] z-20 flex flex-col gap-[12px] rounded-[16px] bg-[rgba(0,_0,_0,_0.28)] p-[12px_10px] text-[#fff] text-xs font-medium" aria-label="이모지 리액션">
         <span>🔥 12</span>
         <span>💜 8</span>
         <span>👏 5</span>

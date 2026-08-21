@@ -1,4 +1,5 @@
 "use client";
+import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { DailyIcon, Input, Label, SubmitButton } from "@/components/atoms";
 import { DailyToggle, PollChoiceRow, SettingsRow } from "@/components/molecules";
@@ -71,11 +72,11 @@ export function PollEditor({ agitId, mode }: PollEditorProps) {
       }}
     >
       {mode === "create" ? (
-        <div className="dl-panel dl-panel--subtle">
-          <p className="dl-notice-title">투표 시작 전까지 질문과 선택지를 수정할 수 있어요.</p>
+        <div className="w-full rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-elevated)] p-[16px_14px] bg-[var(--dl-color-bg-brand-subtle)] m-dlPanelSubtle">
+          <p className="m-0 text-[13px] font-semibold leading-[19px] text-[var(--dl-color-text-brand)]">투표 시작 전까지 질문과 선택지를 수정할 수 있어요.</p>
         </div>
       ) : (
-        <div className="dl-warn">
+        <div className="flex w-full items-center gap-[10px] rounded-[12px] bg-[var(--dl-color-bg-warning)] p-[12px_14px]">
           <DailyIcon name="alert" size={20} />
           <p className="m-0 text-[13px] font-medium leading-[19px] text-[var(--dl-color-text-primary)]">
             투표를 시작하면 질문과 선택지를 수정할 수 없어요.
@@ -83,29 +84,29 @@ export function PollEditor({ agitId, mode }: PollEditorProps) {
         </div>
       )}
 
-      <div className="dl-field">
-        <Label htmlFor="poll-question" className="dl-field__label">
+      <div className="flex w-full flex-col gap-[6px]">
+        <Label htmlFor="poll-question" className="m-0 text-[13px] font-medium leading-5 text-[var(--dl-color-text-primary)]">
           질문
         </Label>
         <Input
           id="poll-question"
           name="question"
           variant="daily"
-          className={mode === "create" ? "dl-input--brand" : ""}
+          className={mode === "create" ? "border border-[var(--dl-color-border-brand)] m-dlInputBrand" : ""}
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
           required
         />
       </div>
 
-      <div className="dl-choice-head">
-        <p className="dl-field__label">{mode === "edit" ? "선택지 순서" : "선택지"}</p>
+      <div className="flex w-full [align-items:baseline] justify-between gap-[8px]">
+        <p className="m-0 text-[13px] font-medium leading-5 text-[var(--dl-color-text-primary)]">{mode === "edit" ? "선택지 순서" : "선택지"}</p>
         {mode === "create" ? (
-          <span className="dl-count">
+          <span className="text-xs font-semibold leading-[17px] text-[var(--dl-color-text-brand)]">
             {choices.length} / {MAX_CHOICES}
           </span>
         ) : (
-          <p className="dl-choice-head__hint">길게 눌러 순서 변경</p>
+          <p className="m-0 text-xs font-normal leading-[17px] text-[var(--dl-color-text-tertiary)]">길게 눌러 순서 변경</p>
         )}
       </div>
 
@@ -126,7 +127,7 @@ export function PollEditor({ agitId, mode }: PollEditorProps) {
         />
       ))}
 
-      <button type="button" className="dl-add-choice" disabled={!canAdd} onClick={addChoice}>
+      <button type="button" className={`${leftoverStyles.dlAddChoice}`} disabled={!canAdd} onClick={addChoice}>
         <DailyIcon name="plus" size={18} />
         선택지 추가
       </button>
@@ -141,18 +142,18 @@ export function PollEditor({ agitId, mode }: PollEditorProps) {
             }
           />
           <SettingsRow title="마감" description="오늘 오후 11:59" showChevron />
-          <div className="dl-actions">
+          <div className="flex w-full flex-col gap-[14px] mt-auto">
             <SubmitButton variant="brand">투표 시작하기</SubmitButton>
           </div>
         </>
       ) : (
         <>
-          <div className="dl-panel">
-            <p className="dl-notice-title">채팅 미리보기</p>
-            <p className="dl-notice-body">저장하면 채팅의 투표 카드에 즉시 반영됩니다.</p>
+          <div className="w-full rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-elevated)] p-[16px_14px]">
+            <p className="m-0 text-[13px] font-semibold leading-[19px] text-[var(--dl-color-text-brand)]">채팅 미리보기</p>
+            <p className="m-0 text-xs font-normal leading-[18px] text-[var(--dl-color-text-secondary)]">저장하면 채팅의 투표 카드에 즉시 반영됩니다.</p>
           </div>
-          <div className="dl-pair">
-            <button type="button" className="dl-btn dl-btn--danger gap-2" onClick={goToChat}>
+          <div className="grid w-full grid-cols-[1fr_1fr] gap-[10px]">
+            <button type="button" className="inline-flex h-[44px] w-full items-center justify-center gap-[8px] rounded-[var(--dl-radius-md)] p-[12px_20px] text-sm font-medium leading-5 !no-underline border-0 bg-[var(--dl-color-bg-brand-subtle)] border-0 bg-[var(--dl-color-bg-danger)] !text-[var(--dl-color-text-danger)] shadow-[none] m-dlBtnDanger gap-2" onClick={goToChat}>
               <DailyIcon name="trash" size={18} />
               초안 삭제
             </button>

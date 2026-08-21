@@ -18,8 +18,8 @@ export function AgitDetailSection({ agit, error }: AgitDetailSectionProps) {
   if (error) {
     return (
       <section className="px-6 py-8">
-        <p className="dl-subtitle">{error}</p>
-        <TextLink href={ROUTES.agit.root} className="dl-link">
+        <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">{error}</p>
+        <TextLink href={ROUTES.agit.root} className="!text-[var(--dl-color-text-brand)] text-sm font-medium leading-5 !no-underline hover:!underline">
           목록으로
         </TextLink>
       </section>
@@ -29,8 +29,8 @@ export function AgitDetailSection({ agit, error }: AgitDetailSectionProps) {
   if (!agit) {
     return (
       <section className="px-6 py-8">
-        <p className="dl-subtitle">아지트를 찾을 수 없습니다.</p>
-        <TextLink href={ROUTES.agit.root} className="dl-link">
+        <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">아지트를 찾을 수 없습니다.</p>
+        <TextLink href={ROUTES.agit.root} className="!text-[var(--dl-color-text-brand)] text-sm font-medium leading-5 !no-underline hover:!underline">
           목록으로
         </TextLink>
       </section>

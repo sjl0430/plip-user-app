@@ -1,3 +1,5 @@
+import { ui } from "@/components/atoms/styles";
+import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 
 type SubmitButtonProps = ComponentProps<"button"> & {
@@ -5,10 +7,10 @@ type SubmitButtonProps = ComponentProps<"button"> & {
 };
 
 const variantClass: Record<NonNullable<SubmitButtonProps["variant"]>, string> = {
-  glass: "dc-btn dc-btn--block",
-  brand: "dl-btn dl-btn--primary",
-  outline: "dl-btn dl-btn--secondary",
-  danger: "dl-btn dl-btn--danger",
+  glass: cn(ui.glassBtn, ui.glassBtnBlock),
+  brand: cn(ui.btn, ui.btnPrimary),
+  outline: cn(ui.btn, ui.btnSecondary),
+  danger: cn(ui.btn, ui.btnDanger),
 };
 
 export function SubmitButton({
@@ -21,7 +23,7 @@ export function SubmitButton({
   return (
     <button
       type={type}
-      className={`${variantClass[variant]} disabled:opacity-50 ${className}`}
+      className={cn(variantClass[variant], "disabled:opacity-50", className)}
       {...props}
     >
       {children}

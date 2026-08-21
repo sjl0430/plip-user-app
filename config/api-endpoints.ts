@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
   auth: {
     otpRequest: gatewayPath("user", "/api/v1/auth/email/otp-request"),
     otpVerify: gatewayPath("user", "/api/v1/auth/email/otp-verify"),
+    terms: gatewayPath("user", "/api/v1/auth/terms"),
     signupLocal: gatewayPath("user", "/api/v1/auth/signup/local"),
     loginLocal: gatewayPath("user", "/api/v1/auth/login/local"),
     loginSocial: (provider: string) =>

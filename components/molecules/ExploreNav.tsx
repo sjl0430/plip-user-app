@@ -16,17 +16,17 @@ const TABS: { id: ExploreNavTab; label: string; href: string }[] = [
 
 export function ExploreNav({ active = "explore" }: ExploreNavProps) {
   return (
-    <nav className="dl-explore-nav" aria-label="앱 메뉴">
+    <nav className="flex w-full items-center justify-between border border-[var(--dl-color-border-default)] rounded-[20px] bg-[var(--dl-color-bg-elevated)] p-[10px_22px]" aria-label="앱 메뉴">
       {TABS.map((tab) => {
         const isActive = tab.id === active;
         return (
           <TextLink
             key={tab.id}
             href={tab.href}
-            className={`dl-explore-nav__item no-underline ${isActive ? "dl-explore-nav__item--active" : ""}`}
+            className={`flex flex-col items-center gap-[3px] !no-underline no-underline ${isActive ? "dl-explore-nav__item--active" : ""}`}
             aria-current={isActive ? "page" : undefined}
           >
-            <span className="dl-explore-nav__dot">
+            <span className="w-[18px] h-[18px] overflow-hidden">
               <img
                 src={isActive ? "/plip/daily-loop/nav-dot-active.svg" : "/plip/daily-loop/nav-dot.svg"}
                 alt=""
@@ -34,7 +34,7 @@ export function ExploreNav({ active = "explore" }: ExploreNavProps) {
                 height={18}
               />
             </span>
-            <p className="dl-explore-nav__label">{tab.label}</p>
+            <p className="m-0 text-[11px] font-medium leading-[16px] text-[var(--dl-color-text-secondary)] text-[var(--dl-color-text-brand)]">{tab.label}</p>
           </TextLink>
         );
       })}

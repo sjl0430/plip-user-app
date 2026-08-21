@@ -27,6 +27,7 @@ export { Pill } from "./Pill";
 export { PageTitle } from "./PageTitle";
 export { PlipLogo } from "./PlipLogo";
 export { Separator } from "./Separator";
+export { ui } from "./styles";
 export { SubmitButton } from "./SubmitButton";
 export { Switch } from "./Switch";
 export { Text } from "./Text";

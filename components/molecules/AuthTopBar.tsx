@@ -1,4 +1,5 @@
 import { TextLink } from "@/components/atoms";
+import { ui } from "@/components/atoms/styles";
 import type { ReactNode } from "react";
 
 type AuthTopBarProps = {
@@ -25,19 +26,19 @@ function BackGlyph() {
 
 export function AuthTopBar({ title, backHref, onBack, step, trailing }: AuthTopBarProps) {
   return (
-    <div className="dl-topbar">
+    <div className={ui.topbar}>
       {onBack ? (
-        <button type="button" className="dl-topbar__back" aria-label="뒤로" onClick={onBack}>
+        <button type="button" className={ui.topbarBack} aria-label="뒤로" onClick={onBack}>
           <BackGlyph />
         </button>
       ) : (
-        <TextLink href={backHref ?? "/"} className="dl-topbar__back no-underline" aria-label="뒤로">
+        <TextLink href={backHref ?? "/"} className={ui.topbarBack} aria-label="뒤로">
           <BackGlyph />
         </TextLink>
       )}
-      {title ? <h1 className="dl-topbar__title">{title}</h1> : <span className="flex-1" />}
-      {trailing ? <div className="dl-topbar__trailing">{trailing}</div> : null}
-      {!trailing && step ? <span className="dl-topbar__step">{step}</span> : null}
+      {title ? <h1 className={ui.topbarTitle}>{title}</h1> : <span className="flex-1" />}
+      {trailing ? <div className={ui.topbarTrailing}>{trailing}</div> : null}
+      {!trailing && step ? <span className={ui.topbarStep}>{step}</span> : null}
     </div>
   );
 }

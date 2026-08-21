@@ -11,9 +11,9 @@ export function ResetPasswordForm() {
   if (done) {
     return (
       <div className="flex w-full flex-col gap-4">
-        <h2 className="dl-title">비밀번호 변경 완료</h2>
-        <p className="dl-subtitle">새 비밀번호가 안전하게 저장되었습니다.</p>
-        <TextLink href={ROUTES.login} className="dl-btn dl-btn--primary no-underline">
+        <h2 className="m-0 text-[28px] font-bold leading-[34px] text-[var(--dl-color-text-primary)]">비밀번호 변경 완료</h2>
+        <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">새 비밀번호가 안전하게 저장되었습니다.</p>
+        <TextLink href={ROUTES.login} className="inline-flex h-[44px] w-full items-center justify-center gap-[8px] rounded-[var(--dl-radius-md)] p-[12px_20px] text-sm font-medium leading-5 !no-underline border-0 bg-[var(--dl-color-bg-brand-subtle)] border-0 bg-[var(--dl-color-bg-brand)] !text-[var(--dl-color-text-inverse)] shadow-[none] [backdrop-filter:none] m-dlBtnPrimary no-underline">
           로그인하기
         </TextLink>
         <p className="text-center text-[13px] text-[var(--dl-color-text-secondary)]">
@@ -31,8 +31,8 @@ export function ResetPasswordForm() {
         setDone(true);
       }}
     >
-      <h2 className="dl-title">새 비밀번호 설정</h2>
-      <p className="dl-subtitle">이전에 사용하지 않은 비밀번호를 입력해 주세요.</p>
+      <h2 className="m-0 text-[28px] font-bold leading-[34px] text-[var(--dl-color-text-primary)]">새 비밀번호 설정</h2>
+      <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">이전에 사용하지 않은 비밀번호를 입력해 주세요.</p>
       <AuthField
         id="reset-password"
         name="password"

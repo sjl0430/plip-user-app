@@ -1,10 +1,12 @@
 import * as authApi from "@/lib/api/authApi";
 import type {
   ApiLocalLoginRequest,
+  ApiLocalSignupRequest,
+  ApiOtpPurpose,
   ApiTokenReissueResponse,
   ApiTokenResponse,
 } from "@/types/auth/api";
-import type { UiAuthTokens, UiRestorePayload } from "@/types/auth/ui";
+import type { UiAuthTokens, UiRestorePayload, UiTerm } from "@/types/auth/ui";
 
 function mapTokenResponse(data: ApiTokenResponse): UiAuthTokens {
   return {
@@ -42,6 +44,34 @@ export async function reissueToken(refreshToken: string): Promise<UiAuthTokens> 
 
 export async function logout(refreshToken: string): Promise<void> {
   await authApi.postLogout({ refreshToken });
+}
+
+export async function requestEmailOtp(email: string, purpose: ApiOtpPurpose = "SIGNUP"): Promise<void> {
+  await authApi.postEmailOtpRequest({ email, purpose });
+}
+
+export async function verifyEmailOtp(
+  email: string,
+  otpCode: string,
+  purpose: ApiOtpPurpose = "SIGNUP",
+): Promise<string> {
+  const data = await authApi.postEmailOtpVerify({ email, otpCode, purpose });
+  return data.verificationToken;
+}
+
+export async function listActiveTerms(): Promise<UiTerm[]> {
+  const data = await authApi.getActiveTerms();
+  return (data.terms ?? []).map((term) => ({
+    id: term.id,
+    title: term.title,
+    required: term.required === true,
+    termCode: term.termCode,
+  }));
+}
+
+export async function signupLocal(payload: ApiLocalSignupRequest): Promise<UiAuthTokens> {
+  const data = await authApi.postSignupLocal(payload);
+  return mapTokenResponse(data);
 }
 
 export async function restoreAccount(payload: UiRestorePayload): Promise<UiAuthTokens> {

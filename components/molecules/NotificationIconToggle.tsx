@@ -1,4 +1,5 @@
 "use client";
+import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { DailyIcon } from "@/components/atoms";
 
@@ -18,7 +19,7 @@ export function NotificationIconToggle({
   return (
     <button
       type="button"
-      className={`dl-icon-sq dl-icon-sq--notify${checked ? " is-on" : ""}`}
+      className={`grid size-11 shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] ${leftoverStyles.dlIconSqNotify} ${checked ? leftoverStyles.isOn : ""}`}
       aria-label={label}
       aria-pressed={checked}
       title={checked ? `${label} 끄기` : `${label} 켜기`}
