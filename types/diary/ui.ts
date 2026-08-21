@@ -1,14 +1,13 @@
-export type DiaryThemeId = "daily" | "exercise" | "cooking";
-
 export type UiDiaryTheme = {
-  id: DiaryThemeId;
+  id: string;
   name: string;
 };
 
 export type UiDiaryClip = {
   id: string;
-  themeId: DiaryThemeId;
+  themeId: string;
   date: string;
+  thumbnailSrc?: string;
 };
 
 export type UiDiaryDateEntry = {
@@ -16,12 +15,14 @@ export type UiDiaryDateEntry = {
   relativeLabel?: string;
   hasClips: boolean;
   isEmpty?: boolean;
+  thumbnailPaths?: string[];
 };
 
 export type UiDiaryDateThemeGroup = {
-  themeId: DiaryThemeId;
+  themeId: string;
   themeName: string;
   clipCount: number;
+  clips?: UiDiaryClip[];
 };
 
 export type UiDiaryDateGroup = {
@@ -32,4 +33,5 @@ export type UiDiaryDateGroup = {
 export type UiDiaryThemeDateGroup = {
   date: string;
   clipCount: number;
+  clips?: UiDiaryClip[];
 };

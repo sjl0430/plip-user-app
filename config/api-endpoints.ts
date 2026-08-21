@@ -29,6 +29,19 @@ export const API_ENDPOINTS = {
     me: gatewayPath("agit", "/api/v1/agits/me"),
     detail: (agitUuid: string) => gatewayPath("agit", `/api/v1/agits/${agitUuid}`),
   },
+  diary: {
+    themes: gatewayPath("diary", "/api/v1/diaries/themes"),
+    themeDetail: (themeId: string) => gatewayPath("diary", `/api/v1/diaries/themes/${themeId}`),
+    home: gatewayPath("diary", "/api/v1/diaries/home"),
+    calendar: gatewayPath("diary", "/api/v1/diaries/calendar"),
+    dateDetail: (date: string) => gatewayPath("diary", `/api/v1/diaries/dates/${date}`),
+    themeTimeline: (themeId: string) =>
+      gatewayPath("diary", `/api/v1/diaries/themes/${themeId}/timeline`),
+    videoTopicTransfer: (diaryVideoId: string) =>
+      gatewayPath("diary", `/api/v1/diaries/videos/${diaryVideoId}/topic-transfer`),
+    videoUnbind: (diaryVideoId: string) =>
+      gatewayPath("diary", `/api/v1/diaries/videos/${diaryVideoId}`),
+  },
   video: {
     uploadUrl: "/api/videos/upload-url",
     complete: (videoUuid: string) => `/api/videos/${videoUuid}/complete` as const,
