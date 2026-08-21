@@ -42,32 +42,32 @@ export function ExploreSection() {
 
   return (
     <section className="flex w-full flex-col gap-4" aria-label="새로운 루프 찾기">
-      <header className="dl-hub-head">
+      <header className="flex w-full items-center justify-between gap-[12px]">
         <div>
-          <h1 className="dl-hub-head__title">새로운 루프 찾기</h1>
-          <p className="dl-hub-head__sub">목적이 맞는 방에 참여해요</p>
+          <h1 className="m-0 text-[22px] font-semibold leading-[31px] text-[var(--dl-color-text-primary)]">새로운 루프 찾기</h1>
+          <p className="m-0 text-[11px] font-normal leading-[15px] text-[var(--dl-color-text-secondary)]">목적이 맞는 방에 참여해요</p>
         </div>
-        <TextLink href={ROUTES.mypage.root} className="dl-avatar-link no-underline" aria-label="프로필">
+        <TextLink href={ROUTES.mypage.root} className="block w-[40px] h-[40px] overflow-hidden rounded-[20px] no-underline" aria-label="프로필">
           <img src="/plip/daily-loop/explore-avatar.svg" alt="" width={40} height={40} />
         </TextLink>
       </header>
 
-      <label className="dl-search">
+      <label className="flex w-full items-center gap-[10px] h-[48px] border border-[var(--dl-color-border-default)] rounded-[14px] bg-[var(--dl-color-bg-elevated)] p-[0_16px]">
         <DailyIcon name="search" size={20} />
         <input
-          className="dl-search__input"
+          className="min-w-0 flex-1 border-0 bg-[transparent] text-sm leading-5 text-[var(--dl-color-text-primary)] [outline:none] placeholder:text-[var(--dl-color-text-tertiary)]"
           value={query}
           placeholder="방 이름, 목표, 카테고리 검색"
           onChange={(event) => setQuery(event.target.value)}
         />
       </label>
 
-      <div className="dl-pills">
+      <div className="flex flex-wrap gap-[8px] items-center">
         {CATEGORIES.map((item) => (
           <Pill
             key={item}
             selected={category === item}
-            className="dl-pill--compact"
+            className="h-[32px] p-[0_12px] rounded-[99px] bg-[var(--dl-color-bg-elevated)] text-[11px] leading-[16px] m-dlPillCompact"
             onClick={() => setCategory(item)}
           >
             {item}
@@ -76,17 +76,17 @@ export function ExploreSection() {
       </div>
 
       {showFeatured && featured ? (
-        <TextLink href={roomHref(featured.id, featured.joined)} className="dl-featured no-underline">
-          <span className="dl-badge">공개 방</span>
-          <p className="dl-featured__title">
+        <TextLink href={roomHref(featured.id, featured.joined)} className="relative flex w-full flex-col items-start gap-[10px] overflow-hidden rounded-[20px] bg-[var(--dl-color-bg-brand-subtle)] p-[18px] !no-underline no-underline">
+          <span className="inline-flex items-center justify-center h-[28px] rounded-[14px] p-[0_12px] text-xs font-semibold leading-none bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)]">공개 방</span>
+          <p className="m-0 text-[24px] font-semibold leading-[34px] text-[var(--dl-color-text-primary)]">
             러닝 메이트의
             <br />
             30일 기록
           </p>
-          <p className="dl-featured__meta">
+          <p className="m-0 text-[13px] font-medium leading-[18px] text-[var(--dl-color-text-secondary)]">
             #{featured.category} · {memberLabel(featured.memberCount, featured.maxMembers)} · 오늘 3개
           </p>
-          <span className="dl-featured__glow">
+          <span className="absolute right-[18px] bottom-[-20px] w-[124px] h-[124px] pointer-events-none">
             <img src="/plip/daily-loop/explore-glow.svg" alt="" width={124} height={124} />
           </span>
         </TextLink>
@@ -103,16 +103,16 @@ export function ExploreSection() {
           <TextLink
             key={room.id}
             href={roomHref(room.id, room.joined)}
-            className="dl-room-card no-underline"
+            className="flex w-full items-center gap-[12px] min-h-[82px] border border-[var(--dl-color-border-default)] rounded-[14px] bg-[var(--dl-color-bg-elevated)] p-[12px] !no-underline no-underline"
           >
-            <span className="dl-room-card__thumb" style={{ background: room.coverGradient }}>
+            <span className="w-[58px] h-[58px] shrink-0 overflow-hidden rounded-[12px] [&_img]:w-full [&_img]:h-full [&_img]:object-cover" style={{ background: room.coverGradient }}>
               {room.thumbnailSrc ? (
                 <img src={room.thumbnailSrc} alt="" width={58} height={58} />
               ) : null}
             </span>
             <span>
-              <p className="dl-room-card__name">{room.name}</p>
-              <p className="dl-room-card__meta">
+              <p className="m-0 text-[15px] font-semibold leading-[21px] text-[var(--dl-color-text-primary)]">{room.name}</p>
+              <p className="m-[4px_0_0] text-xs leading-[17px] text-[var(--dl-color-text-secondary)]">
                 {room.category ? `#${room.category} · ` : ""}
                 {memberLabel(room.memberCount, room.maxMembers)}
               </p>

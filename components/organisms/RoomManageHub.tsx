@@ -51,31 +51,34 @@ export function RoomManageHub({ agit }: RoomManageHubProps) {
   const visibilityLabel = agit.visibility === "private" ? "비공개" : "공개";
 
   return (
-    <section className="dl-manage-hub" aria-label="방 관리">
+    <section className="flex flex-col gap-[16px]" aria-label="방 관리">
       <NoticeCard
         tone="brand"
-        className="dl-notice-card--summary"
+        className="gap-[5px] min-h-[76px] p-[12px_14px] rounded-[14px] m-dlNoticeCardSummary"
         title={agit.name}
         body={`${memberLabel} · ${visibilityLabel} 아지트`}
       />
 
-      <div className="dl-manage-grid">
+      <div className="grid grid-cols-[1fr_1fr] gap-[14px]">
         {TILES.map((tile) => (
           <TextLink
             key={tile.title}
             href={hrefs[tile.href as keyof typeof hrefs]}
-            className={`dl-manage-tile dl-manage-tile--${tile.tone} no-underline`}
+            className={`flex min-h-[112px] flex-col gap-1.5 rounded-2xl p-3.5 no-underline ${tile.tone === "danger" ? "bg-[var(--dl-color-bg-danger)]" : "bg-[var(--dl-color-bg-brand-subtle)]"}`}
           >
-            <span className="dl-manage-tile__icon" aria-hidden>
+            <span
+              className={`grid size-7 place-items-center rounded-lg ${tile.tone === "danger" ? "bg-[rgba(216,69,69,0.12)] text-[var(--dl-color-text-danger)]" : "bg-[rgba(108,75,244,0.12)] text-[var(--dl-color-text-brand)]"}`}
+              aria-hidden
+            >
               <DailyIcon name={tile.icon} size={16} />
             </span>
-            <p className="dl-manage-tile__title">{tile.title}</p>
-            <p className="dl-manage-tile__desc">{tile.description}</p>
+            <p className={`m-0 text-sm font-semibold ${tile.tone === "danger" ? "text-[var(--dl-color-text-danger)]" : "text-[var(--dl-color-text-primary)]"}`}>{tile.title}</p>
+            <p className={`m-0 text-[10px] leading-[14px] ${tile.tone === "danger" ? "text-[var(--dl-color-text-danger)]" : "text-[var(--dl-color-text-secondary)]"}`}>{tile.description}</p>
           </TextLink>
         ))}
       </div>
 
-      <h2 className="dl-manage-hub__section-title">멤버</h2>
+      <h2 className="m-0 text-base font-semibold text-[var(--dl-color-text-primary)]">멤버</h2>
       <MemberManageRow
         name={agit.ownerName ?? "안지민"}
         meta="새벽 루틴 · 오늘 참여"
@@ -85,7 +88,7 @@ export function RoomManageHub({ agit }: RoomManageHubProps) {
       />
       <NoticeCard
         tone="danger"
-        className="dl-notice-card--compact-danger"
+        className="gap-[4px] min-h-[70px] p-[12px_14px] rounded-[14px] m-dlNoticeCardCompactDanger"
         title="토픽 삭제 제한"
         body="등록 영상이 없는 토픽만 삭제할 수 있어요."
       />

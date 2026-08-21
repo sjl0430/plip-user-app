@@ -14,8 +14,8 @@ export function DiaryThemeDetailSection({
   const groups = DIARY_THEME_DATE_GROUPS[themeId] ?? [];
 
   return (
-    <div className="plip-diary-detail">
-      <h2 className="plip-diary-detail__date">{themeName}</h2>
+    <div className="flex flex-col gap-[1.15rem] p-[0.9rem_1rem_1.75rem]">
+      <h2 className="m-0 text-center text-[1rem] font-extrabold text-[#111]">{themeName}</h2>
 
       {groups.length > 0 ? (
         groups.map((group) => (
@@ -28,11 +28,11 @@ export function DiaryThemeDetailSection({
           />
         ))
       ) : (
-        <p className="plip-diary-empty">해당 테마의 클립이 없습니다.</p>
+        <p className="m-[2rem_0_0] text-center text-[0.85rem] font-semibold text-[rgba(0,_0,_0,_0.4)]">해당 테마의 클립이 없습니다.</p>
       )}
 
-      <div className="plip-diary-detail__more">
-        <IconButton label="테마 옵션" className="plip-diary-detail__more-btn">
+      <div className="flex justify-center pt-[0.25rem]">
+        <IconButton label="테마 옵션" className="!border-[var(--dc-glass-border)] !bg-[linear-gradient(180deg,_var(--dc-glass-from),_var(--dc-glass-to))] shadow-[var(--dc-shadow)] !text-[var(--dc-fg-primary)]">
           <span aria-hidden>⋮</span>
         </IconButton>
       </div>

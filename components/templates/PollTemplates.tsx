@@ -10,7 +10,7 @@ type PollTemplateProps = {
 export function PollCreateTemplate({ agitId }: PollTemplateProps) {
   return (
     <DailyLoopAuthTemplate>
-      <p className="dl-eyebrow">POLL · CREATE</p>
+      <p className="m-0 text-xs font-semibold leading-[17px] text-[var(--dl-color-text-brand)]">POLL · CREATE</p>
       <AuthTopBar title="새 투표" backHref={ROUTES.agit.chat(agitId)} step="작성" />
       <PollEditor agitId={agitId} mode="create" />
     </DailyLoopAuthTemplate>
@@ -20,11 +20,11 @@ export function PollCreateTemplate({ agitId }: PollTemplateProps) {
 export function PollEditTemplate({ agitId }: PollTemplateProps) {
   return (
     <DailyLoopAuthTemplate>
-      <p className="dl-eyebrow">POLL · EDIT</p>
+      <p className="m-0 text-xs font-semibold leading-[17px] text-[var(--dl-color-text-brand)]">POLL · EDIT</p>
       <AuthTopBar
         title="투표 수정"
         backHref={ROUTES.agit.chat(agitId)}
-        trailing={<span className="dl-badge">초안</span>}
+        trailing={<span className="inline-flex items-center justify-center h-[28px] rounded-[14px] p-[0_12px] text-xs font-semibold leading-none bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)]">초안</span>}
       />
       <PollEditor agitId={agitId} mode="edit" />
     </DailyLoopAuthTemplate>

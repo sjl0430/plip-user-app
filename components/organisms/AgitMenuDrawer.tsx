@@ -1,4 +1,5 @@
 "use client";
+import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { DailyIcon, SubmitButton, TextLink } from "@/components/atoms";
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
@@ -39,44 +40,44 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
     <>
       <button
         type="button"
-        className={`dl-drawer-scrim ${visible ? "dl-drawer-scrim--open" : ""}`}
+        className={`fixed inset-0 z-[40] border-0 bg-[rgba(0,_0,_0,_0.32)] opacity-0 pointer-events-none transition-[opacity_280ms_ease] motion-reduce:transition-[none] ${visible ? "opacity-100 pointer-events-auto m-dlDrawerScrimOpen" : ""}`}
         aria-label="메뉴 닫기"
         onClick={onClose}
       />
       <aside
-        className={`dl-drawer dl-drawer--v14 ${visible ? "dl-drawer--open" : ""}`}
+        className={`${leftoverStyles.dlDrawer} bg-[#fbfaff] rounded-[24px_0_0_24px] m-dlDrawerV14 ${visible ? "[transform:translateX(0)] m-dlDrawerOpen" : ""}`}
         aria-label="아지트 메뉴"
         aria-hidden={!visible}
       >
-        <div className="dl-drawer__header">
-          <h2 className="dl-drawer__title">{agit.name}</h2>
-          <button type="button" className="dl-icon-sq" aria-label="닫기" onClick={onClose}>
+        <div className="flex items-center justify-between min-h-[48px]">
+          <h2 className="m-0 text-[22px] font-bold text-[#1f1c29]">{agit.name}</h2>
+          <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="닫기" onClick={onClose}>
             <DailyIcon name="x" size={20} />
           </button>
         </div>
 
-        <div className="dl-drawer__summary">
-          <p className="dl-drawer__summary-title">{agit.name}</p>
-          <p className="dl-drawer__summary-body">
+        <div className="flex flex-col gap-[6px] min-h-[88px] p-[16px] rounded-[16px] bg-[#f2edff]">
+          <p className="m-0 text-[15px] font-semibold text-[#1f1c29]">{agit.name}</p>
+          <p className="m-0 text-xs text-[#756e8a]">
             {agit.memberCount}
             {agit.maxMembers ? `/${agit.maxMembers}` : ""}명 · 방장 {agit.ownerName ?? "안지민"}
           </p>
         </div>
 
         {agit.inviteCode ? (
-          <div className="dl-drawer__invite-row">
-            <div className="dl-drawer__invite-body">
+          <div className="flex min-h-[52px] items-center justify-between gap-[12px] p-[12px_14px] border border-[#e3e0ed] rounded-[14px] bg-[#fff]">
+            <div className="flex min-w-0 items-center gap-[14px]">
               <DailyIcon name="link" size={24} />
-              <p className="dl-drawer__invite-code">{agit.inviteCode}</p>
+              <p className="m-0 overflow-hidden text-sm font-semibold tracking-[0.06em] text-[#262433] [text-overflow:ellipsis] whitespace-nowrap">{agit.inviteCode}</p>
             </div>
-            <button type="button" className="dl-badge" onClick={copyInviteCode}>
+            <button type="button" className="inline-flex items-center justify-center h-[28px] rounded-[14px] p-[0_12px] text-xs font-semibold leading-none bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)]" onClick={copyInviteCode}>
               {copied ? "복사됨" : "복사"}
             </button>
           </div>
         ) : null}
 
         {MENU.map((item) => (
-          <TextLink key={item.id} href={item.href(agit.id)} className="dl-drawer__menu-row" onClick={onClose}>
+          <TextLink key={item.id} href={item.href(agit.id)} className="flex min-h-[52px] items-center gap-[14px] p-[12px_14px] border border-[#e3e0ed] rounded-[14px] bg-[#fff] !text-[#262433] text-sm font-semibold !no-underline" onClick={onClose}>
             <DailyIcon name={item.icon} size={24} />
             {item.label}
           </TextLink>

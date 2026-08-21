@@ -14,8 +14,8 @@ export function RecordCalendarTemplate({ agitId }: RecordCalendarTemplateProps) 
     return (
       <AppChromeTemplate activeTab="agit" variant="light">
         <section className="px-6 py-8">
-          <p className="dl-subtitle">방을 찾을 수 없습니다.</p>
-          <TextLink href={ROUTES.agit.root} className="dl-link">
+          <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">방을 찾을 수 없습니다.</p>
+          <TextLink href={ROUTES.agit.root} className="!text-[var(--dl-color-text-brand)] text-sm font-medium leading-5 !no-underline hover:!underline">
             목록으로
           </TextLink>
         </section>

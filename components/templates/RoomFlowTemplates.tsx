@@ -14,8 +14,8 @@ import type { UiAgit } from "@/types/agit/ui";
 function RoomMissing({ backHref = ROUTES.agit.root }: { backHref?: string }) {
   return (
     <DailyLoopAuthTemplate>
-      <p className="dl-subtitle">방을 찾을 수 없습니다.</p>
-      <TextLink href={backHref} className="dl-link">
+      <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">방을 찾을 수 없습니다.</p>
+      <TextLink href={backHref} className="!text-[var(--dl-color-text-brand)] text-sm font-medium leading-5 !no-underline hover:!underline">
         목록으로
       </TextLink>
     </DailyLoopAuthTemplate>
@@ -28,7 +28,7 @@ export function PublicRoomTemplate({ agitId }: { agitId: string }) {
 
   return (
     <DailyLoopAuthTemplate>
-      <p className="dl-eyebrow">R01 · PUBLIC ROOM</p>
+      <p className="m-0 text-xs font-semibold leading-[17px] text-[var(--dl-color-text-brand)]">R01 · PUBLIC ROOM</p>
       <AuthTopBar title="방 정보" backHref={ROUTES.agit.root} />
       <PublicRoomDetail agit={agit} />
     </DailyLoopAuthTemplate>
@@ -41,7 +41,7 @@ export function InviteConfirmTemplate({ agitId }: { agitId: string }) {
 
   return (
     <DailyLoopAuthTemplate>
-      <p className="dl-eyebrow">R02 · PRIVATE INVITE</p>
+      <p className="m-0 text-xs font-semibold leading-[17px] text-[var(--dl-color-text-brand)]">R02 · PRIVATE INVITE</p>
       <AuthTopBar title="초대 확인" backHref={ROUTES.agit.root} />
       <div className="h-2" />
       <InviteConfirmSection agit={agit} />
@@ -73,10 +73,10 @@ export function RoomProfileTemplate({ agitId }: { agitId: string }) {
 
   return (
     <DailyLoopAuthTemplate>
-      <p className="dl-eyebrow">R05 · ROOM PROFILE</p>
+      <p className="m-0 text-xs font-semibold leading-[17px] text-[var(--dl-color-text-brand)]">R05 · ROOM PROFILE</p>
       <AuthTopBar title="이 방에서 사용할 프로필" backHref={ROUTES.agit.enter(agitId)} />
-      <h2 className="dl-title dl-title--section">프로필을 선택해주세요</h2>
-      <p className="dl-subtitle">한 유저는 한 방에서 하나의 프로필만 사용합니다.</p>
+      <h2 className="m-0 text-[28px] font-bold leading-[34px] text-[var(--dl-color-text-primary)] text-[24px] leading-[35px] m-dlTitleSection">프로필을 선택해주세요</h2>
+      <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">한 유저는 한 방에서 하나의 프로필만 사용합니다.</p>
       <RoomProfileSelect agitId={agitId} />
     </DailyLoopAuthTemplate>
   );
@@ -92,8 +92,8 @@ export function JoinCompleteTemplate({
   if (error) {
     return (
       <DailyLoopAuthTemplate>
-        <p className="dl-subtitle">{error}</p>
-        <TextLink href={ROUTES.agit.root} className="dl-link">
+        <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">{error}</p>
+        <TextLink href={ROUTES.agit.root} className="!text-[var(--dl-color-text-brand)] text-sm font-medium leading-5 !no-underline hover:!underline">
           목록으로
         </TextLink>
       </DailyLoopAuthTemplate>
@@ -106,7 +106,7 @@ export function JoinCompleteTemplate({
 
   return (
     <DailyLoopAuthTemplate>
-      <p className="dl-eyebrow">R06 · JOIN COMPLETE</p>
+      <p className="m-0 text-xs font-semibold leading-[17px] text-[var(--dl-color-text-brand)]">R06 · JOIN COMPLETE</p>
       <div className="h-[42px]" />
       <JoinCompleteSection agit={agit} profileName={agit.ownerName} />
     </DailyLoopAuthTemplate>

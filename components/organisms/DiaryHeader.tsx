@@ -43,7 +43,7 @@ export function DiaryMenuLink({
   children: ReactNode;
 }) {
   return (
-    <TextLink href={href} className="plip-diary-sheet__link">
+    <TextLink href={href} className="!block p-[0.45rem_0] !text-[#111] !text-[0.92rem] !font-bold !no-underline">
       {children}
     </TextLink>
   );

@@ -7,14 +7,14 @@ import Image from "next/image";
 export function DiaryMainSection() {
   return (
     <section className="flex flex-col gap-4 px-6 pb-8 pt-2" aria-label="다이어리 홈">
-      <header className="dl-page-head">
+      <header className="flex items-start justify-between gap-[12px] gap-[10px] mb-[4px]">
         <div>
           <h1 className="m-0 text-[22px] font-bold leading-normal text-[var(--dl-color-text-primary)]">
             안녕하세요, 지민님
           </h1>
-          <p className="dl-page-head__sub">오늘의 5초를 자유롭게 남겨보세요.</p>
+          <p className="m-[6px_0_0] text-[13px] leading-[16px] text-[var(--dl-color-text-secondary)]">오늘의 5초를 자유롭게 남겨보세요.</p>
         </div>
-        <TextLink href={ROUTES.mypage.notifications} className="dl-icon-sq no-underline" aria-label="알림">
+        <TextLink href={ROUTES.mypage.notifications} className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="알림">
           <DailyIcon name="bell" size={20} />
         </TextLink>
       </header>
@@ -35,9 +35,9 @@ export function DiaryMainSection() {
       />
 
       <h2 className="m-0 text-[18px] font-semibold text-[var(--dl-color-text-primary)]">최근 기록</h2>
-      <TextLink href={ROUTES.diary.date("2026-08-12")} className="dl-recent-strip no-underline">
+      <TextLink href={ROUTES.diary.date("2026-08-12")} className="relative h-[160px] overflow-hidden rounded-[16px] no-underline">
         <Image src="/plip/v13/diary-recent.png" alt="" fill className="object-cover" sizes="354px" />
-        <p className="dl-recent-strip__label">퇴근 후 산책 · 8월 12일</p>
+        <p className="absolute bottom-[16px] left-[16px] m-0 text-sm font-semibold text-[#fff]">퇴근 후 산책 · 8월 12일</p>
       </TextLink>
     </section>
   );

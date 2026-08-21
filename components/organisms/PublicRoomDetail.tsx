@@ -14,7 +14,7 @@ export function PublicRoomDetail({ agit }: PublicRoomDetailProps) {
 
   return (
     <section className="flex w-full flex-col gap-3.5">
-      <div className="dl-thumb">
+      <div className="relative w-full h-[190px] overflow-hidden rounded-[18px] [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
         <Image
           src={agit.thumbnailSrc ?? "/plip/daily-loop/room-thumbnail.png"}
           alt=""
@@ -22,18 +22,18 @@ export function PublicRoomDetail({ agit }: PublicRoomDetailProps) {
           className="object-cover"
           sizes="350px"
         />
-        <DailyIcon name="video" size={32} className="dl-thumb__icon" />
+        <DailyIcon name="video" size={32} className="absolute top-[50%] left-[50%] w-[32px] h-[32px] [transform:translate(-50%,_-50%)]" />
       </div>
 
-      <div className="dl-pills">
-        {agit.category ? <span className="dl-pill dl-pill--brand">{agit.category}</span> : null}
-        <span className="dl-pill">공개 방</span>
+      <div className="flex flex-wrap gap-[8px] items-center">
+        {agit.category ? <span className="inline-flex items-center border border-[var(--dl-color-border-default)] rounded-[18px] bg-[var(--dl-color-bg-surface)] p-[8px_14px] text-[13px] font-medium leading-[19px] text-[var(--dl-color-text-secondary)] border-[var(--dl-color-border-brand)] bg-[var(--dl-color-bg-brand)] text-[#fff] m-dlPillBrand">{agit.category}</span> : null}
+        <span className="inline-flex items-center border border-[var(--dl-color-border-default)] rounded-[18px] bg-[var(--dl-color-bg-surface)] p-[8px_14px] text-[13px] font-medium leading-[19px] text-[var(--dl-color-text-secondary)]">공개 방</span>
       </div>
 
-      <h2 className="dl-title">{agit.name}</h2>
-      <p className="dl-subtitle">{agit.description}</p>
+      <h2 className="m-0 text-[28px] font-bold leading-[34px] text-[var(--dl-color-text-primary)]">{agit.name}</h2>
+      <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">{agit.description}</p>
 
-      <div className="dl-panel dl-panel--stack">
+      <div className="w-full rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-elevated)] p-[16px_14px] flex flex-col gap-[10px] m-dlPanelStack">
         <RoomInfoRow
           icon="users"
           title={`${agit.memberCount} / ${maxMembers}명`}
@@ -46,12 +46,12 @@ export function PublicRoomDetail({ agit }: PublicRoomDetailProps) {
         />
       </div>
 
-      <p className="dl-subtitle text-[12px] leading-[17px]">
+      <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)] text-[12px] leading-[17px]">
         방장은 {agit.ownerName ?? "방장"} · 공개방은 바로 참여할 수 있어요.
       </p>
 
-      <div className="dl-actions">
-        <TextLink href={ROUTES.agit.profile(agit.id)} className="dl-btn dl-btn--primary no-underline">
+      <div className="flex w-full flex-col gap-[14px] mt-auto">
+        <TextLink href={ROUTES.agit.profile(agit.id)} className="inline-flex h-[44px] w-full items-center justify-center gap-[8px] rounded-[var(--dl-radius-md)] p-[12px_20px] text-sm font-medium leading-5 !no-underline border-0 bg-[var(--dl-color-bg-brand-subtle)] border-0 bg-[var(--dl-color-bg-brand)] !text-[var(--dl-color-text-inverse)] shadow-[none] [backdrop-filter:none] m-dlBtnPrimary no-underline">
           이 방에 참여하기
         </TextLink>
       </div>

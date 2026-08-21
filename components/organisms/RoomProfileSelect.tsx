@@ -52,16 +52,16 @@ export function RoomProfileSelect({ agitId }: RoomProfileSelectProps) {
         onClick={() => setSelectedId("new")}
       />
 
-      <div className="dl-panel">
+      <div className="w-full rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-elevated)] p-[16px_14px]">
         <p className="m-0 text-[13px] font-semibold leading-[19px] text-[var(--dl-color-text-primary)]">
           친구 추가 기능은 제공하지 않아요
         </p>
-        <p className="dl-notice-body mt-1.5">
+        <p className="m-0 text-xs font-normal leading-[18px] text-[var(--dl-color-text-secondary)] mt-1.5">
           프로필은 방 안에서 작성자를 구분하기 위해 사용합니다.
         </p>
       </div>
 
-      <div className="dl-actions">
+      <div className="flex w-full flex-col gap-[14px] mt-auto">
         <SubmitButton variant="brand">이 프로필로 참여</SubmitButton>
       </div>
     </form>

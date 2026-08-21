@@ -64,15 +64,15 @@ export function CreateRoomAccessForm() {
     <form className="flex w-full flex-col gap-3.5" action={handleSubmit}>
       <p className="m-0 text-[16px] font-semibold text-[var(--dl-color-text-primary)]">사진과 닉네임</p>
 
-      <div className="dl-profile-card dl-profile-card--room">
-        <div className="dl-profile-card__avatar">
+      <div className="flex w-full items-center gap-[12px] border border-[var(--dl-color-border-default)] rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-elevated)] p-[14px] text-left min-h-[100px] rounded-[16px] bg-[var(--dl-color-bg-surface)] min-h-[84px] rounded-[14px] m-dlProfileCardRoom">
+        <div className="w-[56px] h-[56px] overflow-hidden rounded-[999px] shrink-0">
           <Image src="/plip/v13/profile-avatar.svg" alt="" width={56} height={56} />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="dl-notice-card__title">프로필 사진</p>
-          <p className="dl-notice-card__body">아지트에서 사용할 프로필</p>
+          <p className="text-sm leading-[17px] text-xs leading-[15px] text-[var(--dl-color-text-danger)] m-0 font-semibold leading-[18px] text-[var(--dl-color-text-primary)]">프로필 사진</p>
+          <p className="text-[11px] leading-[13px] text-[var(--dl-color-text-danger)] m-0 text-[13px] leading-[16px] text-[var(--dl-color-text-secondary)]">아지트에서 사용할 프로필</p>
         </div>
-        <button type="button" className="dl-profile-card__action">
+        <button type="button" className="border-0 bg-[transparent] text-xs font-medium text-[var(--dl-color-text-brand)] cursor-pointer whitespace-nowrap">
           사진 변경
         </button>
       </div>
@@ -100,7 +100,7 @@ export function CreateRoomAccessForm() {
 
       {error ? <p className="m-0 text-[12px] text-red-600">{error}</p> : null}
 
-      <div className="dl-actions">
+      <div className="flex w-full flex-col gap-[14px] mt-auto">
         <SubmitButton variant="brand" disabled={!agreed || pending}>
           {pending ? "만드는 중..." : "아지트 만들기"}
         </SubmitButton>

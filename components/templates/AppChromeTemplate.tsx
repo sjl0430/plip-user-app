@@ -20,14 +20,14 @@ export function AppChromeTemplate({
 }: AppChromeTemplateProps) {
   const shellClass =
     variant === "light" || variant === "diary"
-      ? "plip-tt-shell plip-tt-shell--light"
-      : "plip-tt-shell";
+      ? "mx-auto flex min-h-dvh w-full flex-col bg-[var(--dl-color-bg-elevated)] font-[family-name:var(--font-inter),var(--font-sans),system-ui,sans-serif] text-[var(--dl-color-text-primary)] md:h-full md:min-h-0"
+      : "mx-auto flex min-h-dvh w-full flex-col bg-[var(--plip-tt-bg)] text-[var(--plip-tt-text)] md:h-full md:min-h-0";
 
   return (
     <div className={`${shellClass} ${className}`.trim()}>
-      <div className="plip-tt-shell__stage">
+      <div className="flex flex-1 min-w-0 min-h-0 flex-col w-full">
         {header}
-        <main className="plip-tt-shell__main">{children}</main>
+        <main className="flex flex-1 min-h-0 flex-col w-full">{children}</main>
       </div>
       {showNav ? <BottomNavigation active={activeTab} variant={variant} /> : null}
     </div>

@@ -125,7 +125,7 @@ export function IntroCursorEffects() {
 
   return (
     <>
-      <div className="cursor-lightning-layer" aria-hidden="true">
+      <div className="fixed inset-0 z-30 pointer-events-none overflow-hidden [@media(hover:none),(pointer:coarse)]:hidden motion-reduce:hidden" aria-hidden="true">
         {sparks.map((spark) => (
           <CursorSpark
             key={spark.id}

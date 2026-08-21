@@ -63,10 +63,10 @@ export function RestoreAccountDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton={!pending} className="dl-panel border-[var(--dl-color-border-default)] bg-white">
+      <DialogContent showCloseButton={!pending} className="w-full rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-elevated)] p-[16px_14px] border-[var(--dl-color-border-default)] bg-white">
         <DialogHeader>
-          <DialogTitle className="dl-title text-base">탈퇴 유예 중인 계정</DialogTitle>
-          <DialogDescription className="dl-subtitle text-[13px]">
+          <DialogTitle className="m-0 text-[28px] font-bold leading-[34px] text-[var(--dl-color-text-primary)] text-base">탈퇴 유예 중인 계정</DialogTitle>
+          <DialogDescription className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)] text-[13px]">
             30일 유예 기간 중입니다. 계정을 복구하시겠습니까?
           </DialogDescription>
         </DialogHeader>
