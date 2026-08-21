@@ -1,10 +1,14 @@
 "use client";
 
-import { DailyIcon, SubmitButton, TextLink } from "@/components/atoms";
-import { useOverlayTransition } from "@/hooks/useOverlayTransition";
+import { leaveAgitAction } from "@/actions/agitActions";
+import { DailyIcon, Separator, TextLink } from "@/components/atoms";
+import { AGIT_TOPICS } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
+import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import { cn } from "@/lib/utils";
 import type { UiAgit } from "@/types/agit/ui";
+import { Copy, Link2, LogOut, Settings, UserRoundCog } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type AgitMenuDrawerProps = {
@@ -14,24 +18,55 @@ type AgitMenuDrawerProps = {
 };
 
 const MENU = [
-  { id: "chat", label: "채팅", icon: "message" as const, href: (id: string) => ROUTES.agit.chat(id) },
-  { id: "calendar", label: "캘린더", icon: "calendar" as const, href: (id: string) => ROUTES.agit.calendar(id) },
-  { id: "members", label: "멤버 관리", icon: "users" as const, href: (id: string) => ROUTES.agit.members(id) },
-  { id: "settings", label: "방 설정", icon: "usersBrand" as const, href: (id: string) => ROUTES.agit.manage(id) },
+  { id: "chat" as const, label: "채팅", href: (id: string) => ROUTES.agit.chat(id) },
+  { id: "members" as const, label: "멤버리스트", href: (id: string) => ROUTES.agit.members(id) },
+  { id: "profile" as const, label: "내프로필관리", href: (id: string) => ROUTES.agit.profile(id) },
+  { id: "manage" as const, label: "아지트관리", href: (id: string) => ROUTES.agit.manage(id) },
 ];
+
+function MenuItemIcon({ id }: { id: (typeof MENU)[number]["id"] }) {
+  if (id === "chat") {
+    return <DailyIcon name="message" size={24} />;
+  }
+  if (id === "members") {
+    return <DailyIcon name="users" size={24} />;
+  }
+  if (id === "profile") {
+    return <UserRoundCog className="size-6 shrink-0 text-[#262433]" strokeWidth={2} />;
+  }
+  return <Settings className="size-6 shrink-0 text-[#262433]" strokeWidth={2} />;
+}
 
 export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
   const { mounted, visible } = useOverlayTransition(open);
+  const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const [leaveError, setLeaveError] = useState<string | null>(null);
+  const inviteCode = agit.inviteCode?.trim() ?? "";
 
   async function copyInviteCode() {
-    if (!agit.inviteCode) return;
+    if (!inviteCode) return;
     try {
-      await navigator.clipboard.writeText(agit.inviteCode);
+      await navigator.clipboard.writeText(inviteCode);
       setCopied(true);
     } catch {
       setCopied(false);
     }
+  }
+
+  async function handleLeave() {
+    if (leaving) return;
+    setLeaving(true);
+    setLeaveError(null);
+    const result = await leaveAgitAction(agit.id);
+    if (!result.ok) {
+      setLeaveError(result.error);
+      setLeaving(false);
+      return;
+    }
+    onClose();
+    router.push(ROUTES.agit.root);
   }
 
   if (!mounted) return null;
@@ -55,43 +90,61 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
         aria-label="아지트 메뉴"
         aria-hidden={!visible}
       >
-        <div className="flex items-center justify-between min-h-[48px]">
+        <div className="flex shrink-0 items-center justify-between min-h-[48px]">
           <h2 className="m-0 text-[22px] font-bold text-[#1f1c29]">{agit.name}</h2>
           <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="닫기" onClick={onClose}>
             <DailyIcon name="x" size={20} />
           </button>
         </div>
 
-        <div className="flex flex-col gap-[6px] min-h-[88px] p-[16px] rounded-[16px] bg-[#f2edff]">
-          <p className="m-0 text-[15px] font-semibold text-[#1f1c29]">{agit.name}</p>
-          <p className="m-0 text-xs text-[#756e8a]">
-            {agit.memberCount}
-            {agit.maxMembers ? `/${agit.maxMembers}` : ""}명 · 방장 {agit.ownerName ?? "안지민"}
-          </p>
+        <button
+          type="button"
+          className="flex min-h-[32px] w-full shrink-0 items-center justify-between gap-2 p-[6px_10px] border border-[#e3e0ed] rounded-[10px] bg-[#fff] text-left cursor-pointer disabled:cursor-default"
+          onClick={copyInviteCode}
+          disabled={!inviteCode}
+          aria-label="초대코드 복사"
+        >
+          <div className="flex min-w-0 items-center gap-2">
+            <Link2 className="size-3.5 shrink-0 text-[#262433]" strokeWidth={2} />
+            <p className="m-0 overflow-hidden text-xs font-medium tracking-[0.04em] text-[#262433] [text-overflow:ellipsis] whitespace-nowrap">
+              {inviteCode || "초대코드"}
+            </p>
+          </div>
+          <Copy className="size-3.5 shrink-0 text-[var(--dl-color-text-brand)]" strokeWidth={2} aria-hidden />
+          <span className="sr-only">{copied ? "복사됨" : "복사"}</span>
+        </button>
+
+        <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto">
+          <div className="flex flex-col gap-1" aria-label="진행중인 토픽">
+            {AGIT_TOPICS.map((topic) => (
+              <p key={topic.id} className="m-0 px-1 text-sm font-medium text-[#262433]">
+                {topic.title}
+              </p>
+            ))}
+          </div>
+
+          <Separator className="!m-1 !border-[#e3e0ed]" />
+
+          {MENU.map((item) => (
+            <TextLink key={item.id} href={item.href(agit.id)} className="flex min-h-[52px] items-center gap-[14px] p-[12px_14px] border border-[#e3e0ed] rounded-[14px] bg-[#fff] !text-[#262433] text-sm font-semibold !no-underline" onClick={onClose}>
+              <MenuItemIcon id={item.id} />
+              {item.label}
+            </TextLink>
+          ))}
         </div>
 
-        {agit.inviteCode ? (
-          <div className="flex min-h-[52px] items-center justify-between gap-[12px] p-[12px_14px] border border-[#e3e0ed] rounded-[14px] bg-[#fff]">
-            <div className="flex min-w-0 items-center gap-[14px]">
-              <DailyIcon name="link" size={24} />
-              <p className="m-0 overflow-hidden text-sm font-semibold tracking-[0.06em] text-[#262433] [text-overflow:ellipsis] whitespace-nowrap">{agit.inviteCode}</p>
-            </div>
-            <button type="button" className="inline-flex items-center justify-center h-[28px] rounded-[14px] p-[0_12px] text-xs font-semibold leading-none bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)]" onClick={copyInviteCode}>
-              {copied ? "복사됨" : "복사"}
-            </button>
-          </div>
-        ) : null}
-
-        {MENU.map((item) => (
-          <TextLink key={item.id} href={item.href(agit.id)} className="flex min-h-[52px] items-center gap-[14px] p-[12px_14px] border border-[#e3e0ed] rounded-[14px] bg-[#fff] !text-[#262433] text-sm font-semibold !no-underline" onClick={onClose}>
-            <DailyIcon name={item.icon} size={24} />
-            {item.label}
-          </TextLink>
-        ))}
-
-        <SubmitButton variant="outline" className="w-full">
-          아지트 나가기
-        </SubmitButton>
+        <div className="flex shrink-0 flex-col items-end gap-2">
+          {leaveError ? <p className="m-0 w-full text-right text-xs text-[var(--dl-color-text-danger)]">{leaveError}</p> : null}
+          <button
+            type="button"
+            className="grid w-[44px] h-[44px] place-items-center rounded-[var(--dl-radius-md)] border border-[#e3e0ed] bg-[#fff] cursor-pointer disabled:opacity-50"
+            aria-label="아지트 나가기"
+            disabled={leaving}
+            onClick={handleLeave}
+          >
+            <LogOut className="size-5 text-[#d84545]" strokeWidth={2} />
+          </button>
+        </div>
       </aside>
     </>
   );

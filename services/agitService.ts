@@ -58,6 +58,10 @@ function mapCreatedAgit(item: ApiCreateAgitResponse): UiAgit {
   };
 }
 
+export async function leaveAgit(agitId: string): Promise<void> {
+  await agitApi.leaveAgit(agitId);
+}
+
 export async function createAgit(input: UiCreateAgitInput): Promise<UiAgit> {
   const body: ApiCreateAgitRequest = {
     agitName: input.agitName,

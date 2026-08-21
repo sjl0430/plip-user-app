@@ -35,3 +35,13 @@ export async function createAgit(body: ApiCreateAgitRequest): Promise<ApiCreateA
     }),
   );
 }
+
+export async function leaveAgit(agitUuid: string): Promise<void> {
+  await withAuthRetry(async () =>
+    apiFetch<void>(API_ENDPOINTS.agit.leave(agitUuid), {
+      method: "POST",
+      baseUrl: getApiUrl(),
+      headers: await getActorUserHeaders(),
+    }),
+  );
+}
