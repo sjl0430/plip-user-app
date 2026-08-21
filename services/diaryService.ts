@@ -1,7 +1,7 @@
 import * as diaryApi from "@/lib/api/diaryApi";
 import type {
   ApiDiaryDateResponse,
-  ApiDiaryDateThemeGroup,
+  ApiDiaryDateSection,
   ApiDiaryHomeSection,
   ApiDiaryTheme,
   ApiDiaryTimelineDateGroup,
@@ -31,10 +31,10 @@ function toOptionalThumbnail(path: string | null): string | undefined {
 
 function mapVideoSummary(video: ApiDiaryVideoSummary, themeId: string, date: string): UiDiaryClip {
   return {
-    id: video.diaryVideoId,
+    id: String(video.id),
     themeId,
     date,
-    thumbnailSrc: toOptionalThumbnail(video.thumbnailPath),
+    thumbnailSrc: toOptionalThumbnail(video.thumbnailUrl),
   };
 }
 
@@ -102,12 +102,14 @@ function mapHomeSection(section: ApiDiaryHomeSection): UiDiaryDateEntry {
   };
 }
 
-function mapDateThemeGroup(group: ApiDiaryDateThemeGroup, date: string): UiDiaryDateThemeGroup {
+function mapDateThemeGroup(group: ApiDiaryDateSection, date: string): UiDiaryDateThemeGroup {
+  const themeId = String(group.themeId);
+
   return {
-    themeId: group.themeId,
+    themeId,
     themeName: group.themeName,
     clipCount: group.videos.length,
-    clips: group.videos.map((video) => mapVideoSummary(video, group.themeId, date)),
+    clips: group.videos.map((video) => mapVideoSummary(video, themeId, date)),
   };
 }
 
@@ -121,8 +123,8 @@ function mapTimelineDateGroup(group: ApiDiaryTimelineDateGroup, themeId: string)
 
 function mapDateResponse(response: ApiDiaryDateResponse): UiDiaryDateGroup {
   return {
-    date: response.writtenDate,
-    themes: response.themes.map((group) => mapDateThemeGroup(group, response.writtenDate)),
+    date: response.date,
+    themes: response.sections.map((group) => mapDateThemeGroup(group, response.date)),
   };
 }
 

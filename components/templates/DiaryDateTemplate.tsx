@@ -1,14 +1,29 @@
 import { DiaryDateDetailSection } from "@/components/organisms";
 import { DiaryTemplate } from "@/components/templates/DiaryTemplate";
+import type { UiDiaryDateGroup } from "@/types/diary/ui";
 
 type DiaryDateTemplateProps = {
-  date: string;
+  dateGroup: UiDiaryDateGroup;
+  prevDate: string;
+  nextDate: string;
+  error?: string;
 };
 
-export function DiaryDateTemplate({ date }: DiaryDateTemplateProps) {
+export function DiaryDateTemplate({
+  dateGroup,
+  prevDate,
+  nextDate,
+  error,
+}: DiaryDateTemplateProps) {
   return (
     <DiaryTemplate>
-      <DiaryDateDetailSection date={date} />
+      <DiaryDateDetailSection
+        date={dateGroup.date}
+        themes={dateGroup.themes}
+        prevDate={prevDate}
+        nextDate={nextDate}
+        error={error}
+      />
     </DiaryTemplate>
   );
 }

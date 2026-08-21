@@ -21,8 +21,11 @@ export type ApiUpdateDiaryThemeNameRequest = {
 };
 
 export type ApiDiaryVideoSummary = {
-  diaryVideoId: string;
-  thumbnailPath: string | null;
+  id: number;
+  videoUuid: string;
+  caption: string | null;
+  thumbnailUrl: string | null;
+  createdAt: string;
 };
 
 export type ApiDiaryHomeVideo = {
@@ -50,15 +53,15 @@ export type ApiDiaryCalendarResponse = {
   writtenDates: string[];
 };
 
-export type ApiDiaryDateThemeGroup = {
-  themeId: string;
+export type ApiDiaryDateSection = {
+  themeId: number;
   themeName: string;
   videos: ApiDiaryVideoSummary[];
 };
 
 export type ApiDiaryDateResponse = {
-  writtenDate: string;
-  themes: ApiDiaryDateThemeGroup[];
+  date: string;
+  sections: ApiDiaryDateSection[];
 };
 
 export type ApiDiaryTimelineDateGroup = {
