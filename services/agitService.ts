@@ -37,9 +37,20 @@ export async function listMyAgits(): Promise<UiAgit[]> {
   return items.map(mapMyAgit);
 }
 
-export async function getAgit(agitId: string): Promise<UiAgit> {
+export async function getAgitAndMembers(agitId: string): Promise<{
+  agit: UiAgit;
+  members: ApiAgitDetail["members"];
+}> {
   const item = await agitApi.getAgit(agitId);
-  return mapAgitDetail(item);
+  return {
+    agit: mapAgitDetail(item),
+    members: item.members ?? [],
+  };
+}
+
+export async function getAgit(agitId: string): Promise<UiAgit> {
+  const { agit } = await getAgitAndMembers(agitId);
+  return agit;
 }
 
 function mapCreatedAgit(item: ApiCreateAgitResponse): UiAgit {

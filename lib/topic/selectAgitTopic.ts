@@ -1,0 +1,27 @@
+import type { ApiTopic } from "@/types/topic/api";
+
+export function toKstDateString(value: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(value);
+}
+
+export function isSameKstDate(iso: string, today = new Date()): boolean {
+  const parsed = new Date(iso);
+  if (Number.isNaN(parsed.getTime())) {
+    return false;
+  }
+  return toKstDateString(parsed) === toKstDateString(today);
+}
+
+/** 오늘(KST) startAt 토픽. 없으면 목록 첫 항목(최신). 0개면 null. */
+export function selectAgitTopic(topics: ApiTopic[], today = new Date()): ApiTopic | null {
+  if (topics.length === 0) {
+    return null;
+  }
+  const todayTopic = topics.find((topic) => isSameKstDate(topic.startAt, today));
+  return todayTopic ?? topics[0] ?? null;
+}
