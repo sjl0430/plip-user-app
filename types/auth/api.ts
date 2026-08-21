@@ -60,3 +60,49 @@ export type ApiAccountRestoreResponse = ApiTokenResponse & {
   code?: string;
   message?: string;
 };
+
+export type ApiOtpPurpose = "SIGNUP" | "PASSWORD_RESET";
+
+export type ApiEmailOtpRequest = {
+  email: string;
+  purpose?: ApiOtpPurpose;
+};
+
+export type ApiEmailOtpRequestResponse = {
+  message?: string;
+};
+
+export type ApiEmailOtpVerifyRequest = {
+  email: string;
+  otpCode: string;
+  purpose?: ApiOtpPurpose;
+};
+
+export type ApiEmailOtpVerifyResponse = {
+  verificationToken: string;
+};
+
+export type ApiLocalSignupRequest = {
+  email: string;
+  verificationToken: string;
+  password: string;
+  nickname: string;
+  termsAgreements?: ApiTermAgreement[];
+};
+
+export type ApiLocalSignupResponse = ApiTokenResponse & {
+  message?: string;
+};
+
+export type ApiTermResponse = {
+  id: number;
+  title: string;
+  contentPath?: string;
+  termCode?: string;
+  version?: string;
+  required?: boolean;
+};
+
+export type ApiTermsListResponse = {
+  terms: ApiTermResponse[];
+};

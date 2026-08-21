@@ -25,3 +25,19 @@ export type UiRestoreSocialPayload = {
 };
 
 export type UiRestorePayload = UiRestoreLocalPayload | UiRestoreSocialPayload;
+
+export type UiOtpPurpose = "SIGNUP" | "PASSWORD_RESET";
+
+export type UiTerm = {
+  id: number;
+  title: string;
+  required: boolean;
+  termCode?: string;
+};
+
+export type UiSignupDraft = {
+  email: string;
+  password: string;
+  verificationToken: string;
+  termsAgreements: { termId: number; agreed: boolean }[];
+};
