@@ -25,14 +25,23 @@ export type ApiDiaryVideoSummary = {
   thumbnailPath: string | null;
 };
 
-export type ApiDiaryHomeItem = {
-  writtenDate: string;
-  hasVideos: boolean;
-  thumbnailPaths: string[];
+export type ApiDiaryHomeVideo = {
+  id: number;
+  themeId: number;
+  themeName: string;
+  videoUuid: string;
+  caption: string | null;
+  thumbnailUrl: string | null;
+  createdAt: string;
+};
+
+export type ApiDiaryHomeSection = {
+  date: string;
+  videos: ApiDiaryHomeVideo[];
 };
 
 export type ApiDiaryHomeResponse = {
-  items: ApiDiaryHomeItem[];
+  sections: ApiDiaryHomeSection[];
 };
 
 export type ApiDiaryCalendarResponse = {
