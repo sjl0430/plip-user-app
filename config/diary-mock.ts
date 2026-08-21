@@ -77,10 +77,3 @@ export function formatDiaryWeekday(date: string): string {
   const parsed = new Date(`${date}T12:00:00`);
   return weekdays[parsed.getDay()];
 }
-
-export function parseDiaryDateParam(date: string): string | null {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    return null;
-  }
-  return date;
-}
