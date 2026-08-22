@@ -123,7 +123,6 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
         open={open}
         onClose={handleClose}
         aria-label="아지트 메뉴"
-        className="w-[min(310px,86%)] gap-2.5 overflow-hidden rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-12 md:pb-5"
       >
         <SideSheetHeader title={agit.name} onClose={handleClose} />
 

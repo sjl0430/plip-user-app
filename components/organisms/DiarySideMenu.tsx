@@ -21,7 +21,6 @@ export function DiarySideMenu({ open, onClose }: DiarySideMenuProps) {
       open={open}
       onClose={onClose}
       aria-label="다이어리 메뉴"
-      className="flex w-[min(310px,86vw)] flex-col gap-4 rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-6"
     >
       <SideSheetHeader title="다이어리" onClose={onClose} />
 

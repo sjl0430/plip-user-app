@@ -2,7 +2,8 @@
 
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 type AnimatedDropdownProps = {
   open: boolean;
@@ -111,11 +112,16 @@ export function AnimatedSideSheet({
   "aria-label": ariaLabel,
 }: AnimatedSideSheetProps) {
   const { mounted, visible } = useOverlayTransition(open);
+  const [root, setRoot] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setRoot(document.getElementById("plip-overlay-root"));
+  }, []);
 
   if (!mounted) return null;
 
-  return (
-    <div className="fixed inset-0 z-[40] md:absolute">
+  const sheet = (
+    <div className="absolute inset-0 z-[40]">
       <button
         type="button"
         className={cn(
@@ -129,8 +135,8 @@ export function AnimatedSideSheet({
         aria-label={ariaLabel}
         aria-hidden={!visible}
         className={cn(
-          "absolute top-0 bottom-0 z-[1] flex flex-col overflow-y-auto [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
-          side === "left" ? "left-0" : "right-0",
+          "absolute top-0 bottom-0 z-[1] flex w-[min(310px,86%)] flex-col gap-2.5 overflow-y-auto bg-[#fbfaff] px-6 pt-12 pb-12 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none md:pb-5",
+          side === "left" ? "left-0 rounded-r-[24px]" : "right-0 rounded-l-[24px]",
           visible
             ? "[transform:translateX(0)]"
             : side === "left"
@@ -143,4 +149,10 @@ export function AnimatedSideSheet({
       </aside>
     </div>
   );
+
+  if (root) {
+    return createPortal(sheet, root);
+  }
+
+  return <div className="fixed inset-0 z-[40] md:absolute">{sheet}</div>;
 }

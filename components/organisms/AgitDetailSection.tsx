@@ -63,7 +63,7 @@ export function AgitDetailSection({ agit, gallery, error, galleryError }: AgitDe
   const heading = gallery.topic?.isToday || !gallery.topic ? "오늘의 토픽" : gallery.topic.title || "토픽";
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <ScreenHeader
         leading={<HeaderBackLink href={ROUTES.agit.root} />}
         title={heading}
