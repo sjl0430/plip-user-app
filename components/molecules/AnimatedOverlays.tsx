@@ -2,8 +2,26 @@
 
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import { cn } from "@/lib/utils";
-import { useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+
+const OverlayPortalContext = createContext<HTMLElement | null>(null);
+
+/** 기기 프레임 안에서 사이드 시트가 하단 탭을 덮도록 포탈 호스트를 제공한다. */
+export function OverlayPortalProvider({ children }: { children: ReactNode }) {
+  const [host, setHost] = useState<HTMLElement | null>(null);
+
+  return (
+    <OverlayPortalContext.Provider value={host}>
+      {children}
+      <div
+        id="plip-overlay-root"
+        ref={setHost}
+        className="pointer-events-none absolute inset-0 z-[40]"
+      />
+    </OverlayPortalContext.Provider>
+  );
+}
 
 type AnimatedDropdownProps = {
   open: boolean;
@@ -112,16 +130,12 @@ export function AnimatedSideSheet({
   "aria-label": ariaLabel,
 }: AnimatedSideSheetProps) {
   const { mounted, visible } = useOverlayTransition(open);
-  const [root, setRoot] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    setRoot(document.getElementById("plip-overlay-root"));
-  }, []);
+  const host = useContext(OverlayPortalContext);
 
   if (!mounted) return null;
 
   const sheet = (
-    <div className="absolute inset-0 z-[40]">
+    <div className="pointer-events-none absolute inset-0">
       <button
         type="button"
         className={cn(
@@ -138,10 +152,10 @@ export function AnimatedSideSheet({
           "absolute top-0 bottom-0 z-[1] flex w-[min(310px,86%)] flex-col gap-2.5 overflow-y-auto bg-[#fbfaff] px-6 pt-12 pb-12 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none md:pb-5",
           side === "left" ? "left-0 rounded-r-[24px]" : "right-0 rounded-l-[24px]",
           visible
-            ? "[transform:translateX(0)]"
+            ? "pointer-events-auto [transform:translateX(0)]"
             : side === "left"
-              ? "[transform:translateX(-100%)]"
-              : "[transform:translateX(100%)]",
+              ? "pointer-events-none [transform:translateX(-100%)]"
+              : "pointer-events-none [transform:translateX(100%)]",
           className,
         )}
       >
@@ -150,8 +164,8 @@ export function AnimatedSideSheet({
     </div>
   );
 
-  if (root) {
-    return createPortal(sheet, root);
+  if (host) {
+    return createPortal(sheet, host);
   }
 
   return <div className="fixed inset-0 z-[40] md:absolute">{sheet}</div>;
