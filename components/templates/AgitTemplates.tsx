@@ -50,6 +50,7 @@ export {
   InvitesSafetyTemplate as AgitSafetyTemplate,
   MembersPermissionsTemplate as AgitMembersTemplate,
   RoomManageHubTemplate as AgitManageTemplate,
+  RoomProfileEditTemplate as AgitProfileEditTemplate,
   TopicCreateTemplate as AgitTopicCreateTemplate,
   TopicsLayoutTemplate as AgitTopicsTemplate,
 } from "./RoomManageTemplates";
