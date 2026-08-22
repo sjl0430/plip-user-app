@@ -1,9 +1,5 @@
 import { getVideoApiBaseUrl } from "@/lib/api/env";
 import { getSessionAuthHeaders } from "@/lib/auth/server-token";
-export {
-  isSessionExpiredError,
-  SessionExpiredError,
-} from "@/lib/auth/session-expired";
 
 export class ApiError extends Error {
   constructor(

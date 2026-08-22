@@ -4,11 +4,7 @@ import { signOut } from "@/auth";
 import { ApiError } from "@/lib/api/apiFetch";
 import * as authService from "@/services/authService";
 import { getServerRefreshToken } from "@/lib/auth/server-token";
-import {
-  actionFailure,
-  actionSuccess,
-  type ActionResult,
-} from "@/types/action-result";
+import { actionFailure, actionSuccess, type ActionResult } from "@/types/action-result";
 import type { ApiLocalSignupRequest, ApiOtpPurpose } from "@/types/auth/api";
 import type { UiRestorePayload, UiTerm } from "@/types/auth/ui";
 
@@ -26,13 +22,7 @@ export async function logoutAction(): Promise<ActionResult<void>> {
   try {
     const refreshToken = await getServerRefreshToken();
     if (refreshToken) {
-      try {
-        await authService.logout(refreshToken);
-      } catch (error) {
-        if (!(error instanceof ApiError) || error.status !== 401) {
-          throw error;
-        }
-      }
+      await authService.logout(refreshToken);
     }
     await signOut({ redirect: false });
     return actionSuccess(undefined);
@@ -59,11 +49,7 @@ export async function verifyEmailOtpAction(
   purpose: ApiOtpPurpose = "SIGNUP",
 ): Promise<ActionResult<{ verificationToken: string }>> {
   try {
-    const verificationToken = await authService.verifyEmailOtp(
-      email,
-      otpCode,
-      purpose,
-    );
+    const verificationToken = await authService.verifyEmailOtp(email, otpCode, purpose);
     return actionSuccess({ verificationToken });
   } catch (error) {
     return toActionError(error);
