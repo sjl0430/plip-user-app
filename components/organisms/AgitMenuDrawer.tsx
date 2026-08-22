@@ -1,17 +1,18 @@
 "use client";
 
 import { leaveAgitAction } from "@/actions/agitActions";
+import { listTopicsByStatusAction } from "@/actions/topicActions";
 import { DailyIcon, Separator, TextLink } from "@/components/atoms";
-import { AGIT_TOPICS } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import { toast } from "@/components/ui/toast";
 import { copyText } from "@/lib/copyText";
 import { cn } from "@/lib/utils";
 import type { UiAgit } from "@/types/agit/ui";
+import type { UiTopicListItem } from "@/types/topic/ui";
 import { Check, Copy, Link2, LogOut, Settings, UserRoundCog } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type AgitMenuDrawerProps = {
   agit: UiAgit;
@@ -69,8 +70,21 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
   const [copied, setCopied] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [confirmLeave, setConfirmLeave] = useState(false);
+  const [ongoingTopics, setOngoingTopics] = useState<UiTopicListItem[]>([]);
   const inviteCode = agit.inviteCode?.trim() ?? "";
   const menuItems = MENU.filter((item) => !item.hostOnly || agit.myRole === "HOST");
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    listTopicsByStatusAction(agit.id, "ONGOING", 3).then((result) => {
+      if (cancelled) return;
+      setOngoingTopics(result.ok ? result.data : []);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, agit.id]);
 
   async function copyInviteCode() {
     if (!inviteCode) return;
@@ -160,11 +174,25 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
 
         <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto">
           <div className="flex flex-col gap-1" aria-label="진행중인 토픽">
-            {AGIT_TOPICS.map((topic) => (
-              <p key={topic.id} className="m-0 px-1 text-sm font-medium text-[#262433]">
-                {topic.title}
-              </p>
-            ))}
+            <div className="flex min-h-[32px] items-center justify-between gap-2 px-1">
+              <p className="m-0 text-xs font-semibold text-[#756e8a]">진행중</p>
+              <TextLink
+                href={ROUTES.agit.topics(agit.id)}
+                className="text-xs font-semibold !text-[var(--dl-color-text-brand)] !no-underline"
+                onClick={handleClose}
+              >
+                더보기
+              </TextLink>
+            </div>
+            {ongoingTopics.length === 0 ? (
+              <p className="m-0 px-1 text-sm font-medium text-[#756e8a]">아직 토픽이 없어요</p>
+            ) : (
+              ongoingTopics.map((topic) => (
+                <p key={topic.id} className="m-0 px-1 text-sm font-medium text-[#262433]">
+                  {topic.title || "제목 없음"}
+                </p>
+              ))
+            )}
           </div>
 
           <Separator className="!m-1 !border-[#e3e0ed]" />

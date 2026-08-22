@@ -137,14 +137,17 @@ export function TopicsLayoutSection({
                       key={topic.id}
                       className="flex w-full items-center gap-[10px] rounded-[var(--dl-radius-lg)] border border-[var(--dl-color-border-default)] bg-[var(--dl-color-bg-surface)] p-[12px_14px]"
                     >
-                      <div className="flex min-w-0 flex-1 flex-col gap-[2px]">
+                      <TextLink
+                        href={ROUTES.agit.topicDetail(agitId, topic.id)}
+                        className="flex min-w-0 flex-1 flex-col gap-[2px] !text-inherit !no-underline"
+                      >
                         <p className="m-0 text-sm font-semibold leading-5 text-[var(--dl-color-text-primary)]">
                           {topic.title || "제목 없음"}
                         </p>
                         <p className="m-0 text-xs font-normal leading-[17px] text-[var(--dl-color-text-secondary)]">
                           {topic.startAtLabel}
                         </p>
-                      </div>
+                      </TextLink>
                       <div className="flex shrink-0 flex-col items-end gap-1.5">
                         <span
                           className={`inline-flex h-[28px] items-center justify-center rounded-[14px] p-[0_12px] text-xs font-semibold leading-none ${

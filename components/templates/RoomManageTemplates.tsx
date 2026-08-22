@@ -6,14 +6,15 @@ import { InvitesSafetySection } from "@/components/organisms/InvitesSafetySectio
 import { MembersPermissionsSection } from "@/components/organisms/MembersPermissionsSection";
 import { TopicCreateForm } from "@/components/organisms/TopicCreateForm";
 import { TopicEditForm } from "@/components/organisms/TopicEditForm";
+import { TopicViewerSection } from "@/components/organisms/TopicViewerSection";
 import { TopicsLayoutSection } from "@/components/organisms/TopicsLayoutSection";
-import { AgitFlowChrome } from "@/components/templates/AppChromeTemplate";
+import { AgitFlowChrome, AppChromeTemplate } from "@/components/templates/AppChromeTemplate";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import type { ApiAgitDetailMember } from "@/types/agit/api";
 import type { UiAgit } from "@/types/agit/ui";
-import type { UiTopicDetail, UiTopicListSections } from "@/types/topic/ui";
+import type { UiTopicDetail, UiTopicListSections, UiTopicVideo } from "@/types/topic/ui";
 
 type AgitIdProps = { agitId: string };
 
@@ -60,6 +61,32 @@ export function TopicsLayoutTemplate({
         currentUserUuid={currentUserUuid}
       />
     </AgitFlowChrome>
+  );
+}
+
+export function TopicViewerTemplate({
+  agit,
+  topic,
+  videos,
+}: {
+  agit: UiAgit | null;
+  topic: UiTopicDetail | null;
+  videos: UiTopicVideo[];
+}) {
+  if (!agit || !topic) return <RoomMissing />;
+
+  const dateLabel = topic.startDate.replaceAll("-", ".");
+
+  return (
+    <AppChromeTemplate activeTab="agit" variant="light">
+      <TopicViewerSection
+        agitId={agit.id}
+        title={topic.title || "제목 없음"}
+        meta={`${dateLabel} · ${videos.length}개 영상`}
+        videos={videos}
+        backHref={ROUTES.agit.topics(agit.id)}
+      />
+    </AppChromeTemplate>
   );
 }
 

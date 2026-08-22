@@ -118,6 +118,19 @@ function mapSummary(topic: ApiTopic): UiTopicGallery["topic"] {
   };
 }
 
+export async function getTopicViewer(
+  topicUuid: string,
+  members: ApiAgitDetailMember[],
+): Promise<{ topic: UiTopicDetail; videos: UiTopicVideo[] }> {
+  const [topic, topicVideos] = await Promise.all([
+    topicApi.getTopic(topicUuid),
+    topicApi.listTopicVideos(topicUuid),
+  ]);
+  const profiles = memberMap(members);
+  const videos = await Promise.all(topicVideos.map((item) => mapTopicVideo(item, profiles)));
+  return { topic: toUiTopicDetail(topic), videos };
+}
+
 export async function getTopicGallery(
   agitUuid: string,
   members: ApiAgitDetailMember[],
