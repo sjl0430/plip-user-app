@@ -12,15 +12,18 @@ export default async function AgitMembersPage({ params }: PageProps) {
   const { agitId } = await params;
   let agit: UiAgit | null = null;
   let members: ApiAgitDetailMember[] = [];
+  let currentUserUuid: string | undefined;
 
   try {
     const detail = await getAgitAndMembers(agitId);
     agit = detail.agit;
-    const userUuid = await getServerUserUuid();
-    members = sortAgitMembers(detail.members, userUuid);
+    currentUserUuid = await getServerUserUuid();
+    members = sortAgitMembers(detail.members, currentUserUuid);
   } catch {
     agit = null;
   }
 
-  return <AgitMembersTemplate agit={agit} members={members} />;
+  return (
+    <AgitMembersTemplate agit={agit} members={members} currentUserUuid={currentUserUuid} />
+  );
 }

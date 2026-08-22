@@ -1,4 +1,4 @@
-import { DailyIcon } from "@/components/atoms";
+import { DailyIcon, SubmitButton } from "@/components/atoms";
 
 type MemberManageRowProps = {
   name: string;
@@ -6,9 +6,15 @@ type MemberManageRowProps = {
   host?: boolean;
   selected?: boolean;
   showMenu?: boolean;
+  showActions?: boolean;
+  actionsDisabled?: boolean;
   variant?: "hub" | "manage";
   onSelect?: () => void;
+  onTransfer?: () => void;
+  onBan?: () => void;
 };
+
+const rowActionClass = "h-8 w-auto min-w-0 shrink-0 px-2.5 py-0 text-[11px] leading-4";
 
 export function MemberManageRow({
   name,
@@ -16,8 +22,12 @@ export function MemberManageRow({
   host = false,
   selected = false,
   showMenu = false,
+  showActions = false,
+  actionsDisabled = false,
   variant = "manage",
   onSelect,
+  onTransfer,
+  onBan,
 }: MemberManageRowProps) {
   const rowClass = [
     "flex items-center gap-[10px] min-h-[64px] p-[8px_12px] border border-[var(--dl-color-border-default)] rounded-[var(--dl-radius-lg)] bg-[var(--dl-color-bg-elevated)]",
@@ -43,11 +53,34 @@ export function MemberManageRow({
         ) : (
           <span className="text-[var(--dl-color-text-danger)] ml-auto text-[11px] font-medium text-[var(--dl-color-text-brand)] whitespace-nowrap">방장</span>
         )
-      ) : (
+      ) : showActions ? (
+        <span className="ml-auto flex shrink-0 items-center gap-1">
+          <SubmitButton
+            type="button"
+            variant="outline"
+            className={rowActionClass}
+            disabled={actionsDisabled}
+            aria-label={`${name} 위임`}
+            onClick={onTransfer}
+          >
+            위임
+          </SubmitButton>
+          <SubmitButton
+            type="button"
+            variant="danger"
+            className={rowActionClass}
+            disabled={actionsDisabled}
+            aria-label={`${name} 추방`}
+            onClick={onBan}
+          >
+            추방
+          </SubmitButton>
+        </span>
+      ) : variant === "hub" ? (
         <span className={`text-[var(--dl-color-text-danger)] ml-auto text-[11px] font-medium text-[var(--dl-color-text-brand)] whitespace-nowrap${selected ? " text-[var(--dl-color-text-danger)] m-dlMemberManageActionsDanger" : ""}`}>
           위임&nbsp;&nbsp;|&nbsp;&nbsp;추방
         </span>
-      )}
+      ) : null}
       {showMenu ? (
         <button type="button" className="grid w-[44px] h-[44px] place-items-center border-0 rounded-[12px] bg-[var(--dl-color-bg-surface)] text-[var(--dl-color-text-primary)] cursor-pointer shrink-0" aria-label={`${name} 더보기`}>
           <DailyIcon name="ellipsis" size={20} />
