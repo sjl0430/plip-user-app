@@ -12,6 +12,7 @@ import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import type { ApiAgitDetailMember } from "@/types/agit/api";
 import type { UiAgit } from "@/types/agit/ui";
+import type { UiTopicListSections } from "@/types/topic/ui";
 
 type AgitIdProps = { agitId: string };
 
@@ -37,24 +38,34 @@ export function RoomManageHubTemplate({ agit }: { agit: UiAgit | null }) {
   );
 }
 
-export function TopicsLayoutTemplate({ agitId }: AgitIdProps) {
+export function TopicsLayoutTemplate({
+  agit,
+  sections,
+}: {
+  agit: UiAgit | null;
+  sections: UiTopicListSections;
+}) {
+  if (!agit) return <RoomMissing />;
+
   return (
     <AgitFlowChrome>
-      <AuthTopBar title="토픽관리" backHref={ROUTES.agit.detail(agitId)} />
-      <TopicsLayoutSection agitId={agitId} />
+      <AuthTopBar title="토픽관리" backHref={ROUTES.agit.detail(agit.id)} />
+      <TopicsLayoutSection agitId={agit.id} sections={sections} />
     </AgitFlowChrome>
   );
 }
 
-export function TopicCreateTemplate({ agitId }: AgitIdProps) {
+export function TopicCreateTemplate({ agit }: { agit: UiAgit | null }) {
+  if (!agit) return <RoomMissing />;
+
   return (
     <AgitFlowChrome>
       <AuthTopBar
         title="토픽 만들기"
-        backHref={ROUTES.agit.topics(agitId)}
-        step="토픽 진행 기간과 적용 아이템을 정합니다"
+        backHref={ROUTES.agit.topics(agit.id)}
+        step="토픽 이름과 진행 날짜를 정합니다"
       />
-      <TopicCreateForm />
+      <TopicCreateForm agitId={agit.id} />
     </AgitFlowChrome>
   );
 }

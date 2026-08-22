@@ -19,6 +19,23 @@ export type UiTopicSummary = {
   isToday: boolean;
 };
 
+export type UiTopicListItem = {
+  id: string;
+  title: string;
+  startAtLabel: string;
+  videoCount: number;
+  creatorUuid: string;
+};
+
+export type UiTopicListSectionKey = "ongoing" | "upcoming" | "past";
+
+export type UiTopicListSection = {
+  items: UiTopicListItem[];
+  error?: string;
+};
+
+export type UiTopicListSections = Record<UiTopicListSectionKey, UiTopicListSection>;
+
 export type UiTopicGallery = {
   topic: UiTopicSummary | null;
   videos: UiTopicVideo[];

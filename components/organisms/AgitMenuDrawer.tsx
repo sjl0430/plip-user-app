@@ -24,7 +24,7 @@ const MENU = [
     id: "topics" as const,
     label: "토픽관리",
     href: (id: string) => ROUTES.agit.topics(id),
-    hostOnly: true,
+    hostOnly: false,
   },
   { id: "chat" as const, label: "채팅", href: (id: string) => ROUTES.agit.chat(id), hostOnly: false },
   {
