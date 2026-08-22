@@ -9,6 +9,14 @@ export function toKstDateString(value: Date): string {
   }).format(value);
 }
 
+export function formatKstDotDate(iso: string): string {
+  const parsed = new Date(iso);
+  if (Number.isNaN(parsed.getTime())) {
+    return "";
+  }
+  return toKstDateString(parsed).replaceAll("-", ".");
+}
+
 export function isSameKstDate(iso: string, today = new Date()): boolean {
   const parsed = new Date(iso);
   if (Number.isNaN(parsed.getTime())) {

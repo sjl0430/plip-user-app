@@ -3,7 +3,13 @@ import { getActorUserHeaders } from "@/lib/api/actorHeaders";
 import { apiFetch } from "@/lib/api/apiFetch";
 import { getApiUrl } from "@/lib/api/env";
 import { withAuthRetry } from "@/lib/api/withAuthRetry";
-import type { ApiTopic, ApiTopicVideo } from "@/types/topic/api";
+import type {
+  ApiCreateTopicRequest,
+  ApiTopic,
+  ApiTopicListStatus,
+  ApiTopicVideo,
+  ApiUpdateTopicRequest,
+} from "@/types/topic/api";
 
 function topicFetch<T>(path: string, options: Parameters<typeof apiFetch>[1] = {}): Promise<T> {
   return withAuthRetry(async () =>
@@ -19,6 +25,50 @@ export async function listTopics(agitUuid: string): Promise<ApiTopic[]> {
   return topicFetch<ApiTopic[]>(API_ENDPOINTS.topic.list, {
     method: "GET",
     searchParams: { agitUuid },
+  });
+}
+
+export async function listTopicsByStatus(
+  agitUuid: string,
+  status: ApiTopicListStatus,
+  limit?: number,
+): Promise<ApiTopic[]> {
+  return topicFetch<ApiTopic[]>(API_ENDPOINTS.topic.listByStatus, {
+    method: "GET",
+    searchParams: {
+      agitUuid,
+      status,
+      limit: limit !== undefined ? String(limit) : undefined,
+    },
+  });
+}
+
+export async function createTopic(body: ApiCreateTopicRequest): Promise<ApiTopic> {
+  return topicFetch<ApiTopic>(API_ENDPOINTS.topic.list, {
+    method: "POST",
+    body,
+  });
+}
+
+export async function getTopic(topicUuid: string): Promise<ApiTopic> {
+  return topicFetch<ApiTopic>(API_ENDPOINTS.topic.detail(topicUuid), {
+    method: "GET",
+  });
+}
+
+export async function updateTopic(
+  topicUuid: string,
+  body: ApiUpdateTopicRequest,
+): Promise<ApiTopic> {
+  return topicFetch<ApiTopic>(API_ENDPOINTS.topic.detail(topicUuid), {
+    method: "PATCH",
+    body,
+  });
+}
+
+export async function deleteTopic(topicUuid: string): Promise<void> {
+  await topicFetch<unknown>(API_ENDPOINTS.topic.detail(topicUuid), {
+    method: "DELETE",
   });
 }
 

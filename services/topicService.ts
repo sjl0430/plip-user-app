@@ -1,8 +1,8 @@
 import type { ApiAgitDetailMember } from "@/types/agit/api";
-import type { ApiTopic, ApiTopicVideo } from "@/types/topic/api";
-import type { UiTopicGallery, UiTopicVideo } from "@/types/topic/ui";
+import type { ApiCreateTopicRequest, ApiTopic, ApiTopicListStatus, ApiTopicVideo, ApiUpdateTopicRequest } from "@/types/topic/api";
+import type { UiTopicDetail, UiTopicGallery, UiTopicListItem, UiTopicVideo } from "@/types/topic/ui";
 import * as topicApi from "@/lib/api/topicApi";
-import { isSameKstDate, selectAgitTopic } from "@/lib/topic/selectAgitTopic";
+import { formatKstDotDate, isSameKstDate, selectAgitTopic, toKstDateString } from "@/lib/topic/selectAgitTopic";
 import * as videoService from "@/services/videoService";
 
 const FALLBACK_THUMBNAIL = "/plip/v13/topic-video-1.png";
@@ -62,6 +62,53 @@ async function mapTopicVideo(
   }
 }
 
+export function toUiTopicListItem(topic: ApiTopic): UiTopicListItem {
+  return {
+    id: topic.topicUuid,
+    title: topic.title?.trim() ?? "",
+    startAtLabel: formatKstDotDate(topic.startAt),
+    videoCount: topic.videoCount,
+    creatorUuid: topic.creatorUuid,
+  };
+}
+
+export async function listTopicsByStatus(
+  agitUuid: string,
+  status: ApiTopicListStatus,
+  limit?: number,
+): Promise<UiTopicListItem[]> {
+  const topics = await topicApi.listTopicsByStatus(agitUuid, status, limit);
+  return topics.map(toUiTopicListItem);
+}
+
+export async function createTopic(input: ApiCreateTopicRequest): Promise<ApiTopic> {
+  return topicApi.createTopic(input);
+}
+
+export function toUiTopicDetail(topic: ApiTopic): UiTopicDetail {
+  const parsed = new Date(topic.startAt);
+  return {
+    id: topic.topicUuid,
+    title: topic.title?.trim() ?? "",
+    startDate: Number.isNaN(parsed.getTime()) ? topic.startAt.slice(0, 10) : toKstDateString(parsed),
+    videoCount: topic.videoCount,
+    creatorUuid: topic.creatorUuid,
+  };
+}
+
+export async function getTopic(topicUuid: string): Promise<UiTopicDetail> {
+  const topic = await topicApi.getTopic(topicUuid);
+  return toUiTopicDetail(topic);
+}
+
+export async function updateTopic(topicUuid: string, input: ApiUpdateTopicRequest): Promise<ApiTopic> {
+  return topicApi.updateTopic(topicUuid, input);
+}
+
+export async function deleteTopic(topicUuid: string): Promise<void> {
+  await topicApi.deleteTopic(topicUuid);
+}
+
 function mapSummary(topic: ApiTopic): UiTopicGallery["topic"] {
   return {
     id: topic.topicUuid,
@@ -69,6 +116,19 @@ function mapSummary(topic: ApiTopic): UiTopicGallery["topic"] {
     startAt: topic.startAt,
     isToday: isSameKstDate(topic.startAt),
   };
+}
+
+export async function getTopicViewer(
+  topicUuid: string,
+  members: ApiAgitDetailMember[],
+): Promise<{ topic: UiTopicDetail; videos: UiTopicVideo[] }> {
+  const [topic, topicVideos] = await Promise.all([
+    topicApi.getTopic(topicUuid),
+    topicApi.listTopicVideos(topicUuid),
+  ]);
+  const profiles = memberMap(members);
+  const videos = await Promise.all(topicVideos.map((item) => mapTopicVideo(item, profiles)));
+  return { topic: toUiTopicDetail(topic), videos };
 }
 
 export async function getTopicGallery(

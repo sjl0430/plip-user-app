@@ -1,3 +1,5 @@
+export type ApiTopicListStatus = "ONGOING" | "UPCOMING" | "PAST";
+
 export type ApiTopic = {
   topicUuid: string;
   agitUuid: string;
@@ -7,6 +9,18 @@ export type ApiTopic = {
   videoCount: number;
   uploadedByMe: boolean | null;
   createdAt: string;
+};
+
+export type ApiCreateTopicRequest = {
+  agitUuid: string;
+  creatorUuid: string;
+  title: string;
+  startAt?: string;
+};
+
+export type ApiUpdateTopicRequest = {
+  title?: string;
+  startAt?: string;
 };
 
 export type ApiTopicVideo = {

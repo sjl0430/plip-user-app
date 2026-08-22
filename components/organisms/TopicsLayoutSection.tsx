@@ -1,52 +1,84 @@
 "use client";
 
+import { listTopicsByStatusAction } from "@/actions/topicActions";
 import { DailyIcon, TextLink } from "@/components/atoms";
+import { ManageListRow } from "@/components/molecules/ManageListRow";
 import { ROUTES } from "@/config/routes";
+import type { UiAgitRole } from "@/types/agit/ui";
+import type { ApiTopicListStatus } from "@/types/topic/api";
+import type { UiTopicListItem, UiTopicListSectionKey, UiTopicListSections } from "@/types/topic/ui";
 import { useState } from "react";
 
-type TopicSectionId = "ongoing" | "upcoming" | "past";
+const INITIAL_LIMIT = 10;
+const MORE_LIMIT = 20;
 
-type MockTopic = {
-  id: string;
-  title: string;
-  meta: string;
-  clips: number;
-  section: TopicSectionId;
-};
-
-const INITIAL_TOPICS: MockTopic[] = [
-  { id: "today", title: "오늘의 한 컷", meta: "매일 · 1인 1영상", clips: 12, section: "ongoing" },
-  { id: "workout", title: "운동 인증", meta: "평일 · 릴레이", clips: 8, section: "ongoing" },
-  { id: "weekend", title: "주말 산책", meta: "주말 · 그리드", clips: 0, section: "upcoming" },
-  { id: "archive", title: "지난 챌린지", meta: "종료됨", clips: 21, section: "past" },
-];
-
-const SECTIONS: { id: TopicSectionId; label: string }[] = [
-  { id: "ongoing", label: "진행중" },
-  { id: "upcoming", label: "다가오는" },
-  { id: "past", label: "지난" },
+const SECTIONS: { id: UiTopicListSectionKey; label: string; status: ApiTopicListStatus }[] = [
+  { id: "ongoing", label: "진행중", status: "ONGOING" },
+  { id: "upcoming", label: "다가오는", status: "UPCOMING" },
+  { id: "past", label: "지난", status: "PAST" },
 ];
 
 type TopicsLayoutSectionProps = {
   agitId: string;
+  sections: UiTopicListSections;
+  myRole?: UiAgitRole;
+  currentUserUuid?: string;
 };
 
-export function TopicsLayoutSection({ agitId }: TopicsLayoutSectionProps) {
-  const [topics, setTopics] = useState(INITIAL_TOPICS);
-  const [openSections, setOpenSections] = useState<Record<TopicSectionId, boolean>>({
+export function TopicsLayoutSection({
+  agitId,
+  sections,
+  myRole,
+  currentUserUuid,
+}: TopicsLayoutSectionProps) {
+  const [openSections, setOpenSections] = useState<Record<UiTopicListSectionKey, boolean>>({
     ongoing: true,
     upcoming: true,
     past: true,
   });
+  const [itemsBySection, setItemsBySection] = useState<Record<UiTopicListSectionKey, UiTopicListItem[]>>({
+    ongoing: sections.ongoing.items,
+    upcoming: sections.upcoming.items,
+    past: sections.past.items,
+  });
+  const [errors, setErrors] = useState<Record<UiTopicListSectionKey, string | undefined>>({
+    ongoing: sections.ongoing.error,
+    upcoming: sections.upcoming.error,
+    past: sections.past.error,
+  });
+  const [expanded, setExpanded] = useState<Record<UiTopicListSectionKey, boolean>>({
+    ongoing: false,
+    upcoming: false,
+    past: false,
+  });
+  const [loadingMore, setLoadingMore] = useState<Record<UiTopicListSectionKey, boolean>>({
+    ongoing: false,
+    upcoming: false,
+    past: false,
+  });
 
-  function toggleSection(id: TopicSectionId) {
+  function toggleSection(id: UiTopicListSectionKey) {
     setOpenSections((current) => ({ ...current, [id]: !current[id] }));
+  }
+
+  async function loadMore(id: UiTopicListSectionKey, status: ApiTopicListStatus) {
+    if (loadingMore[id] || expanded[id]) return;
+    setLoadingMore((current) => ({ ...current, [id]: true }));
+    const result = await listTopicsByStatusAction(agitId, status, MORE_LIMIT);
+    setLoadingMore((current) => ({ ...current, [id]: false }));
+    if (!result.ok) {
+      setErrors((current) => ({ ...current, [id]: result.error }));
+      return;
+    }
+    setItemsBySection((current) => ({ ...current, [id]: result.data }));
+    setExpanded((current) => ({ ...current, [id]: true }));
+    setErrors((current) => ({ ...current, [id]: undefined }));
   }
 
   return (
     <section className="flex w-full flex-col gap-3.5">
       <p className="m-0 text-[13px] font-normal leading-5 text-[var(--dl-color-text-secondary)]">
-        토픽을 진행 상태별로 보고 목업으로 만들고 지울 수 있어요
+        토픽을 진행 상태별로 보고 만들 수 있어요
       </p>
 
       <TextLink
@@ -58,8 +90,11 @@ export function TopicsLayoutSection({ agitId }: TopicsLayoutSectionProps) {
       </TextLink>
 
       {SECTIONS.map((section) => {
-        const items = topics.filter((topic) => topic.section === section.id);
+        const items = itemsBySection[section.id];
         const open = openSections[section.id];
+        const error = errors[section.id];
+        const canLoadMore =
+          !error && !expanded[section.id] && items.length >= INITIAL_LIMIT;
 
         return (
           <div key={section.id} className="flex flex-col gap-2">
@@ -84,60 +119,76 @@ export function TopicsLayoutSection({ agitId }: TopicsLayoutSectionProps) {
               </span>
             </button>
 
-            {open
-              ? items.map((topic) => (
-                  <div
-                    key={topic.id}
-                    className="flex w-full items-center gap-[10px] rounded-[var(--dl-radius-lg)] border border-[var(--dl-color-border-default)] bg-[var(--dl-color-bg-surface)] p-[12px_14px]"
-                  >
-                    <DailyIcon name="grip" size={18} />
-                    <div className="flex min-w-0 flex-1 flex-col gap-[2px]">
-                      <p className="m-0 text-sm font-semibold leading-5 text-[var(--dl-color-text-primary)]">
-                        {topic.title}
-                      </p>
-                      <p className="m-0 text-xs font-normal leading-[17px] text-[var(--dl-color-text-secondary)]">
-                        {topic.meta}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end gap-1.5">
-                      <span
-                        className={`inline-flex h-[28px] items-center justify-center rounded-[14px] p-[0_12px] text-xs font-semibold leading-none ${
-                          topic.clips === 0
-                            ? "m-dlBadgeSuccess bg-[var(--dl-color-bg-success)] text-[var(--dl-color-text-success)]"
-                            : "bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)]"
-                        }`}
-                      >
-                        {topic.clips}개 영상
-                      </span>
-                      {topic.clips === 0 ? (
-                        <button
-                          type="button"
-                          className="text-[12px] font-semibold text-[var(--dl-color-text-danger)]"
-                          onClick={() =>
-                            setTopics((current) => current.filter((item) => item.id !== topic.id))
-                          }
+            {open ? (
+              <>
+                {error ? (
+                  <p className="m-0 text-[13px] text-[var(--dl-color-text-danger)]">{error}</p>
+                ) : items.length === 0 ? (
+                  <p className="m-0 text-[13px] text-[var(--dl-color-text-secondary)]">
+                    아직 토픽이 없어요
+                  </p>
+                ) : (
+                  items.map((topic) => {
+                    const canEdit =
+                      myRole === "HOST" ||
+                      (Boolean(currentUserUuid) && topic.creatorUuid === currentUserUuid);
+
+                    return (
+                    <ManageListRow
+                      key={topic.id}
+                      title={
+                        <TextLink
+                          href={ROUTES.agit.topicDetail(agitId, topic.id)}
+                          className="flex min-w-0 flex-col gap-[2px] !text-inherit !no-underline"
                         >
-                          삭제
-                        </button>
-                      ) : (
-                        <span className="text-[12px] font-semibold text-[var(--dl-color-text-tertiary)]">
-                          삭제 불가
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))
-              : null}
+                          <p className="m-0 text-sm font-semibold leading-5 text-[var(--dl-color-text-primary)]">
+                            {topic.title || "제목 없음"}
+                          </p>
+                          <p className="m-0 text-xs font-normal leading-[17px] text-[var(--dl-color-text-secondary)]">
+                            {topic.startAtLabel}
+                          </p>
+                        </TextLink>
+                      }
+                      trailing={
+                        <div className="flex flex-col items-end gap-1.5">
+                          <span
+                            className={`inline-flex h-[28px] items-center justify-center rounded-[14px] p-[0_12px] text-xs font-semibold leading-none ${
+                              topic.videoCount === 0
+                                ? "m-dlBadgeSuccess bg-[var(--dl-color-bg-success)] text-[var(--dl-color-text-success)]"
+                                : "bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)]"
+                            }`}
+                          >
+                            {topic.videoCount}개 영상
+                          </span>
+                          {canEdit ? (
+                            <TextLink
+                              href={ROUTES.agit.topicEdit(agitId, topic.id)}
+                              className="text-[12px] font-semibold !text-[var(--dl-color-text-brand)] !no-underline"
+                            >
+                              편집
+                            </TextLink>
+                          ) : null}
+                        </div>
+                      }
+                    />
+                    );
+                  })
+                )}
+                {open && canLoadMore ? (
+                  <button
+                    type="button"
+                    className="h-[40px] rounded-[var(--dl-radius-md)] text-sm font-medium text-[var(--dl-color-text-brand)] disabled:opacity-50"
+                    disabled={loadingMore[section.id]}
+                    onClick={() => loadMore(section.id, section.status)}
+                  >
+                    {loadingMore[section.id] ? "불러오는 중..." : "더보기"}
+                  </button>
+                ) : null}
+              </>
+            ) : null}
           </div>
         );
       })}
-
-      <div className="flex w-full items-center gap-[10px] rounded-[12px] bg-[var(--dl-color-bg-warning)] p-[12px_14px]">
-        <DailyIcon name="alert" size={18} />
-        <p className="m-0 text-[12px] font-medium text-[var(--dl-color-text-primary)]">
-          영상이 등록된 토픽은 삭제할 수 없어요.
-        </p>
-      </div>
     </section>
   );
 }
