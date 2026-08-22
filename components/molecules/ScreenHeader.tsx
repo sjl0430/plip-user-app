@@ -86,6 +86,32 @@ export function HeaderStep({ children }: { children: ReactNode }) {
   return <span className={ui.topbarStep}>{children}</span>;
 }
 
+type AuthTopBarProps = {
+  title: string;
+  backHref?: string;
+  onBack?: () => void;
+  step?: string;
+  trailing?: ReactNode;
+};
+
+/** @deprecated ScreenHeader 슬롯을 쓰세요. 기존 인증·플로우 화면 호환용. */
+export function AuthTopBar({ title, backHref, onBack, step, trailing }: AuthTopBarProps) {
+  const leading = onBack ? (
+    <HeaderBackButton onClick={onBack} />
+  ) : backHref ? (
+    <HeaderBackLink href={backHref} />
+  ) : undefined;
+
+  return (
+    <ScreenHeader
+      tone="plain"
+      leading={leading}
+      title={title || undefined}
+      trailing={trailing ?? (step ? <HeaderStep>{step}</HeaderStep> : undefined)}
+    />
+  );
+}
+
 export function ScreenHeader({
   leading,
   trailing,

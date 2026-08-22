@@ -16,7 +16,14 @@ export { AgreementRow } from "./AgreementRow";
 export { AuthDivider } from "./AuthDivider";
 export { AuthField } from "./AuthField";
 export { AuthNavigationLinks } from "./AuthNavigationLinks";
-export { AuthTopBar } from "./AuthTopBar";
+export {
+  AuthTopBar,
+  HeaderBackButton,
+  HeaderBackLink,
+  HeaderMenuButton,
+  HeaderStep,
+  ScreenHeader,
+} from "./ScreenHeader";
 export { ExploreNav } from "./ExploreNav";
 export { TopicOption } from "./TopicOption";
 export { ChatBubble } from "./ChatBubble";
@@ -40,14 +47,6 @@ export { FeedTopBar } from "./FeedTopBar";
 export { FormField } from "./FormField";
 export { LinkButton } from "./LinkButton";
 export { MyPageMenuItem } from "./MyPageMenuItem";
-export { PageHeader } from "./PageHeader";
-export {
-  HeaderBackButton,
-  HeaderBackLink,
-  HeaderMenuButton,
-  HeaderStep,
-  ScreenHeader,
-} from "./ScreenHeader";
 export { UploadProgress } from "./UploadProgress";
 export { DailyToggle } from "./DailyToggle";
 export { SettingsRow } from "./SettingsRow";
