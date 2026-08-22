@@ -6,6 +6,7 @@ import { AuthField } from "@/components/molecules";
 import { NoticeCard } from "@/components/molecules/NoticeCard";
 import { toast } from "@/components/ui/toast";
 import { ROUTES } from "@/config/routes";
+import { TOPIC_FORBIDDEN, TOPIC_LOGIN_REQUIRED } from "@/lib/topic/actionErrors";
 import { toKstDateString } from "@/lib/topic/selectAgitTopic";
 import { TOPIC_TITLE_MAX_LENGTH } from "@/types/topic/schema";
 import { useRouter } from "next/navigation";
@@ -34,6 +35,10 @@ export function TopicCreateForm({ agitId }: TopicCreateFormProps) {
     setPending(false);
 
     if (!result.ok) {
+      if (result.error === TOPIC_FORBIDDEN || result.error === TOPIC_LOGIN_REQUIRED) {
+        toast.add({ type: "error", title: result.error });
+        return;
+      }
       setError(result.error);
       return;
     }

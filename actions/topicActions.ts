@@ -2,6 +2,7 @@
 
 import { ApiError } from "@/lib/api/apiFetch";
 import { getServerUserUuid } from "@/lib/auth/server-token";
+import { TOPIC_FORBIDDEN, TOPIC_LOGIN_REQUIRED } from "@/lib/topic/actionErrors";
 import * as topicService from "@/services/topicService";
 import { actionFailure, actionSuccess, type ActionResult } from "@/types/action-result";
 import type { ApiTopicListStatus } from "@/types/topic/api";
@@ -10,12 +11,20 @@ import type { UiTopicListItem } from "@/types/topic/ui";
 
 function toActionError(error: unknown): ActionResult<never> {
   if (error instanceof ApiError) {
+    if (error.status === 403) {
+      return actionFailure(TOPIC_FORBIDDEN);
+    }
     return actionFailure(`[${error.status}] ${error.message}`);
   }
   if (error instanceof Error) {
     return actionFailure(error.message);
   }
   return actionFailure("Unknown error");
+}
+
+async function requireLogin(): Promise<string | null> {
+  const userUuid = await getServerUserUuid();
+  return userUuid ? null : TOPIC_LOGIN_REQUIRED;
 }
 
 export async function listTopicsByStatusAction(
@@ -35,9 +44,9 @@ export async function createTopicAction(
   agitId: string,
   input: { title: unknown; startDate: unknown },
 ): Promise<ActionResult<void>> {
-  const creatorUuid = await getServerUserUuid();
-  if (!creatorUuid) {
-    return actionFailure("로그인이 필요합니다.");
+  const loginError = await requireLogin();
+  if (loginError) {
+    return actionFailure(loginError);
   }
 
   const parsed = parseCreateTopicInput(input);
@@ -48,7 +57,6 @@ export async function createTopicAction(
   try {
     await topicService.createTopic({
       agitUuid: agitId,
-      creatorUuid,
       title: parsed.title,
       startAt: parsed.startAt,
     });
@@ -62,6 +70,11 @@ export async function updateTopicAction(
   topicId: string,
   input: { title: unknown; startDate: unknown },
 ): Promise<ActionResult<void>> {
+  const loginError = await requireLogin();
+  if (loginError) {
+    return actionFailure(loginError);
+  }
+
   const parsed = parseUpdateTopicInput(input);
   if (!parsed.ok) {
     return actionFailure(parsed.error);
@@ -79,6 +92,11 @@ export async function updateTopicAction(
 }
 
 export async function deleteTopicAction(topicId: string): Promise<ActionResult<void>> {
+  const loginError = await requireLogin();
+  if (loginError) {
+    return actionFailure(loginError);
+  }
+
   try {
     await topicService.deleteTopic(topicId);
     return actionSuccess(undefined);

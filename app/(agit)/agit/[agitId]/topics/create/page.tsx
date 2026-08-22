@@ -1,5 +1,6 @@
 import { AgitTopicCreateTemplate } from "@/components/templates";
 import { ROUTES } from "@/config/routes";
+import { getServerUserUuid } from "@/lib/auth/server-token";
 import { getAgit } from "@/services/agitService";
 import type { UiAgit } from "@/types/agit/ui";
 import { redirect } from "next/navigation";
@@ -20,6 +21,10 @@ export default async function AgitTopicCreatePage({ params }: PageProps) {
 
   if (!agit) {
     redirect(ROUTES.agit.detail(agitId));
+  }
+
+  if (!(await getServerUserUuid())) {
+    redirect(ROUTES.login);
   }
 
   return <AgitTopicCreateTemplate agit={agit} />;

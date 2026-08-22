@@ -5,6 +5,7 @@ import { SubmitButton } from "@/components/atoms";
 import { AuthField } from "@/components/molecules";
 import { toast } from "@/components/ui/toast";
 import { ROUTES } from "@/config/routes";
+import { TOPIC_FORBIDDEN, TOPIC_LOGIN_REQUIRED } from "@/lib/topic/actionErrors";
 import { TOPIC_TITLE_MAX_LENGTH } from "@/types/topic/schema";
 import type { UiTopicDetail } from "@/types/topic/ui";
 import { useRouter } from "next/navigation";
@@ -36,6 +37,10 @@ export function TopicEditForm({ agitId, topic }: TopicEditFormProps) {
     setPending(false);
 
     if (!result.ok) {
+      if (result.error === TOPIC_FORBIDDEN || result.error === TOPIC_LOGIN_REQUIRED) {
+        toast.add({ type: "error", title: result.error });
+        return;
+      }
       setError(result.error);
       return;
     }
@@ -52,8 +57,14 @@ export function TopicEditForm({ agitId, topic }: TopicEditFormProps) {
     if (!result.ok) {
       toast.add({
         type: "error",
-        title: "토픽을 삭제하지 못했습니다",
-        description: result.error,
+        title:
+          result.error === TOPIC_FORBIDDEN || result.error === TOPIC_LOGIN_REQUIRED
+            ? result.error
+            : "토픽을 삭제하지 못했습니다",
+        description:
+          result.error === TOPIC_FORBIDDEN || result.error === TOPIC_LOGIN_REQUIRED
+            ? undefined
+            : result.error,
       });
       setDeleting(false);
       setConfirmDelete(false);
