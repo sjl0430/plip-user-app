@@ -13,7 +13,6 @@ export type ApiTopic = {
 
 export type ApiCreateTopicRequest = {
   agitUuid: string;
-  creatorUuid: string;
   title: string;
   startAt?: string;
 };
