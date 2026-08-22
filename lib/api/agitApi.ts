@@ -3,7 +3,16 @@ import { getActorUserHeaders } from "@/lib/api/actorHeaders";
 import { apiFetch } from "@/lib/api/apiFetch";
 import { getApiUrl } from "@/lib/api/env";
 import { withAuthRetry } from "@/lib/api/withAuthRetry";
-import type { ApiAgitDetail, ApiCreateAgitRequest, ApiCreateAgitResponse, ApiMyAgitItem } from "@/types/agit/api";
+import type {
+  ApiAgitDetail,
+  ApiCreateAgitRequest,
+  ApiCreateAgitResponse,
+  ApiMyAgitItem,
+  ApiUpdateAgitRequest,
+  ApiUpdateAgitResponse,
+  ApiUpdateMyMemberProfileRequest,
+  ApiUpdateMyMemberProfileResponse,
+} from "@/types/agit/api";
 
 export async function getMyAgits(): Promise<ApiMyAgitItem[]> {
   return withAuthRetry(async () =>
@@ -42,6 +51,34 @@ export async function leaveAgit(agitUuid: string): Promise<void> {
       method: "POST",
       baseUrl: getApiUrl(),
       headers: await getActorUserHeaders(),
+    }),
+  );
+}
+
+export async function updateAgit(
+  agitUuid: string,
+  body: ApiUpdateAgitRequest,
+): Promise<ApiUpdateAgitResponse> {
+  return withAuthRetry(async () =>
+    apiFetch<ApiUpdateAgitResponse>(API_ENDPOINTS.agit.detail(agitUuid), {
+      method: "PATCH",
+      baseUrl: getApiUrl(),
+      headers: await getActorUserHeaders(),
+      body,
+    }),
+  );
+}
+
+export async function updateMyMemberProfile(
+  agitUuid: string,
+  body: ApiUpdateMyMemberProfileRequest,
+): Promise<ApiUpdateMyMemberProfileResponse> {
+  return withAuthRetry(async () =>
+    apiFetch<ApiUpdateMyMemberProfileResponse>(API_ENDPOINTS.agit.memberMe(agitUuid), {
+      method: "PATCH",
+      baseUrl: getApiUrl(),
+      headers: await getActorUserHeaders(),
+      body,
     }),
   );
 }

@@ -1,4 +1,6 @@
 export { AgitMenuDrawer } from "./AgitMenuDrawer";
+export { AgitManageForm } from "./AgitManageForm";
+export { AgitProfileEditForm } from "./AgitProfileEditForm";
 export { ChatMoreSheet } from "./ChatMoreSheet";
 export { MoveTopicSheet } from "./MoveTopicSheet";
 export { TopicCreateForm } from "./TopicCreateForm";

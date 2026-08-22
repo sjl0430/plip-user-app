@@ -6,6 +6,7 @@ import { InviteConfirmSection } from "@/components/organisms/InviteConfirmSectio
 import { JoinCompleteSection } from "@/components/organisms/JoinCompleteSection";
 import { PublicRoomDetail } from "@/components/organisms/PublicRoomDetail";
 import { RoomProfileSelect } from "@/components/organisms/RoomProfileSelect";
+import { AgitFlowChrome } from "@/components/templates/AppChromeTemplate";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
@@ -51,19 +52,19 @@ export function InviteConfirmTemplate({ agitId }: { agitId: string }) {
 
 export function CreateRoomBasicTemplate() {
   return (
-    <DailyLoopAuthTemplate>
+    <AgitFlowChrome>
       <AuthTopBar title="아지트 만들기" backHref={ROUTES.agit.root} step="1 / 2 · 기본 정보" />
       <CreateRoomBasicForm />
-    </DailyLoopAuthTemplate>
+    </AgitFlowChrome>
   );
 }
 
 export function CreateRoomAccessTemplate() {
   return (
-    <DailyLoopAuthTemplate>
+    <AgitFlowChrome>
       <AuthTopBar title="아지트 만들기" backHref={ROUTES.agit.create} step="2 / 2 · 프로필" />
       <CreateRoomAccessForm />
-    </DailyLoopAuthTemplate>
+    </AgitFlowChrome>
   );
 }
 

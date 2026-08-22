@@ -55,3 +55,28 @@ export type ApiCreateAgitResponse = {
   profileImagePath: string | null;
   role: ApiAgitMemberRole;
 };
+
+export type ApiUpdateAgitRequest = {
+  agitName: string;
+  description?: string;
+  maximumCapacity: number;
+  thumbnailPath?: string;
+};
+
+export type ApiUpdateAgitResponse = {
+  agitUuid: string;
+  agitName: string;
+  description: string | null;
+  maximumCapacity: number;
+  thumbnailPath: string | null;
+};
+
+export type ApiUpdateMyMemberProfileRequest = {
+  nickname?: string;
+  profileImagePath?: string;
+};
+
+export type ApiUpdateMyMemberProfileResponse = {
+  nickname: string;
+  profileImagePath: string | null;
+};

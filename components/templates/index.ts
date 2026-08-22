@@ -11,6 +11,7 @@ export {
   AgitSearchTemplate,
   AgitTopicsTemplate,
   AgitManageTemplate,
+  AgitProfileEditTemplate,
   AgitSafetyTemplate,
   AgitTopicCreateTemplate,
 } from "./AgitTemplates";

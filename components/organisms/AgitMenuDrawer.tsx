@@ -20,13 +20,37 @@ type AgitMenuDrawerProps = {
 };
 
 const MENU = [
-  { id: "chat" as const, label: "채팅", href: (id: string) => ROUTES.agit.chat(id) },
-  { id: "members" as const, label: "멤버리스트", href: (id: string) => ROUTES.agit.members(id) },
-  { id: "profile" as const, label: "내프로필관리", href: (id: string) => ROUTES.agit.profile(id) },
-  { id: "manage" as const, label: "아지트관리", href: (id: string) => ROUTES.agit.manage(id) },
+  {
+    id: "topics" as const,
+    label: "토픽관리",
+    href: (id: string) => ROUTES.agit.topics(id),
+    hostOnly: true,
+  },
+  { id: "chat" as const, label: "채팅", href: (id: string) => ROUTES.agit.chat(id), hostOnly: false },
+  {
+    id: "members" as const,
+    label: "멤버리스트",
+    href: (id: string) => ROUTES.agit.members(id),
+    hostOnly: false,
+  },
+  {
+    id: "profile" as const,
+    label: "내프로필관리",
+    href: (id: string) => ROUTES.agit.profileEdit(id),
+    hostOnly: false,
+  },
+  {
+    id: "manage" as const,
+    label: "아지트관리",
+    href: (id: string) => ROUTES.agit.manage(id),
+    hostOnly: true,
+  },
 ];
 
 function MenuItemIcon({ id }: { id: (typeof MENU)[number]["id"] }) {
+  if (id === "topics") {
+    return <DailyIcon name="list" size={24} />;
+  }
   if (id === "chat") {
     return <DailyIcon name="message" size={24} />;
   }
@@ -44,12 +68,19 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [leaving, setLeaving] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState(false);
   const inviteCode = agit.inviteCode?.trim() ?? "";
+  const menuItems = MENU.filter((item) => !item.hostOnly || agit.myRole === "HOST");
 
   async function copyInviteCode() {
     if (!inviteCode) return;
     const ok = await copyText(inviteCode);
     setCopied(ok);
+  }
+
+  function handleClose() {
+    setConfirmLeave(false);
+    onClose();
   }
 
   async function handleLeave() {
@@ -65,7 +96,7 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
       setLeaving(false);
       return;
     }
-    onClose();
+    handleClose();
     toast.add({
       type: "success",
       title: "아지트에서 나갔습니다",
@@ -80,37 +111,42 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
       <button
         type="button"
         className={cn(
-          "fixed inset-0 z-[40] border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
+          "absolute inset-0 z-[40] border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
           visible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
         aria-label="메뉴 닫기"
-        onClick={onClose}
+        onClick={handleClose}
       />
       <aside
         className={cn(
-          "fixed top-0 right-0 z-[41] flex h-dvh w-[min(310px,86vw)] flex-col gap-2.5 rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-6 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          "absolute top-0 right-0 z-[41] flex h-full w-[min(310px,86%)] flex-col gap-2.5 rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-24 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
           visible ? "[transform:translateX(0)]" : "[transform:translateX(100%)]",
         )}
         aria-label="아지트 메뉴"
         aria-hidden={!visible}
       >
-        <div className="flex shrink-0 items-center justify-between min-h-[48px]">
+        <div className="flex min-h-[48px] shrink-0 items-center justify-between">
           <h2 className="m-0 text-[22px] font-bold text-[#1f1c29]">{agit.name}</h2>
-          <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="닫기" onClick={onClose}>
+          <button
+            type="button"
+            className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]"
+            aria-label="닫기"
+            onClick={handleClose}
+          >
             <DailyIcon name="x" size={20} />
           </button>
         </div>
 
         <button
           type="button"
-          className="flex min-h-[32px] w-full shrink-0 items-center justify-between gap-2 p-[6px_10px] border border-[#e3e0ed] rounded-[10px] bg-[#fff] text-left cursor-pointer disabled:cursor-default"
+          className="flex min-h-[32px] w-full shrink-0 cursor-pointer items-center justify-between gap-2 rounded-[10px] border border-[#e3e0ed] bg-[#fff] p-[6px_10px] text-left disabled:cursor-default"
           onClick={copyInviteCode}
           disabled={!inviteCode}
           aria-label="초대코드 복사"
         >
           <div className="flex min-w-0 items-center gap-2">
             <Link2 className="size-3.5 shrink-0 text-[#262433]" strokeWidth={2} />
-            <p className="m-0 overflow-hidden text-xs font-medium tracking-[0.04em] text-[#262433] [text-overflow:ellipsis] whitespace-nowrap">
+            <p className="m-0 overflow-hidden text-xs font-medium tracking-[0.04em] text-[#262433] whitespace-nowrap [text-overflow:ellipsis]">
               {inviteCode || "초대코드"}
             </p>
           </div>
@@ -133,8 +169,13 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
 
           <Separator className="!m-1 !border-[#e3e0ed]" />
 
-          {MENU.map((item) => (
-            <TextLink key={item.id} href={item.href(agit.id)} className="flex min-h-[52px] items-center gap-[14px] p-[12px_14px] border border-[#e3e0ed] rounded-[14px] bg-[#fff] !text-[#262433] text-sm font-semibold !no-underline" onClick={onClose}>
+          {menuItems.map((item) => (
+            <TextLink
+              key={item.id}
+              href={item.href(agit.id)}
+              className="flex min-h-[52px] items-center gap-[14px] rounded-[14px] border border-[#e3e0ed] bg-[#fff] p-[12px_14px] text-sm font-semibold !text-[#262433] !no-underline"
+              onClick={handleClose}
+            >
               <MenuItemIcon id={item.id} />
               {item.label}
             </TextLink>
@@ -144,15 +185,54 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
         <div className="flex shrink-0 flex-col items-end gap-2">
           <button
             type="button"
-            className="grid w-[44px] h-[44px] place-items-center rounded-[var(--dl-radius-md)] border border-[#e3e0ed] bg-[#fff] cursor-pointer disabled:opacity-50"
+            className="grid h-[44px] w-[44px] cursor-pointer place-items-center rounded-[var(--dl-radius-md)] border border-[#e3e0ed] bg-[#fff] disabled:opacity-50"
             aria-label="아지트 나가기"
             disabled={leaving}
-            onClick={handleLeave}
+            onClick={() => setConfirmLeave(true)}
           >
             <LogOut className="size-5 text-[#d84545]" strokeWidth={2} />
           </button>
         </div>
       </aside>
+
+      {confirmLeave ? (
+        <div className="absolute inset-0 z-[42] flex items-center justify-center p-6">
+          <button
+            type="button"
+            className="absolute inset-0 border-0 bg-[rgba(0,0,0,0.32)]"
+            aria-label="취소"
+            onClick={() => setConfirmLeave(false)}
+          />
+          <div
+            role="dialog"
+            aria-modal
+            aria-labelledby="agit-leave-title"
+            className="relative z-[1] w-full max-w-[280px] rounded-[20px] border border-[#e3e0ed] bg-[#fbfaff] p-5 shadow-[0_8px_24px_rgba(31,28,41,0.12)]"
+          >
+            <p id="agit-leave-title" className="m-0 text-base font-semibold text-[#1f1c29]">
+              아지트에서 나가시겠어요?
+            </p>
+            <p className="m-[8px_0_0] text-xs text-[#756e8a]">나가면 목록에서 이 아지트가 사라집니다.</p>
+            <div className="mt-4 flex gap-2">
+              <button
+                type="button"
+                className="flex h-11 flex-1 items-center justify-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] text-sm font-medium text-[#262433]"
+                onClick={() => setConfirmLeave(false)}
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                className="flex h-11 flex-1 items-center justify-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-danger)] text-sm font-medium text-[var(--dl-color-text-danger)] disabled:opacity-50"
+                disabled={leaving}
+                onClick={handleLeave}
+              >
+                {leaving ? "나가는 중..." : "나가기"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }

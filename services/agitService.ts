@@ -1,5 +1,14 @@
 import * as agitApi from "@/lib/api/agitApi";
-import type { ApiAgitDetail, ApiCreateAgitRequest, ApiCreateAgitResponse, ApiMyAgitItem } from "@/types/agit/api";
+import type {
+  ApiAgitDetail,
+  ApiAgitDetailMember,
+  ApiCreateAgitRequest,
+  ApiCreateAgitResponse,
+  ApiMyAgitItem,
+  ApiUpdateAgitRequest,
+  ApiUpdateMyMemberProfileRequest,
+  ApiUpdateMyMemberProfileResponse,
+} from "@/types/agit/api";
 import type { UiAgit, UiCreateAgitInput } from "@/types/agit/ui";
 
 const DEFAULT_COVER_GRADIENT = "linear-gradient(104deg, #2e1f52 0%, #7a5cfa 100%)";
@@ -29,7 +38,22 @@ function mapAgitDetail(item: ApiAgitDetail): UiAgit {
     thumbnailSrc: item.thumbnailPath ?? undefined,
     inviteCode: item.code,
     joined: true,
+    myRole: item.myRole,
   };
+}
+
+export function sortAgitMembers(
+  members: ApiAgitDetailMember[],
+  currentUserUuid?: string,
+): ApiAgitDetailMember[] {
+  return [...members].sort((a, b) => {
+    const rank = (member: ApiAgitDetailMember) => {
+      if (member.role === "HOST") return 0;
+      if (currentUserUuid && member.userUuid === currentUserUuid) return 1;
+      return 2;
+    };
+    return rank(a) - rank(b);
+  });
 }
 
 export async function listMyAgits(): Promise<UiAgit[]> {
@@ -66,11 +90,24 @@ function mapCreatedAgit(item: ApiCreateAgitResponse): UiAgit {
     thumbnailSrc: item.thumbnailPath ?? undefined,
     inviteCode: item.code,
     joined: true,
+    myRole: item.role,
   };
 }
 
 export async function leaveAgit(agitId: string): Promise<void> {
   await agitApi.leaveAgit(agitId);
+}
+
+export async function updateAgit(agitId: string, body: ApiUpdateAgitRequest): Promise<UiAgit> {
+  await agitApi.updateAgit(agitId, body);
+  return getAgit(agitId);
+}
+
+export async function updateMyMemberProfile(
+  agitId: string,
+  body: ApiUpdateMyMemberProfileRequest,
+): Promise<ApiUpdateMyMemberProfileResponse> {
+  return agitApi.updateMyMemberProfile(agitId, body);
 }
 
 export async function createAgit(input: UiCreateAgitInput): Promise<UiAgit> {

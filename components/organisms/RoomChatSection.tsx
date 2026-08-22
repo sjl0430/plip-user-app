@@ -104,6 +104,7 @@ export function RoomChatSection({ agit }: RoomChatSectionProps) {
         agitId={agit.id}
         open={menuOpen}
         notify={notify}
+        myRole={agit.myRole}
         onClose={() => setMenuOpen(false)}
         onToggleNotify={() => setNotify((current) => !current)}
       />

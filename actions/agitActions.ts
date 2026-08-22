@@ -3,7 +3,7 @@
 import { ApiError } from "@/lib/api/apiFetch";
 import * as agitService from "@/services/agitService";
 import { actionFailure, actionSuccess, type ActionResult } from "@/types/action-result";
-import { parseCreateAgitInput } from "@/types/agit/schema";
+import { parseAgitNickname, parseCreateAgitInput, parseUpdateAgitInput } from "@/types/agit/schema";
 import type { UiAgit, UiCreateAgitInput } from "@/types/agit/ui";
 
 function toActionError(error: unknown): ActionResult<never> {
@@ -36,6 +36,46 @@ export async function createAgitAction(
   try {
     const agit = await agitService.createAgit(parsed.data);
     return actionSuccess(agit);
+  } catch (error) {
+    return toActionError(error);
+  }
+}
+
+export async function updateAgitAction(
+  agitId: string,
+  input: {
+    agitName: unknown;
+    description?: unknown;
+    maximumCapacity: unknown;
+    thumbnailPath?: unknown;
+  },
+  minCapacity: number,
+): Promise<ActionResult<UiAgit>> {
+  const parsed = parseUpdateAgitInput(input, { minCapacity });
+  if (!parsed.ok) {
+    return actionFailure(parsed.error);
+  }
+
+  try {
+    const agit = await agitService.updateAgit(agitId, parsed.data);
+    return actionSuccess(agit);
+  } catch (error) {
+    return toActionError(error);
+  }
+}
+
+export async function updateMyAgitProfileAction(
+  agitId: string,
+  nickname: unknown,
+): Promise<ActionResult<void>> {
+  const parsed = parseAgitNickname(nickname);
+  if (!parsed.ok) {
+    return actionFailure(parsed.error);
+  }
+
+  try {
+    await agitService.updateMyMemberProfile(agitId, { nickname: parsed.nickname });
+    return actionSuccess(undefined);
   } catch (error) {
     return toActionError(error);
   }
