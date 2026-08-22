@@ -23,6 +23,7 @@ export { ChatBubble } from "./ChatBubble";
 export { ChatPollCard } from "./ChatPollCard";
 export { CalendarClipCard } from "./CalendarClipCard";
 export { CalendarDay } from "./CalendarDay";
+export { MonthCalendarGrid, buildMonthGridCells, type MonthGridCell } from "./MonthCalendarGrid";
 export { ManageQuickLink } from "./ManageQuickLink";
 export { PollChoiceRow } from "./PollChoiceRow";
 export { RoomNav } from "./RoomNav";

@@ -1,9 +1,10 @@
 "use client";
 
 import { DailyIcon, TextLink } from "@/components/atoms";
-import { MenuNavRow, SideSheetHeader } from "@/components/molecules";
+import { MenuNavRow, MonthCalendarGrid, SideSheetHeader, buildMonthGridCells } from "@/components/molecules";
 import { AnimatedSideSheet } from "@/components/molecules/AnimatedOverlays";
 import { ROUTES } from "@/config/routes";
+import { useMemo } from "react";
 
 type DiarySideMenuProps = {
   open: boolean;
@@ -12,27 +13,8 @@ type DiarySideMenuProps = {
 
 const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"] as const;
 
-function buildAugust2026Days() {
-  const leading = 6;
-  const daysInMonth = 31;
-  const cells: Array<{ day: number; date?: string; outside?: boolean }> = [];
-
-  for (let i = 0; i < leading; i += 1) {
-    cells.push({ day: 26 + i, outside: true });
-  }
-  for (let day = 1; day <= daysInMonth; day += 1) {
-    const dd = String(day).padStart(2, "0");
-    cells.push({ day, date: `2026-08-${dd}` });
-  }
-  while (cells.length % 7 !== 0) {
-    const overflow = cells.length - (leading + daysInMonth) + 1;
-    cells.push({ day: overflow, outside: true });
-  }
-  return cells;
-}
-
 export function DiarySideMenu({ open, onClose }: DiarySideMenuProps) {
-  const cells = buildAugust2026Days();
+  const cells = useMemo(() => buildMonthGridCells(2026, 7, "adjacent"), []);
 
   return (
     <AnimatedSideSheet
@@ -71,13 +53,12 @@ export function DiarySideMenu({ open, onClose }: DiarySideMenuProps) {
             ›
           </button>
         </div>
-        <div className="grid grid-cols-[repeat(7,_minmax(0,_1fr))] gap-[0.2rem] [&_span]:inline-flex [&_span]:h-[1.35rem] [&_span]:items-center [&_span]:justify-center [&_span]:text-[0.7rem] [&_span]:font-bold [&_span]:text-[rgba(0,_0,_0,_0.4)]">
-          {WEEKDAYS.map((day) => (
-            <span key={day}>{day}</span>
-          ))}
-        </div>
-        <div className="grid grid-cols-[repeat(7,_minmax(0,_1fr))] gap-[0.2rem]">
-          {cells.map((cell, index) =>
+        <MonthCalendarGrid
+          weekdayLabels={WEEKDAYS}
+          cells={cells}
+          weekdaysClassName="grid grid-cols-[repeat(7,_minmax(0,_1fr))] gap-[0.2rem] [&_span]:inline-flex [&_span]:h-[1.35rem] [&_span]:items-center [&_span]:justify-center [&_span]:text-[0.7rem] [&_span]:font-bold [&_span]:text-[rgba(0,_0,_0,_0.4)]"
+          daysClassName="grid grid-cols-[repeat(7,_minmax(0,_1fr))] gap-[0.2rem]"
+          renderDay={(cell, index) =>
             cell.date && !cell.outside ? (
               <TextLink
                 key={`${cell.day}-${index}`}
@@ -94,9 +75,9 @@ export function DiarySideMenu({ open, onClose }: DiarySideMenuProps) {
               >
                 {cell.day}
               </span>
-            ),
-          )}
-        </div>
+            )
+          }
+        />
       </div>
     </AnimatedSideSheet>
   );
