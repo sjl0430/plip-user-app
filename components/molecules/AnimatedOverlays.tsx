@@ -115,11 +115,11 @@ export function AnimatedSideSheet({
   if (!mounted) return null;
 
   return (
-    <>
+    <div className="fixed inset-0 z-[40] md:absolute">
       <button
         type="button"
         className={cn(
-          "fixed inset-0 z-[40] border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
+          "absolute inset-0 border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
           visible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
         aria-label="닫기"
@@ -129,7 +129,7 @@ export function AnimatedSideSheet({
         aria-label={ariaLabel}
         aria-hidden={!visible}
         className={cn(
-          "fixed top-0 z-50 flex h-dvh flex-col overflow-y-auto [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          "absolute top-0 bottom-0 z-[1] flex flex-col overflow-y-auto [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
           side === "left" ? "left-0" : "right-0",
           visible
             ? "[transform:translateX(0)]"
@@ -141,6 +141,6 @@ export function AnimatedSideSheet({
       >
         {children}
       </aside>
-    </>
+    </div>
   );
 }

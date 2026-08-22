@@ -44,6 +44,7 @@ export { ScreenHeader } from "./ScreenHeader";
 export { UploadProgress } from "./UploadProgress";
 export { DailyToggle } from "./DailyToggle";
 export { SettingsRow } from "./SettingsRow";
+export { MenuNavRow, SideSheetHeader } from "./SideSheetMenu";
 export { CapacityStepper } from "./CapacityStepper";
 export { ProfileOption } from "./ProfileOption";
 export { RoomInfoRow } from "./RoomInfoRow";

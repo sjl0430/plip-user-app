@@ -2,12 +2,12 @@
 
 import { leaveAgitAction } from "@/actions/agitActions";
 import { listTopicsByStatusAction } from "@/actions/topicActions";
-import { DailyIcon, Separator, TextLink } from "@/components/atoms";
+import { DailyIcon, IconButton, Separator, TextLink } from "@/components/atoms";
+import { AnimatedSideSheet } from "@/components/molecules/AnimatedOverlays";
+import { MenuNavRow, SideSheetHeader } from "@/components/molecules/SideSheetMenu";
 import { ROUTES } from "@/config/routes";
-import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import { toast } from "@/components/ui/toast";
 import { copyText } from "@/lib/copyText";
-import { cn } from "@/lib/utils";
 import type { UiAgit } from "@/types/agit/ui";
 import type { UiTopicListItem } from "@/types/topic/ui";
 import { Check, Copy, Link2, LogOut, Settings, UserRoundCog } from "lucide-react";
@@ -65,7 +65,6 @@ function MenuItemIcon({ id }: { id: (typeof MENU)[number]["id"] }) {
 }
 
 export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
-  const { mounted, visible } = useOverlayTransition(open);
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [leaving, setLeaving] = useState(false);
@@ -118,38 +117,15 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
     router.push(ROUTES.agit.root);
   }
 
-  if (!mounted) return null;
-
   return (
-    <div className="fixed inset-0 z-[40] md:absolute">
-      <button
-        type="button"
-        className={cn(
-          "absolute inset-0 border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
-          visible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
-        )}
-        aria-label="메뉴 닫기"
-        onClick={handleClose}
-      />
-      <aside
-        className={cn(
-          "absolute top-0 right-0 bottom-0 z-[1] flex w-[min(310px,86%)] flex-col gap-2.5 overflow-hidden rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-12 md:pb-5 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
-          visible ? "[transform:translateX(0)]" : "[transform:translateX(100%)]",
-        )}
+    <>
+      <AnimatedSideSheet
+        open={open}
+        onClose={handleClose}
         aria-label="아지트 메뉴"
-        aria-hidden={!visible}
+        className="w-[min(310px,86%)] gap-2.5 overflow-hidden rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-12 md:pb-5"
       >
-        <div className="flex min-h-[48px] shrink-0 items-center justify-between">
-          <h2 className="m-0 text-[22px] font-bold text-[#1f1c29]">{agit.name}</h2>
-          <button
-            type="button"
-            className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]"
-            aria-label="닫기"
-            onClick={handleClose}
-          >
-            <DailyIcon name="x" size={20} />
-          </button>
-        </div>
+        <SideSheetHeader title={agit.name} onClose={handleClose} />
 
         <button
           type="button"
@@ -198,33 +174,28 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
           <Separator className="!m-1 !border-[#e3e0ed]" />
 
           {menuItems.map((item) => (
-            <TextLink
-              key={item.id}
-              href={item.href(agit.id)}
-              className="flex min-h-[52px] items-center gap-[14px] rounded-[14px] border border-[#e3e0ed] bg-[#fff] p-[12px_14px] text-sm font-semibold !text-[#262433] !no-underline"
-              onClick={handleClose}
-            >
+            <MenuNavRow key={item.id} href={item.href(agit.id)} onClick={handleClose}>
               <MenuItemIcon id={item.id} />
               {item.label}
-            </TextLink>
+            </MenuNavRow>
           ))}
         </div>
 
         <div className="flex shrink-0 flex-col items-end gap-2">
-          <button
-            type="button"
-            className="grid h-[44px] w-[44px] cursor-pointer place-items-center rounded-[var(--dl-radius-md)] border border-[#e3e0ed] bg-[#fff] disabled:opacity-50"
-            aria-label="아지트 나가기"
+          <IconButton
+            variant="surface"
+            label="아지트 나가기"
+            className="cursor-pointer border border-[#e3e0ed] bg-[#fff] disabled:opacity-50"
             disabled={leaving}
             onClick={() => setConfirmLeave(true)}
           >
             <LogOut className="size-5 text-[#d84545]" strokeWidth={2} />
-          </button>
+          </IconButton>
         </div>
-      </aside>
+      </AnimatedSideSheet>
 
       {confirmLeave ? (
-        <div className="absolute inset-0 z-[2] flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-[41] flex items-center justify-center p-6 md:absolute">
           <button
             type="button"
             className="absolute inset-0 border-0 bg-[rgba(0,0,0,0.32)]"
@@ -261,6 +232,6 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
           </div>
         </div>
       ) : null}
-    </div>
+    </>
   );
 }
