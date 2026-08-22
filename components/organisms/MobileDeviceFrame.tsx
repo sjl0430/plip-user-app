@@ -1,3 +1,4 @@
+import { OverlayPortalProvider } from "@/components/molecules/AnimatedOverlays";
 import leftoverStyles from "@/components/styles/leftover.module.css";
 import type { ReactNode } from "react";
 
@@ -13,14 +14,16 @@ export function MobileDeviceFrame({ children }: MobileDeviceFrameProps) {
   return (
     <div className="w-full min-h-dvh md:flex md:items-center md:justify-center md:min-h-dvh md:p-[2rem_1.5rem] md:bg-[#ececf1]">
       <div className="contents md:relative md:flex md:flex-col md:w-[min(402px,_calc(100vw_-_2rem))] md:h-[min(874px,_calc(100dvh_-_2.5rem))] md:p-[2px] md:rounded-[16px] md:bg-[var(--dl-color-border-default)] md:shadow-[0_12px_40px_rgba(23,_23,_28,_0.16)]">
-        <div className="min-h-dvh md:relative md:flex md:flex-1 md:min-h-0 md:flex-col md:overflow-hidden md:rounded-[14px] md:bg-[var(--dl-color-bg-elevated)] md:[transform:translateZ(0)]">
-          <div className="hidden md:flex md:h-[32px] md:shrink-0 md:items-center md:justify-between md:p-[0_22px] md:text-[11px] md:font-semibold md:text-[var(--dl-color-text-primary)] md:[&_span:last-child]:text-[10px] md:[&_span:last-child]:font-medium md:[&_span:last-child]:text-[var(--dl-color-text-secondary)] md:[&_span:last-child]:tracking-[0.02em]" aria-hidden>
-            <span>9:41</span>
-            <span>●●●  100%</span>
-          </div>
-          <div className={`${leftoverStyles.plipDeviceApp} flex min-h-dvh flex-col md:min-h-0 md:flex-1 md:overflow-hidden`}>
-            {children}
-          </div>
+        <div className="relative min-h-dvh md:flex md:flex-1 md:min-h-0 md:flex-col md:overflow-hidden md:rounded-[14px] md:bg-[var(--dl-color-bg-elevated)] md:[transform:translateZ(0)]">
+          <OverlayPortalProvider>
+            <div className="hidden md:flex md:h-[32px] md:shrink-0 md:items-center md:justify-between md:p-[0_22px] md:text-[11px] md:font-semibold md:text-[var(--dl-color-text-primary)] md:[&_span:last-child]:text-[10px] md:[&_span:last-child]:font-medium md:[&_span:last-child]:text-[var(--dl-color-text-secondary)] md:[&_span:last-child]:tracking-[0.02em]" aria-hidden>
+              <span>9:41</span>
+              <span>●●●  100%</span>
+            </div>
+            <div className={`${leftoverStyles.plipDeviceApp} flex min-h-dvh flex-col md:min-h-0 md:flex-1 md:overflow-hidden`}>
+              {children}
+            </div>
+          </OverlayPortalProvider>
         </div>
       </div>
     </div>

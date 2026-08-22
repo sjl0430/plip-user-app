@@ -1,5 +1,10 @@
 export { ActionSheet } from "./ActionSheet";
-export { AnimatedDialog, AnimatedDropdown, AnimatedSideSheet } from "./AnimatedOverlays";
+export {
+  AnimatedDialog,
+  AnimatedDropdown,
+  AnimatedSideSheet,
+  OverlayPortalProvider,
+} from "./AnimatedOverlays";
 export { AgitListRow } from "./AgitListRow";
 export { ManageListRow } from "./ManageListRow";
 export { DestinationToggle } from "./DestinationToggle";
@@ -16,13 +21,21 @@ export { AgreementRow } from "./AgreementRow";
 export { AuthDivider } from "./AuthDivider";
 export { AuthField } from "./AuthField";
 export { AuthNavigationLinks } from "./AuthNavigationLinks";
-export { AuthTopBar } from "./AuthTopBar";
+export {
+  AuthTopBar,
+  HeaderBackButton,
+  HeaderBackLink,
+  HeaderMenuButton,
+  HeaderStep,
+  ScreenHeader,
+} from "./ScreenHeader";
 export { ExploreNav } from "./ExploreNav";
 export { TopicOption } from "./TopicOption";
 export { ChatBubble } from "./ChatBubble";
 export { ChatPollCard } from "./ChatPollCard";
 export { CalendarClipCard } from "./CalendarClipCard";
 export { CalendarDay } from "./CalendarDay";
+export { MonthCalendarGrid, buildMonthGridCells, type MonthGridCell } from "./MonthCalendarGrid";
 export { ManageQuickLink } from "./ManageQuickLink";
 export { PollChoiceRow } from "./PollChoiceRow";
 export { RoomNav } from "./RoomNav";
@@ -39,10 +52,10 @@ export { FeedTopBar } from "./FeedTopBar";
 export { FormField } from "./FormField";
 export { LinkButton } from "./LinkButton";
 export { MyPageMenuItem } from "./MyPageMenuItem";
-export { PageHeader } from "./PageHeader";
 export { UploadProgress } from "./UploadProgress";
 export { DailyToggle } from "./DailyToggle";
 export { SettingsRow } from "./SettingsRow";
+export { MenuNavRow, SideSheetHeader } from "./SideSheetMenu";
 export { CapacityStepper } from "./CapacityStepper";
 export { ProfileOption } from "./ProfileOption";
 export { RoomInfoRow } from "./RoomInfoRow";

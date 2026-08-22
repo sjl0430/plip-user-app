@@ -1,16 +1,20 @@
 import leftoverStyles from "@/components/styles/leftover.module.css";
 import { TextLink } from "@/components/atoms";
+import { ScreenHeader } from "@/components/molecules";
 import { ROUTES } from "@/config/routes";
 
 export function MyPageProfileSection() {
   return (
     <section aria-label="설정 홈" className="flex flex-1 flex-col bg-[transparent] text-[var(--dc-fg-primary)]">
-      <header className="flex items-center justify-between p-[0.65rem_0.85rem]">
-        <span className="text-[1rem] font-extrabold">설정</span>
-        <TextLink href={ROUTES.mypage.settings} className="grid place-items-center min-w-[1.75rem] !text-[#111] !no-underline text-[1.15rem] font-bold" aria-label="전체 설정">
-          ≡
-        </TextLink>
-      </header>
+      <ScreenHeader
+        tone="plain"
+        title="설정"
+        trailing={
+          <TextLink href={ROUTES.mypage.settings} className="grid min-w-[1.75rem] place-items-center text-[1.15rem] font-bold !text-[#111] !no-underline" aria-label="전체 설정">
+            ≡
+          </TextLink>
+        }
+      />
 
       <div className="flex flex-col items-center gap-[0.65rem] p-[0.5rem_1rem_1rem]">
         <div className="relative">

@@ -1,6 +1,7 @@
 "use client";
 
-import { DailyIcon, TextLink } from "@/components/atoms";
+import { DailyIcon, IconButton, TextLink } from "@/components/atoms";
+import { HeaderBackLink, MonthCalendarGrid, ScreenHeader, buildMonthGridCells } from "@/components/molecules";
 import {
   getCompactCalendarDetail,
   listCompactCalendarActiveDays,
@@ -14,22 +15,11 @@ type RecordCalendarProps = {
   agitId: string;
 };
 
-function monthCells(year: number, month: number) {
-  const startPad = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cells: Array<number | undefined> = [
-    ...Array<undefined>(startPad).fill(undefined),
-    ...Array.from({ length: daysInMonth }, (_, index) => index + 1),
-  ];
-  while (cells.length % 7 !== 0) cells.push(undefined);
-  return cells;
-}
-
 export function RecordCalendar({ agitId }: RecordCalendarProps) {
   const [year, setYear] = useState(2026);
   const [month, setMonth] = useState(7);
   const [selectedDay, setSelectedDay] = useState(14);
-  const cells = useMemo(() => monthCells(year, month), [year, month]);
+  const cells = useMemo(() => buildMonthGridCells(year, month, "empty"), [year, month]);
   const activeDays = useMemo(() => new Set(listCompactCalendarActiveDays(year, month)), [year, month]);
   const selectedDetail = getCompactCalendarDetail(year, month, selectedDay);
 
@@ -46,60 +36,73 @@ export function RecordCalendar({ agitId }: RecordCalendarProps) {
 
   return (
     <section className="flex flex-col gap-[16px] px-[23px] pb-8 pt-3" aria-label="기록 캘린더">
-      <header className="flex items-start justify-between gap-[12px] gap-[10px] mb-[4px]">
-        <TextLink href={ROUTES.agit.detail(agitId)} className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="뒤로">
-          <DailyIcon name="chevronLeft" size={20} />
-        </TextLink>
-        <div className="pt-[14px] min-w-0 flex-1">
-          <h1 className="m-0 text-[22px] font-bold leading-[27px] text-[var(--dl-color-text-primary)]">기록 캘린더</h1>
-        </div>
-      </header>
+      <ScreenHeader
+        tone="plain"
+        className="mb-[4px]"
+        leading={<HeaderBackLink href={ROUTES.agit.detail(agitId)} />}
+        title="기록 캘린더"
+      />
 
       <div className="flex items-center justify-between gap-[12px]">
-        <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="이전 달" onClick={() => shiftMonth(-1)}>
+        <IconButton variant="surface" label="이전 달" onClick={() => shiftMonth(-1)}>
           <DailyIcon name="chevronLeft" size={20} />
-        </button>
+        </IconButton>
         <p className="m-0 flex-1 text-center text-lg font-semibold text-[var(--dl-color-text-primary)]">
           {year}년 {month + 1}월
         </p>
-        <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="다음 달" onClick={() => shiftMonth(1)}>
+        <IconButton variant="surface" label="다음 달" onClick={() => shiftMonth(1)}>
           <DailyIcon name="chevronRight" size={20} />
-        </button>
+        </IconButton>
       </div>
 
-      <div className="grid grid-cols-[repeat(7,_1fr)] gap-[4px]">
-        {WEEKDAYS.map((label, index) => (
+      <MonthCalendarGrid
+        weekdayLabels={WEEKDAYS}
+        cells={cells}
+        weekdaysClassName="grid grid-cols-[repeat(7,_1fr)] gap-[4px]"
+        daysClassName="grid grid-cols-[repeat(7,_1fr)] gap-[4px]"
+        renderWeekday={(label, index) => (
           <span
             key={label}
-            className={index === 0 ? "text-center text-[11px] font-medium text-[var(--dl-color-text-secondary)] text-[var(--dl-color-text-danger)] m-dlCompactCalWeekdaySun" : "text-center text-[11px] font-medium text-[var(--dl-color-text-secondary)]"}
+            className={
+              index === 0
+                ? "m-dlCompactCalWeekdaySun text-center text-[11px] font-medium text-[var(--dl-color-text-danger)]"
+                : "text-center text-[11px] font-medium text-[var(--dl-color-text-secondary)]"
+            }
           >
             {label}
           </span>
-        ))}
-      </div>
+        )}
+        renderDay={(cell, index) => {
+          if (cell.outside || !cell.day) {
+            return (
+              <span
+                key={`empty-${index}`}
+                className="relative flex h-[36px] flex-col items-center justify-center gap-[4px] rounded-[12px] border-0 bg-[transparent] text-sm font-medium text-[var(--dl-color-text-tertiary)]"
+                aria-hidden
+              />
+            );
+          }
 
-      <div className="grid grid-cols-[repeat(7,_1fr)] gap-[4px]">
-        {cells.map((day, index) => {
-          if (!day) return <span key={`empty-${index}`} className="relative flex h-[36px] flex-col items-center justify-center gap-[4px] border-0 rounded-[12px] bg-[transparent] text-sm font-medium text-[var(--dl-color-text-tertiary)]" aria-hidden />;
-
-          const available = activeDays.has(day);
-          const selected = day === selectedDay;
+          const available = activeDays.has(cell.day);
+          const selected = cell.day === selectedDay;
 
           return (
             <button
-              key={day}
+              key={cell.day}
               type="button"
-              className={`relative flex h-[36px] flex-col items-center justify-center gap-[4px] border-0 rounded-[12px] bg-[transparent] text-sm font-medium text-[var(--dl-color-text-tertiary)] ${available ? "text-[var(--dl-color-text-primary)] m-dlCompactCalCellAvailable" : "opacity-[0.45] m-dlCompactCalCellEmpty"} ${selected ? "text-[var(--dl-color-text-inverse)] bg-[var(--dl-color-bg-brand)] m-dlCompactCalCellSelected" : ""}`}
+              className={`relative flex h-[36px] flex-col items-center justify-center gap-[4px] rounded-[12px] border-0 bg-[transparent] text-sm font-medium text-[var(--dl-color-text-tertiary)] ${available ? "m-dlCompactCalCellAvailable text-[var(--dl-color-text-primary)]" : "m-dlCompactCalCellEmpty opacity-[0.45]"} ${selected ? "m-dlCompactCalCellSelected bg-[var(--dl-color-bg-brand)] text-[var(--dl-color-text-inverse)]" : ""}`}
               disabled={!available}
               aria-pressed={selected}
-              onClick={() => available && setSelectedDay(day)}
+              onClick={() => available && setSelectedDay(cell.day)}
             >
-              {day}
-              {available ? <span className="w-[5px] h-[5px] rounded-[999px] bg-[var(--dl-color-text-brand)] bg-[#fff]" aria-hidden /> : null}
+              {cell.day}
+              {available ? (
+                <span className="h-[5px] w-[5px] rounded-[999px] bg-[#fff]" aria-hidden />
+              ) : null}
             </button>
           );
-        })}
-      </div>
+        }}
+      />
 
       {selectedDetail ? (
         <>

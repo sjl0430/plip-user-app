@@ -1,8 +1,8 @@
 "use client";
-import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { deleteThemeAction } from "@/actions/diaryActions";
-import { DailyIcon, TextLink } from "@/components/atoms";
+import { TextLink } from "@/components/atoms";
+import { HeaderBackLink, ScreenHeader } from "@/components/molecules";
 import { AnimatedDropdown } from "@/components/molecules/AnimatedOverlays";
 import { CreateThemeDialog } from "@/components/organisms/CreateThemeDialog";
 import { ROUTES } from "@/config/routes";
@@ -154,25 +154,21 @@ export function DiaryThemesListSection({ themes, error: fetchError }: DiaryTheme
   return (
     <>
       <div className="flex flex-col gap-[0.95rem] p-[0.9rem_1rem_1.5rem]">
-        <header className="grid grid-cols-[44px_1fr_auto] items-center gap-[10px]">
-          <TextLink
-            href={ROUTES.diary.root}
-            className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline"
-            aria-label="뒤로"
-          >
-            <DailyIcon name="chevronLeft" size={20} />
-          </TextLink>
-          <div className={leftoverStyles.plipDiaryThemesHead}>
-            <h2>테마</h2>
-          </div>
-          <button
-            type="button"
-            className="border border-[var(--dc-glass-border)] rounded-[var(--dc-btn-radius)] bg-[linear-gradient(180deg,_var(--dc-glass-from),_var(--dc-glass-to))] p-[0.4rem_0.85rem] text-[0.8rem] font-medium text-[var(--dc-fg-primary)] shadow-[var(--dc-shadow)] backdrop-blur-[20px] cursor-pointer"
-            onClick={openCreateDialog}
-          >
-            생성
-          </button>
-        </header>
+        <ScreenHeader
+          tone="plain"
+          titleAlign="center"
+          leading={<HeaderBackLink href={ROUTES.diary.root} />}
+          title="테마"
+          trailing={
+            <button
+              type="button"
+              className="cursor-pointer rounded-[var(--dc-btn-radius)] border border-[var(--dc-glass-border)] bg-[linear-gradient(180deg,_var(--dc-glass-from),_var(--dc-glass-to))] p-[0.4rem_0.85rem] text-[0.8rem] font-medium text-[var(--dc-fg-primary)] shadow-[var(--dc-shadow)] backdrop-blur-[20px]"
+              onClick={openCreateDialog}
+            >
+              생성
+            </button>
+          }
+        />
 
         {fetchError || error ? (
           <p className="m-0 px-1 text-sm text-red-600">{fetchError ?? error}</p>

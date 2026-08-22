@@ -1,7 +1,7 @@
 "use client";
 
 import { DailyIcon } from "@/components/atoms";
-import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { HeaderBackButton, ScreenHeader } from "@/components/molecules";
 import type { RecorderStatus } from "@/hooks/useVideoRecorder";
 import { formatRecordTimer } from "@/lib/video/formatRecordTimer";
 import type { RefCallback } from "react";
@@ -42,7 +42,7 @@ export function CaptureCameraStage({
       />
 
       <div className="absolute inset-x-0 top-0 z-10">
-        <AuthTopBar title="" onBack={onBack} />
+        <ScreenHeader tone="overlay" leading={<HeaderBackButton onClick={onBack} />} />
       </div>
 
       {error ? (

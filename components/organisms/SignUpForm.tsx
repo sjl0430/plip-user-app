@@ -10,7 +10,7 @@ import { ui } from "@/components/atoms/styles";
 import { cn } from "@/lib/utils";
 import { AgreementRow } from "@/components/molecules/AgreementRow";
 import { AuthField } from "@/components/molecules/AuthField";
-import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { AuthTopBar } from "@/components/molecules";
 import { ProgressTrack } from "@/components/molecules/ProgressTrack";
 import { ROUTES } from "@/config/routes";
 import { saveSignupDraft } from "@/lib/auth/signup-draft";

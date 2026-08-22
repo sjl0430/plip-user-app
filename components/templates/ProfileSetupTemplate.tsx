@@ -1,5 +1,5 @@
 import { ui } from "@/components/atoms/styles";
-import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { AuthTopBar } from "@/components/molecules";
 import { ProfileSetupForm } from "@/components/organisms";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { ROUTES } from "@/config/routes";

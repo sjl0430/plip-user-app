@@ -1,5 +1,5 @@
 import { TextLink } from "@/components/atoms";
-import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { AuthTopBar } from "@/components/molecules";
 import { AgitManageForm } from "@/components/organisms/AgitManageForm";
 import { AgitProfileEditForm } from "@/components/organisms/AgitProfileEditForm";
 import { InvitesSafetySection } from "@/components/organisms/InvitesSafetySection";

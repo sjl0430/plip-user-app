@@ -1,7 +1,7 @@
 "use client";
 
 import { DailyIcon, Pill, TextLink } from "@/components/atoms";
-import { ExploreNav } from "@/components/molecules";
+import { ExploreNav, ScreenHeader } from "@/components/molecules";
 import { AGIT_LIST } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import { useState } from "react";
@@ -42,15 +42,16 @@ export function ExploreSection() {
 
   return (
     <section className="flex w-full flex-col gap-4" aria-label="새로운 루프 찾기">
-      <header className="flex w-full items-center justify-between gap-[12px]">
-        <div>
-          <h1 className="m-0 text-[22px] font-semibold leading-[31px] text-[var(--dl-color-text-primary)]">새로운 루프 찾기</h1>
-          <p className="m-0 text-[11px] font-normal leading-[15px] text-[var(--dl-color-text-secondary)]">목적이 맞는 방에 참여해요</p>
-        </div>
-        <TextLink href={ROUTES.mypage.root} className="block w-[40px] h-[40px] overflow-hidden rounded-[20px] no-underline" aria-label="프로필">
-          <img src="/plip/daily-loop/explore-avatar.svg" alt="" width={40} height={40} />
-        </TextLink>
-      </header>
+      <ScreenHeader
+        tone="plain"
+        title="새로운 루프 찾기"
+        subtitle="목적이 맞는 방에 참여해요"
+        trailing={
+          <TextLink href={ROUTES.mypage.root} className="block h-[40px] w-[40px] overflow-hidden rounded-[20px] no-underline" aria-label="프로필">
+            <img src="/plip/daily-loop/explore-avatar.svg" alt="" width={40} height={40} />
+          </TextLink>
+        }
+      />
 
       <label className="flex w-full items-center gap-[10px] h-[48px] border border-[var(--dl-color-border-default)] rounded-[14px] bg-[var(--dl-color-bg-elevated)] p-[0_16px]">
         <DailyIcon name="search" size={20} />

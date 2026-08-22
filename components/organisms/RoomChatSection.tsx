@@ -1,6 +1,7 @@
 "use client";
 
-import { DailyIcon, TextLink } from "@/components/atoms";
+import { DailyIcon } from "@/components/atoms";
+import { HeaderBackLink, HeaderMenuButton, ScreenHeader } from "@/components/molecules";
 import { ChatMoreSheet } from "@/components/organisms/ChatMoreSheet";
 import { NotificationIconToggle } from "@/components/molecules/NotificationIconToggle";
 import { ROUTES } from "@/config/routes";
@@ -33,29 +34,18 @@ export function RoomChatSection({ agit }: RoomChatSectionProps) {
 
   return (
     <section className="flex min-h-[calc(100dvh_-_80px)] flex-col p-[12px_23px_16px]" aria-label="아지트 채팅">
-      <header className="grid grid-cols-[44px_1fr_44px_44px] items-start gap-[10px]">
-        <TextLink href={ROUTES.agit.detail(agit.id)} className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="뒤로">
-          <DailyIcon name="chevronLeft" size={20} />
-        </TextLink>
-        <div className="pt-[14px]">
-          <h1 className="m-0 text-xl font-bold leading-6 text-[var(--dl-color-text-primary)]">{agit.name}</h1>
-          <p className="m-[4px_0_0] text-[11px] text-[var(--dl-color-text-secondary)]">채팅 · 알림 {notify ? "켜짐" : "꺼짐"}</p>
-        </div>
-        <NotificationIconToggle
-          checked={notify}
-          label="채팅 알림"
-          onChange={setNotify}
-        />
-        <button
-          type="button"
-          className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]"
-          aria-label="더보기"
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen(true)}
-        >
-          <DailyIcon name="ellipsis" size={20} />
-        </button>
-      </header>
+      <ScreenHeader
+        tone="plain"
+        leading={<HeaderBackLink href={ROUTES.agit.detail(agit.id)} />}
+        title={agit.name}
+        subtitle={`채팅 · 알림 ${notify ? "켜짐" : "꺼짐"}`}
+        trailing={
+          <>
+            <NotificationIconToggle checked={notify} label="채팅 알림" onChange={setNotify} />
+            <HeaderMenuButton label="더보기" expanded={menuOpen} onClick={() => setMenuOpen(true)} />
+          </>
+        }
+      />
 
       <p className="m-[16px_0_8px] text-center text-xs font-medium text-[#7a758f]">오늘</p>
 
@@ -111,4 +101,4 @@ export function RoomChatSection({ agit }: RoomChatSectionProps) {
     </section>
   );
 }
-
+

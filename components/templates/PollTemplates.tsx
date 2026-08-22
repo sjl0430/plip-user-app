@@ -1,4 +1,4 @@
-import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { AuthTopBar } from "@/components/molecules";
 import { PollEditor } from "@/components/organisms/PollEditor";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { ROUTES } from "@/config/routes";

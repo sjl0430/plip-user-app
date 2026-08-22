@@ -1,5 +1,5 @@
 import { TextLink } from "@/components/atoms";
-import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { AuthTopBar } from "@/components/molecules";
 import { CreateRoomAccessForm } from "@/components/organisms/CreateRoomAccessForm";
 import { CreateRoomBasicForm } from "@/components/organisms/CreateRoomBasicForm";
 import { InviteConfirmSection } from "@/components/organisms/InviteConfirmSection";

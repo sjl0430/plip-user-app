@@ -1,4 +1,4 @@
-import { AuthTopBar } from "@/components/molecules/AuthTopBar";
+import { AuthTopBar } from "@/components/molecules";
 import { AccountSecuritySection } from "@/components/organisms/AccountSecuritySection";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
 import { ROUTES } from "@/config/routes";
