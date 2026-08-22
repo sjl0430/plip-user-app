@@ -3,6 +3,7 @@
 import { listTopicsByStatusAction } from "@/actions/topicActions";
 import { DailyIcon, TextLink } from "@/components/atoms";
 import { ROUTES } from "@/config/routes";
+import type { UiAgitRole } from "@/types/agit/ui";
 import type { ApiTopicListStatus } from "@/types/topic/api";
 import type { UiTopicListItem, UiTopicListSectionKey, UiTopicListSections } from "@/types/topic/ui";
 import { useState } from "react";
@@ -19,9 +20,16 @@ const SECTIONS: { id: UiTopicListSectionKey; label: string; status: ApiTopicList
 type TopicsLayoutSectionProps = {
   agitId: string;
   sections: UiTopicListSections;
+  myRole?: UiAgitRole;
+  currentUserUuid?: string;
 };
 
-export function TopicsLayoutSection({ agitId, sections }: TopicsLayoutSectionProps) {
+export function TopicsLayoutSection({
+  agitId,
+  sections,
+  myRole,
+  currentUserUuid,
+}: TopicsLayoutSectionProps) {
   const [openSections, setOpenSections] = useState<Record<UiTopicListSectionKey, boolean>>({
     ongoing: true,
     upcoming: true,
@@ -119,7 +127,12 @@ export function TopicsLayoutSection({ agitId, sections }: TopicsLayoutSectionPro
                     아직 토픽이 없어요
                   </p>
                 ) : (
-                  items.map((topic) => (
+                  items.map((topic) => {
+                    const canEdit =
+                      myRole === "HOST" ||
+                      (Boolean(currentUserUuid) && topic.creatorUuid === currentUserUuid);
+
+                    return (
                     <div
                       key={topic.id}
                       className="flex w-full items-center gap-[10px] rounded-[var(--dl-radius-lg)] border border-[var(--dl-color-border-default)] bg-[var(--dl-color-bg-surface)] p-[12px_14px]"
@@ -132,17 +145,28 @@ export function TopicsLayoutSection({ agitId, sections }: TopicsLayoutSectionPro
                           {topic.startAtLabel}
                         </p>
                       </div>
-                      <span
-                        className={`inline-flex h-[28px] items-center justify-center rounded-[14px] p-[0_12px] text-xs font-semibold leading-none ${
-                          topic.videoCount === 0
-                            ? "m-dlBadgeSuccess bg-[var(--dl-color-bg-success)] text-[var(--dl-color-text-success)]"
-                            : "bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)]"
-                        }`}
-                      >
-                        {topic.videoCount}개 영상
-                      </span>
+                      <div className="flex shrink-0 flex-col items-end gap-1.5">
+                        <span
+                          className={`inline-flex h-[28px] items-center justify-center rounded-[14px] p-[0_12px] text-xs font-semibold leading-none ${
+                            topic.videoCount === 0
+                              ? "m-dlBadgeSuccess bg-[var(--dl-color-bg-success)] text-[var(--dl-color-text-success)]"
+                              : "bg-[var(--dl-color-bg-brand-subtle)] text-[var(--dl-color-text-brand)]"
+                          }`}
+                        >
+                          {topic.videoCount}개 영상
+                        </span>
+                        {canEdit ? (
+                          <TextLink
+                            href={ROUTES.agit.topicEdit(agitId, topic.id)}
+                            className="text-[12px] font-semibold !text-[var(--dl-color-text-brand)] !no-underline"
+                          >
+                            편집
+                          </TextLink>
+                        ) : null}
+                      </div>
                     </div>
-                  ))
+                    );
+                  })
                 )}
                 {open && canLoadMore ? (
                   <button

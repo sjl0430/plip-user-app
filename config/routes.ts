@@ -30,6 +30,10 @@ export const ROUTES = {
     members: (agitId: string) => `/agit/${agitId}/members` as const,
     topics: (agitId: string) => `/agit/${agitId}/topics` as const,
     topicCreate: (agitId: string) => `/agit/${agitId}/topics/create` as const,
+    topicDetail: (agitId: string, topicId: string) =>
+      `/agit/${agitId}/topics/${topicId}` as const,
+    topicEdit: (agitId: string, topicId: string) =>
+      `/agit/${agitId}/topics/${topicId}/edit` as const,
     manage: (agitId: string) => `/agit/${agitId}/manage` as const,
     calendar: (agitId: string) => `/agit/${agitId}/calendar` as const,
     upload: (agitId: string) => `/agit/${agitId}/upload` as const,

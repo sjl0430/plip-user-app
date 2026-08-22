@@ -1,4 +1,5 @@
 import { AgitTopicsTemplate } from "@/components/templates";
+import { getServerUserUuid } from "@/lib/auth/server-token";
 import { getAgitAndMembers } from "@/services/agitService";
 import { listTopicsByStatus } from "@/services/topicService";
 import type { UiAgit } from "@/types/agit/ui";
@@ -28,10 +29,12 @@ async function loadSection(
 export default async function AgitTopicsPage({ params }: PageProps) {
   const { agitId } = await params;
   let agit: UiAgit | null = null;
+  let currentUserUuid: string | undefined;
 
   try {
     const detail = await getAgitAndMembers(agitId);
     agit = detail.agit;
+    currentUserUuid = await getServerUserUuid();
   } catch {
     agit = null;
   }
@@ -51,5 +54,5 @@ export default async function AgitTopicsPage({ params }: PageProps) {
     sections = { ongoing, upcoming, past };
   }
 
-  return <AgitTopicsTemplate agit={agit} sections={sections} />;
+  return <AgitTopicsTemplate agit={agit} sections={sections} currentUserUuid={currentUserUuid} />;
 }

@@ -38,6 +38,7 @@ export const API_ENDPOINTS = {
   topic: {
     list: gatewayPath("topic", "/api/v1/topics"),
     listByStatus: gatewayPath("topic", "/api/v1/topics/list"),
+    detail: (topicUuid: string) => gatewayPath("topic", `/api/v1/topics/${topicUuid}`),
     videos: (topicUuid: string) =>
       gatewayPath("topic", `/api/v1/topics/${topicUuid}/videos`),
   },

@@ -27,6 +27,14 @@ export type UiTopicListItem = {
   creatorUuid: string;
 };
 
+export type UiTopicDetail = {
+  id: string;
+  title: string;
+  startDate: string;
+  videoCount: number;
+  creatorUuid: string;
+};
+
 export type UiTopicListSectionKey = "ongoing" | "upcoming" | "past";
 
 export type UiTopicListSection = {

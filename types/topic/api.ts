@@ -18,6 +18,11 @@ export type ApiCreateTopicRequest = {
   startAt?: string;
 };
 
+export type ApiUpdateTopicRequest = {
+  title?: string;
+  startAt?: string;
+};
+
 export type ApiTopicVideo = {
   videoUuid: string;
   userUuid: string;

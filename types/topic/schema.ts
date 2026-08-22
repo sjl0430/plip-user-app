@@ -13,6 +13,13 @@ export function toTopicStartAtPayload(date: string): string {
   return `${date}T00:00:00`;
 }
 
+export function parseUpdateTopicInput(input: {
+  title: unknown;
+  startDate: unknown;
+}): CreateTopicParseResult {
+  return parseCreateTopicInput(input);
+}
+
 export function parseCreateTopicInput(input: {
   title: unknown;
   startDate: unknown;

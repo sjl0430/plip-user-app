@@ -8,6 +8,7 @@ import type {
   ApiTopic,
   ApiTopicListStatus,
   ApiTopicVideo,
+  ApiUpdateTopicRequest,
 } from "@/types/topic/api";
 
 function topicFetch<T>(path: string, options: Parameters<typeof apiFetch>[1] = {}): Promise<T> {
@@ -46,6 +47,28 @@ export async function createTopic(body: ApiCreateTopicRequest): Promise<ApiTopic
   return topicFetch<ApiTopic>(API_ENDPOINTS.topic.list, {
     method: "POST",
     body,
+  });
+}
+
+export async function getTopic(topicUuid: string): Promise<ApiTopic> {
+  return topicFetch<ApiTopic>(API_ENDPOINTS.topic.detail(topicUuid), {
+    method: "GET",
+  });
+}
+
+export async function updateTopic(
+  topicUuid: string,
+  body: ApiUpdateTopicRequest,
+): Promise<ApiTopic> {
+  return topicFetch<ApiTopic>(API_ENDPOINTS.topic.detail(topicUuid), {
+    method: "PATCH",
+    body,
+  });
+}
+
+export async function deleteTopic(topicUuid: string): Promise<void> {
+  await topicFetch<unknown>(API_ENDPOINTS.topic.detail(topicUuid), {
+    method: "DELETE",
   });
 }
 

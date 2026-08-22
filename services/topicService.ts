@@ -1,8 +1,8 @@
 import type { ApiAgitDetailMember } from "@/types/agit/api";
-import type { ApiCreateTopicRequest, ApiTopic, ApiTopicListStatus, ApiTopicVideo } from "@/types/topic/api";
-import type { UiTopicGallery, UiTopicListItem, UiTopicVideo } from "@/types/topic/ui";
+import type { ApiCreateTopicRequest, ApiTopic, ApiTopicListStatus, ApiTopicVideo, ApiUpdateTopicRequest } from "@/types/topic/api";
+import type { UiTopicDetail, UiTopicGallery, UiTopicListItem, UiTopicVideo } from "@/types/topic/ui";
 import * as topicApi from "@/lib/api/topicApi";
-import { formatKstDotDate, isSameKstDate, selectAgitTopic } from "@/lib/topic/selectAgitTopic";
+import { formatKstDotDate, isSameKstDate, selectAgitTopic, toKstDateString } from "@/lib/topic/selectAgitTopic";
 import * as videoService from "@/services/videoService";
 
 const FALLBACK_THUMBNAIL = "/plip/v13/topic-video-1.png";
@@ -83,6 +83,30 @@ export async function listTopicsByStatus(
 
 export async function createTopic(input: ApiCreateTopicRequest): Promise<ApiTopic> {
   return topicApi.createTopic(input);
+}
+
+export function toUiTopicDetail(topic: ApiTopic): UiTopicDetail {
+  const parsed = new Date(topic.startAt);
+  return {
+    id: topic.topicUuid,
+    title: topic.title?.trim() ?? "",
+    startDate: Number.isNaN(parsed.getTime()) ? topic.startAt.slice(0, 10) : toKstDateString(parsed),
+    videoCount: topic.videoCount,
+    creatorUuid: topic.creatorUuid,
+  };
+}
+
+export async function getTopic(topicUuid: string): Promise<UiTopicDetail> {
+  const topic = await topicApi.getTopic(topicUuid);
+  return toUiTopicDetail(topic);
+}
+
+export async function updateTopic(topicUuid: string, input: ApiUpdateTopicRequest): Promise<ApiTopic> {
+  return topicApi.updateTopic(topicUuid, input);
+}
+
+export async function deleteTopic(topicUuid: string): Promise<void> {
+  await topicApi.deleteTopic(topicUuid);
 }
 
 function mapSummary(topic: ApiTopic): UiTopicGallery["topic"] {

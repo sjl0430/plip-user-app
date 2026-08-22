@@ -14,6 +14,7 @@ export {
   AgitProfileEditTemplate,
   AgitSafetyTemplate,
   AgitTopicCreateTemplate,
+  AgitTopicEditTemplate,
 } from "./AgitTemplates";
 export { ChangePasswordTemplate } from "./ChangePasswordTemplate";
 export { CreateTemplate } from "./CreateTemplate";

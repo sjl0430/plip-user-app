@@ -5,6 +5,7 @@ import { AgitProfileEditForm } from "@/components/organisms/AgitProfileEditForm"
 import { InvitesSafetySection } from "@/components/organisms/InvitesSafetySection";
 import { MembersPermissionsSection } from "@/components/organisms/MembersPermissionsSection";
 import { TopicCreateForm } from "@/components/organisms/TopicCreateForm";
+import { TopicEditForm } from "@/components/organisms/TopicEditForm";
 import { TopicsLayoutSection } from "@/components/organisms/TopicsLayoutSection";
 import { AgitFlowChrome } from "@/components/templates/AppChromeTemplate";
 import { DailyLoopAuthTemplate } from "@/components/templates/DailyLoopAuthTemplate";
@@ -12,7 +13,7 @@ import { getAgitById } from "@/config/agit-mock";
 import { ROUTES } from "@/config/routes";
 import type { ApiAgitDetailMember } from "@/types/agit/api";
 import type { UiAgit } from "@/types/agit/ui";
-import type { UiTopicListSections } from "@/types/topic/ui";
+import type { UiTopicDetail, UiTopicListSections } from "@/types/topic/ui";
 
 type AgitIdProps = { agitId: string };
 
@@ -41,16 +42,40 @@ export function RoomManageHubTemplate({ agit }: { agit: UiAgit | null }) {
 export function TopicsLayoutTemplate({
   agit,
   sections,
+  currentUserUuid,
 }: {
   agit: UiAgit | null;
   sections: UiTopicListSections;
+  currentUserUuid?: string;
 }) {
   if (!agit) return <RoomMissing />;
 
   return (
     <AgitFlowChrome>
       <AuthTopBar title="토픽관리" backHref={ROUTES.agit.detail(agit.id)} />
-      <TopicsLayoutSection agitId={agit.id} sections={sections} />
+      <TopicsLayoutSection
+        agitId={agit.id}
+        sections={sections}
+        myRole={agit.myRole}
+        currentUserUuid={currentUserUuid}
+      />
+    </AgitFlowChrome>
+  );
+}
+
+export function TopicEditTemplate({
+  agit,
+  topic,
+}: {
+  agit: UiAgit | null;
+  topic: UiTopicDetail | null;
+}) {
+  if (!agit || !topic) return <RoomMissing />;
+
+  return (
+    <AgitFlowChrome>
+      <AuthTopBar title="토픽 편집" backHref={ROUTES.agit.topics(agit.id)} />
+      <TopicEditForm agitId={agit.id} topic={topic} />
     </AgitFlowChrome>
   );
 }
