@@ -121,11 +121,11 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
   if (!mounted) return null;
 
   return (
-    <>
+    <div className="fixed inset-0 z-[40] md:absolute">
       <button
         type="button"
         className={cn(
-          "absolute inset-0 z-[40] border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
+          "absolute inset-0 border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
           visible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
         aria-label="메뉴 닫기"
@@ -133,7 +133,7 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
       />
       <aside
         className={cn(
-          "absolute top-0 right-0 z-[41] flex h-full w-[min(310px,86%)] flex-col gap-2.5 rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-24 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          "absolute top-0 right-0 bottom-0 z-[1] flex w-[min(310px,86%)] flex-col gap-2.5 overflow-hidden rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-[calc(1.25rem+80px)] md:pb-5 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
           visible ? "[transform:translateX(0)]" : "[transform:translateX(100%)]",
         )}
         aria-label="아지트 메뉴"
@@ -224,7 +224,7 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
       </aside>
 
       {confirmLeave ? (
-        <div className="absolute inset-0 z-[42] flex items-center justify-center p-6">
+        <div className="absolute inset-0 z-[2] flex items-center justify-center p-6">
           <button
             type="button"
             className="absolute inset-0 border-0 bg-[rgba(0,0,0,0.32)]"
@@ -261,6 +261,6 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
           </div>
         </div>
       ) : null}
-    </>
+    </div>
   );
 }

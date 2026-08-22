@@ -62,7 +62,7 @@ export function AgitDetailSection({ agit, gallery, error, galleryError }: AgitDe
   const heading = gallery.topic?.isToday || !gallery.topic ? "오늘의 토픽" : gallery.topic.title || "토픽";
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       <header className="grid shrink-0 grid-cols-[44px_1fr_44px] items-start gap-[10px] p-[12px_23px_0]">
         <TextLink href={ROUTES.agit.root} className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="뒤로">
           <DailyIcon name="chevronLeft" size={20} />
