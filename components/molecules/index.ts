@@ -1,6 +1,7 @@
 export { ActionSheet } from "./ActionSheet";
 export { AnimatedDialog, AnimatedDropdown, AnimatedSideSheet } from "./AnimatedOverlays";
 export { AgitListRow } from "./AgitListRow";
+export { ManageListRow } from "./ManageListRow";
 export { DestinationToggle } from "./DestinationToggle";
 export { DiaryCard } from "./DiaryCard";
 export { MemberManageRow } from "./MemberManageRow";

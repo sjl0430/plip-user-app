@@ -133,7 +133,7 @@ export function AgitMenuDrawer({ agit, open, onClose }: AgitMenuDrawerProps) {
       />
       <aside
         className={cn(
-          "absolute top-0 right-0 bottom-0 z-[1] flex w-[min(310px,86%)] flex-col gap-2.5 overflow-hidden rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-[calc(1.25rem+80px)] md:pb-5 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          "absolute top-0 right-0 bottom-0 z-[1] flex w-[min(310px,86%)] flex-col gap-2.5 overflow-hidden rounded-l-[24px] bg-[#fbfaff] px-6 pt-12 pb-12 md:pb-5 [transition:transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
           visible ? "[transform:translateX(0)]" : "[transform:translateX(100%)]",
         )}
         aria-label="아지트 메뉴"
