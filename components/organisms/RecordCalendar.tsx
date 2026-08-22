@@ -1,6 +1,7 @@
 "use client";
 
-import { DailyIcon, TextLink } from "@/components/atoms";
+import { DailyIcon, IconButton, IconLink, TextLink } from "@/components/atoms";
+import { ScreenHeader } from "@/components/molecules";
 import {
   getCompactCalendarDetail,
   listCompactCalendarActiveDays,
@@ -46,25 +47,28 @@ export function RecordCalendar({ agitId }: RecordCalendarProps) {
 
   return (
     <section className="flex flex-col gap-[16px] px-[23px] pb-8 pt-3" aria-label="기록 캘린더">
-      <header className="flex items-start justify-between gap-[12px] gap-[10px] mb-[4px]">
-        <TextLink href={ROUTES.agit.detail(agitId)} className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="뒤로">
-          <DailyIcon name="chevronLeft" size={20} />
-        </TextLink>
-        <div className="pt-[14px] min-w-0 flex-1">
+      <ScreenHeader
+        className="mb-[4px]"
+        leading={
+          <IconLink href={ROUTES.agit.detail(agitId)} label="뒤로">
+            <DailyIcon name="chevronLeft" size={20} />
+          </IconLink>
+        }
+        title={
           <h1 className="m-0 text-[22px] font-bold leading-[27px] text-[var(--dl-color-text-primary)]">기록 캘린더</h1>
-        </div>
-      </header>
+        }
+      />
 
       <div className="flex items-center justify-between gap-[12px]">
-        <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="이전 달" onClick={() => shiftMonth(-1)}>
+        <IconButton variant="surface" label="이전 달" onClick={() => shiftMonth(-1)}>
           <DailyIcon name="chevronLeft" size={20} />
-        </button>
+        </IconButton>
         <p className="m-0 flex-1 text-center text-lg font-semibold text-[var(--dl-color-text-primary)]">
           {year}년 {month + 1}월
         </p>
-        <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="다음 달" onClick={() => shiftMonth(1)}>
+        <IconButton variant="surface" label="다음 달" onClick={() => shiftMonth(1)}>
           <DailyIcon name="chevronRight" size={20} />
-        </button>
+        </IconButton>
       </div>
 
       <div className="grid grid-cols-[repeat(7,_1fr)] gap-[4px]">

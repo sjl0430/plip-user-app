@@ -7,7 +7,7 @@ export { GlassInput } from "./GlassInput";
 export { GradientButton } from "./GradientButton";
 export { GradientButtonLink } from "./GradientButtonLink";
 export { Heading } from "./Heading";
-export { IconButton } from "./IconButton";
+export { IconButton, IconLink } from "./IconButton";
 export { InlineCode } from "./InlineCode";
 export { Input } from "./Input";
 export { Label } from "./Label";

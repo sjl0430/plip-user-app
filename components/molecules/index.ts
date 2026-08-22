@@ -40,6 +40,7 @@ export { FormField } from "./FormField";
 export { LinkButton } from "./LinkButton";
 export { MyPageMenuItem } from "./MyPageMenuItem";
 export { PageHeader } from "./PageHeader";
+export { ScreenHeader } from "./ScreenHeader";
 export { UploadProgress } from "./UploadProgress";
 export { DailyToggle } from "./DailyToggle";
 export { SettingsRow } from "./SettingsRow";

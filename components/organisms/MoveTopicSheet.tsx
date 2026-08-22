@@ -1,6 +1,6 @@
 "use client";
 
-import { DailyIcon, SubmitButton } from "@/components/atoms";
+import { DailyIcon, IconButton, SubmitButton } from "@/components/atoms";
 import { useOverlayTransition } from "@/hooks/useOverlayTransition";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -52,9 +52,9 @@ export function MoveTopicSheet({ open, onClose }: MoveTopicSheetProps) {
               현재 영상의 토픽을 변경합니다
             </p>
           </div>
-          <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="닫기" onClick={onClose}>
+          <IconButton variant="surface" label="닫기" onClick={onClose}>
             <DailyIcon name="x" size={20} />
-          </button>
+          </IconButton>
         </div>
 
         <div className="flex flex-col gap-[4px] p-[14px] rounded-[14px] bg-[var(--dl-color-bg-brand-subtle)]">
