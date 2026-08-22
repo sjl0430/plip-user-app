@@ -25,6 +25,30 @@ export async function leaveAgitAction(agitId: string): Promise<ActionResult<void
   }
 }
 
+export async function banAgitMemberAction(
+  agitId: string,
+  ampId: number,
+): Promise<ActionResult<void>> {
+  try {
+    await agitService.banAgitMember(agitId, ampId);
+    return actionSuccess(undefined);
+  } catch (error) {
+    return toActionError(error);
+  }
+}
+
+export async function transferAgitHostAction(
+  agitId: string,
+  ampId: number,
+): Promise<ActionResult<void>> {
+  try {
+    await agitService.transferAgitHost(agitId, ampId);
+    return actionSuccess(undefined);
+  } catch (error) {
+    return toActionError(error);
+  }
+}
+
 export async function createAgitAction(
   input: UiCreateAgitInput,
 ): Promise<ActionResult<UiAgit>> {

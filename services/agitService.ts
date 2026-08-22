@@ -98,6 +98,14 @@ export async function leaveAgit(agitId: string): Promise<void> {
   await agitApi.leaveAgit(agitId);
 }
 
+export async function banAgitMember(agitId: string, ampId: number): Promise<void> {
+  await agitApi.banAgitMember(agitId, ampId);
+}
+
+export async function transferAgitHost(agitId: string, ampId: number): Promise<void> {
+  await agitApi.transferAgitHost(agitId, ampId);
+}
+
 export async function updateAgit(agitId: string, body: ApiUpdateAgitRequest): Promise<UiAgit> {
   await agitApi.updateAgit(agitId, body);
   return getAgit(agitId);

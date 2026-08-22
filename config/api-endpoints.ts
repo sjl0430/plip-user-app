@@ -30,6 +30,10 @@ export const API_ENDPOINTS = {
     detail: (agitUuid: string) => gatewayPath("agit", `/api/v1/agits/${agitUuid}`),
     memberMe: (agitUuid: string) => gatewayPath("agit", `/api/v1/agits/${agitUuid}/members/me`),
     leave: (agitUuid: string) => gatewayPath("agit", `/api/v1/agits/${agitUuid}/leave`),
+    ban: (agitUuid: string, ampId: number) =>
+      gatewayPath("agit", `/api/v1/agits/${agitUuid}/members/${ampId}/ban`),
+    transferHost: (agitUuid: string, ampId: number) =>
+      gatewayPath("agit", `/api/v1/agits/${agitUuid}/members/${ampId}/transfer-host`),
   },
   topic: {
     list: gatewayPath("topic", "/api/v1/topics"),

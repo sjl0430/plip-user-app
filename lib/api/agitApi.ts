@@ -55,6 +55,26 @@ export async function leaveAgit(agitUuid: string): Promise<void> {
   );
 }
 
+export async function banAgitMember(agitUuid: string, ampId: number): Promise<void> {
+  await withAuthRetry(async () =>
+    apiFetch<void>(API_ENDPOINTS.agit.ban(agitUuid, ampId), {
+      method: "POST",
+      baseUrl: getApiUrl(),
+      headers: await getActorUserHeaders(),
+    }),
+  );
+}
+
+export async function transferAgitHost(agitUuid: string, ampId: number): Promise<void> {
+  await withAuthRetry(async () =>
+    apiFetch<void>(API_ENDPOINTS.agit.transferHost(agitUuid, ampId), {
+      method: "POST",
+      baseUrl: getApiUrl(),
+      headers: await getActorUserHeaders(),
+    }),
+  );
+}
+
 export async function updateAgit(
   agitUuid: string,
   body: ApiUpdateAgitRequest,
