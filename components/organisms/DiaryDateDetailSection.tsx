@@ -1,7 +1,7 @@
 "use client";
 
-import { DailyIcon, IconLink, TextLink } from "@/components/atoms";
-import { DiaryThemeClipGroup, ScreenHeader } from "@/components/molecules";
+import { TextLink } from "@/components/atoms";
+import { DiaryThemeClipGroup, HeaderBackLink, ScreenHeader } from "@/components/molecules";
 import { formatDiaryDate } from "@/config/diary-mock";
 import { ROUTES } from "@/config/routes";
 import type { UiDiaryDateThemeGroup } from "@/types/diary/ui";
@@ -112,13 +112,10 @@ export function DiaryDateDetailSection({
     <div className="flex h-[calc(100dvh-80px)] flex-col overflow-hidden bg-[var(--dc-page-bg)]">
       <div className="shrink-0 px-4 pb-[1.15rem] pt-[0.9rem]">
         <ScreenHeader
-          align="center"
+          tone="plain"
+          titleAlign="center"
           className="mb-[1.15rem]"
-          leading={
-            <IconLink href={ROUTES.diary.root} label="뒤로">
-              <DailyIcon name="chevronLeft" size={20} />
-            </IconLink>
-          }
+          leading={<HeaderBackLink href={ROUTES.diary.root} />}
           title={<span className="sr-only">{formatDiaryDate(date)}</span>}
         />
 

@@ -25,6 +25,7 @@ export { CursorSpark } from "./CursorSpark";
 export { DailyIcon, type DailyIconName } from "./DailyIcon";
 export { Pill } from "./Pill";
 export { PageTitle } from "./PageTitle";
+export { ScreenSubtitle, ScreenTitle } from "./ScreenTitle";
 export { PlipLogo } from "./PlipLogo";
 export { Separator } from "./Separator";
 export { ui } from "./styles";

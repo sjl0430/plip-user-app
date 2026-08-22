@@ -1,7 +1,6 @@
 "use client";
 
-import { DailyIcon, IconButton, IconLink } from "@/components/atoms";
-import { ScreenHeader } from "@/components/molecules";
+import { HeaderBackLink, HeaderMenuButton, ScreenHeader } from "@/components/molecules";
 import { MoveTopicSheet } from "@/components/organisms/MoveTopicSheet";
 import { ViewerActionsSheet } from "@/components/organisms/ViewerActionsSheet";
 import { FEED_CLIPS } from "@/config/feed-mock";
@@ -27,20 +26,11 @@ export function ClipViewerSection({ clipId, mode = "view" }: ClipViewerSectionPr
       <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/80" />
 
       <ScreenHeader
-        className="relative z-10 px-4 py-3"
-        padTitle={false}
-        leading={
-          <IconLink href={ROUTES.home} label="닫기">
-            <DailyIcon name="chevronLeft" size={20} />
-          </IconLink>
-        }
-        title={<p className="m-0 text-[24px] font-bold leading-[29px] text-white">오늘의 영상</p>}
-        subtitle={<p className="mt-1 text-[11px] text-white/78">8월 14일 · #기상 #러닝</p>}
-        trailing={
-          <IconButton variant="surface" label="더보기" onClick={() => setActionsOpen(true)}>
-            <DailyIcon name="ellipsis" size={20} />
-          </IconButton>
-        }
+        tone="overlay"
+        leading={<HeaderBackLink href={ROUTES.home} label="닫기" />}
+        title="오늘의 영상"
+        subtitle="8월 14일 · #기상 #러닝"
+        trailing={<HeaderMenuButton label="더보기" onClick={() => setActionsOpen(true)} />}
       />
 
       <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">

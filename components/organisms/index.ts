@@ -41,7 +41,7 @@ export { CreateClipSection } from "./CreateClipSection";
 export { UploadWizard } from "./UploadWizard";
 export { CreateThemeDialog } from "./CreateThemeDialog";
 export { DiaryDateDetailSection } from "./DiaryDateDetailSection";
-export { DiaryHeader, DiaryMenuLink } from "./DiaryHeader";
+export { DiaryHeader } from "./DiaryHeader";
 export { DiaryMainSection } from "./DiaryMainSection";
 export { DiarySideMenu } from "./DiarySideMenu";
 export { DiaryThemeDetailSection } from "./DiaryThemeDetailSection";

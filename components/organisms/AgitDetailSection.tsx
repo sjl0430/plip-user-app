@@ -1,7 +1,7 @@
 "use client";
 
-import { DailyIcon, IconButton, IconLink, TextLink } from "@/components/atoms";
-import { ScreenHeader } from "@/components/molecules";
+import { TextLink } from "@/components/atoms";
+import { HeaderBackLink, HeaderMenuButton, ScreenHeader } from "@/components/molecules";
 import { AgitMenuDrawer } from "@/components/organisms/AgitMenuDrawer";
 import { TopicGallerySection } from "@/components/organisms/TopicGallerySection";
 import { ROUTES } from "@/config/routes";
@@ -65,25 +65,10 @@ export function AgitDetailSection({ agit, gallery, error, galleryError }: AgitDe
   return (
     <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
       <ScreenHeader
-        className="shrink-0 p-[12px_23px_0]"
-        leading={
-          <IconLink href={ROUTES.agit.root} label="뒤로">
-            <DailyIcon name="chevronLeft" size={20} />
-          </IconLink>
-        }
-        title={
-          <h1 className="m-0 text-[22px] font-bold leading-[27px] text-[var(--dl-color-text-primary)]">{heading}</h1>
-        }
-        subtitle={
-          <p className="m-[4px_0_0] text-xs leading-[16px] text-[var(--dl-color-text-secondary)]">
-            {formatTopicMeta(gallery)}
-          </p>
-        }
-        trailing={
-          <IconButton variant="surface" label="아지트 메뉴" onClick={() => setMenuOpen(true)}>
-            <DailyIcon name="ellipsis" size={20} />
-          </IconButton>
-        }
+        leading={<HeaderBackLink href={ROUTES.agit.root} />}
+        title={heading}
+        subtitle={formatTopicMeta(gallery)}
+        trailing={<HeaderMenuButton label="아지트 메뉴" onClick={() => setMenuOpen(true)} />}
       />
 
       {galleryError ? (

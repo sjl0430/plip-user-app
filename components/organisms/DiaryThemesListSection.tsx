@@ -1,9 +1,8 @@
 "use client";
-import leftoverStyles from "@/components/styles/leftover.module.css";
 
 import { deleteThemeAction } from "@/actions/diaryActions";
-import { DailyIcon, IconLink, TextLink } from "@/components/atoms";
-import { ScreenHeader } from "@/components/molecules";
+import { TextLink } from "@/components/atoms";
+import { HeaderBackLink, ScreenHeader } from "@/components/molecules";
 import { AnimatedDropdown } from "@/components/molecules/AnimatedOverlays";
 import { CreateThemeDialog } from "@/components/organisms/CreateThemeDialog";
 import { ROUTES } from "@/config/routes";
@@ -156,18 +155,10 @@ export function DiaryThemesListSection({ themes, error: fetchError }: DiaryTheme
     <>
       <div className="flex flex-col gap-[0.95rem] p-[0.9rem_1rem_1.5rem]">
         <ScreenHeader
-          align="center"
-          trailingFit
-          leading={
-            <IconLink href={ROUTES.diary.root} label="뒤로">
-              <DailyIcon name="chevronLeft" size={20} />
-            </IconLink>
-          }
-          title={
-            <div className={leftoverStyles.plipDiaryThemesHead}>
-              <h2>테마</h2>
-            </div>
-          }
+          tone="plain"
+          titleAlign="center"
+          leading={<HeaderBackLink href={ROUTES.diary.root} />}
+          title="테마"
           trailing={
             <button
               type="button"

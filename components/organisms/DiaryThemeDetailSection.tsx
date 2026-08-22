@@ -1,7 +1,7 @@
 "use client";
 
-import { DailyIcon, IconButton, IconLink } from "@/components/atoms";
-import { DiaryThemeClipGroup, ScreenHeader } from "@/components/molecules";
+import { IconButton, ScreenTitle } from "@/components/atoms";
+import { DiaryThemeClipGroup, HeaderBackLink, ScreenHeader } from "@/components/molecules";
 import { ROUTES } from "@/config/routes";
 import type { UiDiaryThemeDateGroup } from "@/types/diary/ui";
 
@@ -20,13 +20,10 @@ export function DiaryThemeDetailSection({
   return (
     <div className="flex flex-col gap-[1.15rem] p-[0.9rem_1rem_1.75rem]">
       <ScreenHeader
-        align="center"
-        leading={
-          <IconLink href={ROUTES.diary.themes.root} label="뒤로">
-            <DailyIcon name="chevronLeft" size={20} />
-          </IconLink>
-        }
-        title={<h2 className="m-0 text-[1rem] font-extrabold text-[#111]">{themeName}</h2>}
+        tone="plain"
+        titleAlign="center"
+        leading={<HeaderBackLink href={ROUTES.diary.themes.root} />}
+        title={<ScreenTitle className="text-[1rem] font-extrabold text-[#111]">{themeName}</ScreenTitle>}
       />
 
       {error ? <p className="m-0 text-center text-sm text-red-600">{error}</p> : null}

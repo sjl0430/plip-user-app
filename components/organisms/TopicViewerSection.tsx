@@ -1,7 +1,7 @@
 "use client";
 
-import { DailyIcon, IconButton, IconLink, TextLink } from "@/components/atoms";
-import { ScreenHeader } from "@/components/molecules";
+import { DailyIcon, TextLink } from "@/components/atoms";
+import { HeaderBackLink, HeaderMenuButton, ScreenHeader } from "@/components/molecules";
 import { ROUTES } from "@/config/routes";
 import type { UiTopicVideo } from "@/types/topic/ui";
 
@@ -25,29 +25,11 @@ export function TopicViewerSection({
   return (
     <section className="flex flex-col gap-[16px] p-[12px_23px_24px]" aria-label={title}>
       <ScreenHeader
-        leading={
-          <IconLink href={backHref} label="뒤로">
-            <DailyIcon name="chevronLeft" size={20} />
-          </IconLink>
-        }
-        title={<h1 className="m-0 text-[22px] font-bold leading-[27px] text-[var(--dl-color-text-primary)]">{title}</h1>}
-        subtitle={
-          meta ? (
-            <p className="m-[4px_0_0] text-xs leading-[16px] text-[var(--dl-color-text-secondary)]">{meta}</p>
-          ) : null
-        }
-        trailing={
-          onMenuClick ? (
-            <IconButton variant="surface" label="아지트 메뉴" onClick={onMenuClick}>
-              <DailyIcon name="ellipsis" size={20} />
-            </IconButton>
-          ) : (
-            <span
-              className="m-dlIconSqSpacer pointer-events-none grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] [visibility:hidden]"
-              aria-hidden
-            />
-          )
-        }
+        tone="plain"
+        leading={<HeaderBackLink href={backHref} />}
+        title={title}
+        subtitle={meta || undefined}
+        trailing={onMenuClick ? <HeaderMenuButton label="아지트 메뉴" onClick={onMenuClick} /> : undefined}
       />
 
       {videos.length === 0 ? (

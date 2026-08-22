@@ -1,7 +1,7 @@
 "use client";
 
-import { DailyIcon, IconButton, IconLink, TextLink } from "@/components/atoms";
-import { MonthCalendarGrid, ScreenHeader, buildMonthGridCells } from "@/components/molecules";
+import { DailyIcon, IconButton, TextLink } from "@/components/atoms";
+import { HeaderBackLink, MonthCalendarGrid, ScreenHeader, buildMonthGridCells } from "@/components/molecules";
 import {
   getCompactCalendarDetail,
   listCompactCalendarActiveDays,
@@ -37,15 +37,10 @@ export function RecordCalendar({ agitId }: RecordCalendarProps) {
   return (
     <section className="flex flex-col gap-[16px] px-[23px] pb-8 pt-3" aria-label="기록 캘린더">
       <ScreenHeader
+        tone="plain"
         className="mb-[4px]"
-        leading={
-          <IconLink href={ROUTES.agit.detail(agitId)} label="뒤로">
-            <DailyIcon name="chevronLeft" size={20} />
-          </IconLink>
-        }
-        title={
-          <h1 className="m-0 text-[22px] font-bold leading-[27px] text-[var(--dl-color-text-primary)]">기록 캘린더</h1>
-        }
+        leading={<HeaderBackLink href={ROUTES.agit.detail(agitId)} />}
+        title="기록 캘린더"
       />
 
       <div className="flex items-center justify-between gap-[12px]">
