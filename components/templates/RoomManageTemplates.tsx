@@ -62,9 +62,11 @@ export function TopicCreateTemplate({ agitId }: AgitIdProps) {
 export function MembersPermissionsTemplate({
   agit,
   members,
+  currentUserUuid,
 }: {
   agit: UiAgit | null;
   members: ApiAgitDetailMember[];
+  currentUserUuid?: string;
 }) {
   if (!agit) return <RoomMissing />;
 
@@ -76,7 +78,12 @@ export function MembersPermissionsTemplate({
     <AgitFlowChrome>
       <AuthTopBar title="멤버리스트" backHref={ROUTES.agit.detail(agit.id)} />
       <p className="m-0 text-sm font-normal leading-5 text-[var(--dl-color-text-secondary)]">{countLabel}</p>
-      <MembersPermissionsSection members={members} />
+      <MembersPermissionsSection
+        agitId={agit.id}
+        members={members}
+        myRole={agit.myRole}
+        currentUserUuid={currentUserUuid}
+      />
     </AgitFlowChrome>
   );
 }

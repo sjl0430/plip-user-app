@@ -8,6 +8,7 @@ export type ApiAgitMemberRole = "HOST" | "GUEST";
 export type ApiAgitStatus = "ACTIVE" | "DELETED";
 
 export type ApiAgitDetailMember = {
+  ampId: number | null;
   userUuid: string;
   nickname: string;
   profileImagePath: string | null;
