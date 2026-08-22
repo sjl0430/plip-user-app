@@ -1,5 +1,6 @@
 import { ApiError } from "@/lib/api/apiFetch";
 import { clearDevAccessToken } from "@/lib/api/devAccessToken";
+import { handleSessionExpired } from "@/lib/auth/session-expired";
 import {
   clearRequestAccessTokenOverride,
   getRequestAccessTokenOverride,
@@ -21,19 +22,31 @@ export async function withAuthRetry<T>(request: () => Promise<T>): Promise<T> {
     const override = getRequestAccessTokenOverride();
     if (override) {
       clearRequestAccessTokenOverride();
-      throw error;
+      return handleSessionExpired();
     }
 
     const jwt = await getServerAuthJwt();
     const refreshToken = jwt?.refreshToken;
     if (typeof refreshToken !== "string" || !refreshToken) {
-      throw error;
+      return handleSessionExpired();
     }
 
     try {
       const refreshed = await authService.reissueToken(refreshToken);
       setRequestAccessTokenOverride(refreshed.accessToken);
-      return await request();
+      try {
+        return await request();
+      } catch (retryError) {
+        if (retryError instanceof ApiError && retryError.status === 401) {
+          return handleSessionExpired();
+        }
+        throw retryError;
+      }
+    } catch (reissueError) {
+      if (reissueError instanceof ApiError && reissueError.status === 401) {
+        return handleSessionExpired();
+      }
+      throw reissueError;
     } finally {
       clearRequestAccessTokenOverride();
     }
