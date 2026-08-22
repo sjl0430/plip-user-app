@@ -21,6 +21,11 @@ async function getServerAuthJwtSafe() {
   }
 }
 
+export async function getServerUserUuid(): Promise<string | undefined> {
+  const jwt = await getServerAuthJwtSafe();
+  return typeof jwt?.userUuid === "string" && jwt.userUuid.length > 0 ? jwt.userUuid : undefined;
+}
+
 export async function getServerAccessToken(): Promise<string | undefined> {
   const override = getRequestAccessTokenOverride();
   if (override) {

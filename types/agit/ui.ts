@@ -1,5 +1,7 @@
 export type UiAgitVisibility = "public" | "private";
 
+export type UiAgitRole = "HOST" | "GUEST";
+
 export type UiMyAgit = {
   id: string;
   name: string;
@@ -40,6 +42,7 @@ export type UiAgit = {
   joined?: boolean;
   hasNewChat?: boolean;
   hasTodayTopic?: boolean;
+  myRole?: UiAgitRole;
 };
 
 export type UiAgitMember = {

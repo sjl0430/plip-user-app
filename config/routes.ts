@@ -25,6 +25,7 @@ export const ROUTES = {
     enter: (agitId: string) => `/agit/${agitId}/enter` as const,
     invite: (agitId: string) => `/agit/${agitId}/invite` as const,
     profile: (agitId: string) => `/agit/${agitId}/profile` as const,
+    profileEdit: (agitId: string) => `/agit/${agitId}/profile/edit` as const,
     joined: (agitId: string) => `/agit/${agitId}/joined` as const,
     members: (agitId: string) => `/agit/${agitId}/members` as const,
     topics: (agitId: string) => `/agit/${agitId}/topics` as const,
