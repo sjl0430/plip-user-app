@@ -1,7 +1,7 @@
 "use client";
 
 import { DailyIcon, SubmitButton, TextLink } from "@/components/atoms";
-import { AgreementRow, TopicOption } from "@/components/molecules";
+import { AgreementRow, ScreenHeader, TopicOption } from "@/components/molecules";
 import { ROUTES } from "@/config/routes";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -30,12 +30,15 @@ export function RoomUploadSection({ agitId }: RoomUploadSectionProps) {
 
   return (
     <section className="flex w-full flex-col gap-3.5" aria-label="영상 올리기">
-      <header className="flex w-full items-center justify-between gap-[12px]">
-        <h1 className="m-0 text-[22px] font-semibold leading-[31px] text-[var(--dl-color-text-primary)]">영상 올리기</h1>
-        <TextLink href={ROUTES.agit.detail(agitId)} className="text-[14px] font-medium text-[var(--dl-color-text-secondary)] no-underline">
-          닫기
-        </TextLink>
-      </header>
+      <ScreenHeader
+        tone="plain"
+        title="영상 올리기"
+        trailing={
+          <TextLink href={ROUTES.agit.detail(agitId)} className="text-[14px] font-medium text-[var(--dl-color-text-secondary)] no-underline">
+            닫기
+          </TextLink>
+        }
+      />
 
       <button
         type="button"

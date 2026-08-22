@@ -1,8 +1,8 @@
 "use client";
 import leftoverStyles from "@/components/styles/leftover.module.css";
 
-import { DailyIcon, TextLink } from "@/components/atoms";
-import { AgitListRow } from "@/components/molecules/AgitListRow";
+import { DailyIcon, IconLink, TextLink } from "@/components/atoms";
+import { AgitListRow, ScreenHeader } from "@/components/molecules";
 import { ROUTES } from "@/config/routes";
 import type { UiAgit } from "@/types/agit/ui";
 import { useMemo, useState } from "react";
@@ -30,15 +30,16 @@ export function AgitListSection({ items, error }: AgitListSectionProps) {
 
   return (
     <section aria-label="내 아지트" className="flex flex-1 flex-col gap-[14px] p-[12px_24px_24px]">
-      <header className="flex items-start justify-between gap-[12px]">
-        <div>
-          <h1 className="m-0 text-[26px] font-bold leading-[1.15] text-[var(--dl-color-text-primary)]">아지트</h1>
-          <p className="m-[6px_0_0] text-xs font-medium text-[var(--dl-color-text-secondary)]">참여 중인 방에서 오늘의 기록을 이어가요</p>
-        </div>
-        <TextLink href={ROUTES.agit.search} className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="검색">
-          <DailyIcon name="search" size={20} />
-        </TextLink>
-      </header>
+      <ScreenHeader
+        tone="plain"
+        title="아지트"
+        subtitle="참여 중인 방에서 오늘의 기록을 이어가요"
+        trailing={
+          <IconLink href={ROUTES.agit.search} label="검색">
+            <DailyIcon name="search" size={20} />
+          </IconLink>
+        }
+      />
 
       <label className="flex items-center gap-[10px] min-h-[48px] p-[0_14px] border border-[var(--dl-color-border-default)] rounded-[14px] bg-[var(--dl-color-bg-surface)]">
         <DailyIcon name="search" size={18} />

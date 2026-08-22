@@ -1,7 +1,7 @@
 "use client";
 
 import { DailyIcon, SubmitButton, TextLink } from "@/components/atoms";
-import { AuthField } from "@/components/molecules";
+import { AuthField, HeaderBackButton, HeaderBackLink, ScreenHeader } from "@/components/molecules";
 import { TopicChip } from "@/components/molecules/TopicChip";
 import { ROUTES } from "@/config/routes";
 import Image from "next/image";
@@ -45,15 +45,11 @@ export function UploadWizard() {
   if (step === 2) {
     return (
       <section className="flex flex-col gap-3.5 px-[23px] pb-8 pt-3" aria-label="영상 확인">
-        <header className="grid grid-cols-[44px_1fr_44px] items-start gap-[10px]">
-          <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="뒤로" onClick={() => setStep(1)}>
-            <DailyIcon name="chevronLeft" size={20} />
-          </button>
-          <div className="min-w-0 pt-[14px]">
-            <h1 className="m-0 text-[24px] font-bold leading-[29px] text-[var(--dl-color-text-primary)]">영상 확인</h1>
-          </div>
-          <span className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] [visibility:hidden] pointer-events-none m-dlIconSqSpacer" aria-hidden />
-        </header>
+        <ScreenHeader
+          tone="plain"
+          leading={<HeaderBackButton onClick={() => setStep(1)} />}
+          title="영상 확인"
+        />
 
         <div className="relative h-[450px] overflow-hidden rounded-[22px]">
           <Image src="/plip/v13/runner-preview.png" alt="" fill className="object-cover" sizes="354px" />
@@ -90,15 +86,11 @@ export function UploadWizard() {
   if (step === 3) {
     return (
       <section className="flex flex-col gap-[14px] px-[23px] pb-8 pt-3" aria-label="업로드 설정">
-        <header className="grid grid-cols-[44px_1fr_44px] items-start gap-[10px]">
-          <button type="button" className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)]" aria-label="뒤로" onClick={() => setStep(2)}>
-            <DailyIcon name="chevronLeft" size={20} />
-          </button>
-          <div className="min-w-0 pt-[14px]">
-            <h1 className="m-0 text-[24px] font-bold leading-[29px] text-[var(--dl-color-text-primary)]">업로드 설정</h1>
-          </div>
-          <span className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] [visibility:hidden] pointer-events-none m-dlIconSqSpacer" aria-hidden />
-        </header>
+        <ScreenHeader
+          tone="plain"
+          leading={<HeaderBackButton onClick={() => setStep(2)} />}
+          title="업로드 설정"
+        />
 
         <p className="m-0 text-[15px] font-semibold text-[#1f1c29]">기록 목적지</p>
         <div className="flex flex-wrap gap-2">
@@ -142,15 +134,11 @@ export function UploadWizard() {
 
   return (
     <section className="flex w-full flex-col gap-3.5 px-[23px] pb-8 pt-3" aria-label="업로드 완료">
-      <header className="grid grid-cols-[44px_1fr_44px] items-start gap-[10px]">
-        <TextLink href={ROUTES.diary.root} className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] no-underline" aria-label="뒤로">
-          <DailyIcon name="chevronLeft" size={20} />
-        </TextLink>
-        <div className="min-w-0 pt-[14px]">
-          <h1 className="m-0 text-[24px] font-bold leading-[29px] text-[var(--dl-color-text-primary)]">업로드 완료</h1>
-        </div>
-        <span className="grid w-[44px] h-[44px] shrink-0 place-items-center rounded-[var(--dl-radius-md)] bg-[var(--dl-color-bg-surface)] [visibility:hidden] pointer-events-none m-dlIconSqSpacer" aria-hidden />
-      </header>
+      <ScreenHeader
+        tone="plain"
+        leading={<HeaderBackLink href={ROUTES.diary.root} />}
+        title="업로드 완료"
+      />
       <div className="flex w-full flex-col items-center justify-center gap-[10px] rounded-[20px] bg-[var(--dl-color-bg-success)] p-[20px]">
         <div className="grid w-[58px] h-[58px] place-items-center rounded-[29px] bg-[var(--dl-color-bg-elevated)]">
           <DailyIcon name="check" size={28} />
