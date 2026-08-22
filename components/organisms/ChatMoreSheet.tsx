@@ -9,6 +9,7 @@ type ChatMoreSheetProps = {
   agitId: string;
   open: boolean;
   notify: boolean;
+  myRole?: "HOST" | "GUEST";
   onClose: () => void;
   onToggleNotify: () => void;
 };
@@ -48,10 +49,12 @@ export function ChatMoreSheet({
   agitId,
   open,
   notify,
+  myRole,
   onClose,
   onToggleNotify,
 }: ChatMoreSheetProps) {
   const { mounted, visible } = useOverlayTransition(open);
+  const items = MENU.filter((item) => item.id !== "manage" || myRole !== "GUEST");
 
   if (!mounted) return null;
 
@@ -60,7 +63,7 @@ export function ChatMoreSheet({
       <button
         type="button"
         className={cn(
-          "fixed inset-0 z-[41] border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
+          "absolute inset-0 z-[41] border-0 bg-[rgba(0,0,0,0.32)] [transition:opacity_280ms_ease] motion-reduce:transition-none",
           visible ? "opacity-100" : "opacity-0",
         )}
         aria-label="메뉴 닫기"
@@ -68,7 +71,7 @@ export function ChatMoreSheet({
       />
       <div
         className={cn(
-          "fixed bottom-[96px] left-1/2 z-[42] flex w-[min(300px,calc(100%-48px))] flex-col gap-2 rounded-[20px] bg-[rgba(252,251,255,0.98)] p-3 shadow-[0_8px_24px_rgba(0,0,0,0.22)] [transition:opacity_280ms_ease,transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
+          "absolute bottom-[96px] left-1/2 z-[42] flex w-[min(300px,calc(100%-48px))] flex-col gap-2 rounded-[20px] bg-[rgba(252,251,255,0.98)] p-3 shadow-[0_8px_24px_rgba(0,0,0,0.22)] [transition:opacity_280ms_ease,transform_280ms_cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none",
           visible
             ? "opacity-100 [transform:translate(-50%,0)_scale(1)]"
             : "opacity-0 [transform:translate(-50%,12px)_scale(0.96)]",
@@ -91,7 +94,7 @@ export function ChatMoreSheet({
           </span>
         </button>
 
-        {MENU.map((item) => (
+        {items.map((item) => (
           <TextLink
             key={item.id}
             href={item.href(agitId)}

@@ -1,3 +1,4 @@
+import { ui } from "@/components/atoms/styles";
 import { BottomNavigation, type BottomNavTab } from "@/components/molecules/BottomNavigation";
 import type { ReactNode } from "react";
 
@@ -31,5 +32,13 @@ export function AppChromeTemplate({
       </div>
       {showNav ? <BottomNavigation active={activeTab} variant={variant} /> : null}
     </div>
+  );
+}
+
+export function AgitFlowChrome({ children }: { children: ReactNode }) {
+  return (
+    <AppChromeTemplate activeTab="agit" variant="light">
+      <div className={`${ui.authContent} min-h-0 flex-1 overflow-y-auto`}>{children}</div>
+    </AppChromeTemplate>
   );
 }
